@@ -38,6 +38,13 @@ export default function ResultsScreen() {
       setEliminationMessage('It\'s a tie! No one was eliminated.')
       setWinnerMessage('')
       setShowWord(false)
+      
+      // Auto-restart voting after showing tie message
+      if (isLeader) {
+        setTimeout(() => {
+          continueGame()
+        }, 3000)
+      }
     } else if (eliminatedPlayer) {
       const playerName = playerNames.get(eliminatedPlayer)
       const role = eliminatedRole || playerRoles[eliminatedPlayer]
@@ -86,6 +93,11 @@ export default function ResultsScreen() {
   }
 
   const continueGame = () => {
+    // Clear all player votes for fresh start
+    playerNames.forEach((_, playerId) => {
+      setCRDT(`player-votes-${playerId}`, null)
+    })
+    
     // Continue to next round
     setCRDT('game-phase', 'description-voting')
     setCRDT('voting-results', null)

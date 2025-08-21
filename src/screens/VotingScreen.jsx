@@ -13,15 +13,20 @@ export default function VotingScreen() {
     speakingOrder,
     deadPlayers,
     playerNames,
-    playerVotes
+    playerVotes,
+    audienceVotes,
+    myLocalVote,
+    submitVote
   } = useGame()
   
   const [timeRemaining, setTimeRemaining] = useState(90)
   const timerRef = useRef(null)
+  const autoSelectionTriggered = useRef(false)
 
   useEffect(() => {
     // Start countdown timer
     setTimeRemaining(90)
+    autoSelectionTriggered.current = false
     
     timerRef.current = setInterval(() => {
       setTimeRemaining(prev => {
@@ -40,12 +45,51 @@ export default function VotingScreen() {
     }
   }, [])
   
+  // Auto-select based on TikTok votes when time is running out
   useEffect(() => {
+    if (timeRemaining === 5 && !myLocalVote && !autoSelectionTriggered.current && !deadPlayers.has(playerId)) {
+      autoSelectionTriggered.current = true
+      console.log('🤖 Auto-selecting player with most TikTok votes')
+      
+      // Calculate TikTok vote counts
+      const tikTokVoteCounts = new Map()
+      audienceVotes.forEach((votes, targetId) => {
+        if (!deadPlayers.has(targetId)) {
+          const totalWeight = votes.reduce((sum, v) => sum + v.voteWeight, 0)
+          tikTokVoteCounts.set(targetId, totalWeight)
+        }
+      })
+      
+      // Find player with most votes
+      let topPlayer = null
+      let maxVotes = 0
+      
+      tikTokVoteCounts.forEach((votes, playerId) => {
+        console.log(`🤖 ${playerNames.get(playerId)}: ${votes} TikTok votes`)
+        if (votes > maxVotes) {
+          maxVotes = votes
+          topPlayer = playerId
+        }
+      })
+      
+      if (topPlayer) {
+        console.log(`🤖 Auto-selecting: ${playerNames.get(topPlayer)} (${maxVotes} TikTok votes)`)
+        submitVote(topPlayer)
+      } else if (speakingOrder.length > 0) {
+        // If no TikTok votes, select first alive player
+        const firstAlive = speakingOrder.find(id => !deadPlayers.has(id) && id !== playerId)
+        if (firstAlive) {
+          console.log(`🤖 No TikTok votes, auto-selecting first player: ${playerNames.get(firstAlive)}`)
+          submitVote(firstAlive)
+        }
+      }
+    }
+    
     if (timeRemaining === 0 && isLeader) {
       console.log('⏰ Timer reached 0, ending voting phase')
       calculateAndPublishResults()
     }
-  }, [timeRemaining, isLeader])
+  }, [timeRemaining, isLeader, myLocalVote, audienceVotes, deadPlayers, playerId, playerNames, speakingOrder, submitVote])
 
   const endVoting = () => {
     if (!isLeader) return

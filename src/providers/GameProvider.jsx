@@ -130,6 +130,13 @@ export default function GameProvider({ children }) {
   const handleGamePhaseUpdate = useCallback((phase) => {
     console.log(`🎯 Game phase changed to: ${phase}`)
     setGamePhase(phase)
+    
+    // Clear votes when starting a new voting round
+    if (phase === 'description-voting') {
+      setSelectedVote(null)
+      setMyLocalVote(null)
+      console.log('🔄 Cleared vote selections for new voting round')
+    }
   }, [])
 
   // Handle role assignments
