@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>WebView Simulation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            background: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden;
+        }
+        
+        #webview-content {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            background: white;
+        }
+        
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        #loading.hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">Loading project...</div>
+    <iframe id="webview-content" title="Beemi Project" scrolling="no"></iframe>
+    
+    <script>
+        // Simulate React Native WebView environment
+        window.ReactNativeWebView = {
+            postMessage: function(data) {
+                console.log('RN WebView postMessage:', data);
+            }
+        };
+        
+        // Determine entry point from manifest or fallback to index.html
+        async function loadProject() {
+        const iframe = document.getElementById('webview-content');
+            const loading = document.getElementById('loading');
+            let entryPoint = './index.html'; // Default fallback
+            
+            try {
+                // Try to load manifest.json to get entry point
+                const response = await fetch('./manifest.json');
+                if (response.ok) {
+                    const manifest = await response.json();
+                    
+                    // Check for development configuration
+                    if (manifest.development && manifest.development.url) {
+                        entryPoint = manifest.development.url;
+                        console.log('Using development URL:', entryPoint);
+                    } else if (manifest.entryPoint) {
+                        entryPoint = './' + manifest.entryPoint;
+                        console.log('Using manifest entry point:', entryPoint);
+                    }
+                }
+            } catch (error) {
+                console.log('Could not load manifest, using default entry point');
+            }
+            
+            // Load the project
+            iframe.src = entryPoint;
+            
+            // Handle load events
+        iframe.onload = function() {
+                console.log('Project loaded in WebView simulation:', entryPoint);
+                loading.classList.add('hidden');
+        };
+        
+        iframe.onerror = function() {
+                console.error('Error loading project in WebView simulation:', entryPoint);
+                loading.innerHTML = 'Error loading project';
+                loading.style.color = '#ff0000';
+        };
+        }
+        
+        // Load project when DOM is ready
+        document.addEventListener('DOMContentLoaded', loadProject);
+    </script>
+</body>
+</html> 

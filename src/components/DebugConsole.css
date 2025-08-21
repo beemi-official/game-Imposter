@@ -1,0 +1,94 @@
+.debug-console {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 400px;
+  max-width: 90vw;
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  z-index: 10000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.debug-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background: rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.debug-header span {
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.console-btn {
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s ease;
+}
+
+.console-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.console-content {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.85rem;
+}
+
+.console-log {
+  margin-bottom: 5px;
+  padding: 4px 8px;
+  border-radius: 3px;
+  word-wrap: break-word;
+  color: #e0e0e0;
+}
+
+.console-log.debug {
+  color: #90caf9;
+}
+
+.console-log.info {
+  color: #81c784;
+}
+
+.console-log.warn {
+  color: #ffb74d;
+  background: rgba(255, 183, 77, 0.1);
+}
+
+.console-log.error {
+  color: #ef5350;
+  background: rgba(239, 83, 80, 0.1);
+}
+
+.console-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.console-content::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.console-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+}
+
+.console-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}

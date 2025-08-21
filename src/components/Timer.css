@@ -1,0 +1,38 @@
+.timer-display {
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #667eea;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  min-width: 60px;
+  text-align: center;
+  border: 2px solid #667eea;
+  transition: all 0.3s ease;
+}
+
+.timer-display.warning {
+  color: #ff9800;
+  border-color: #ff9800;
+  background: rgba(255, 152, 0, 0.1);
+  animation: pulse 1s infinite;
+}
+
+.timer-display.danger {
+  color: #ff4444;
+  border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.1);
+  animation: pulse 0.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}

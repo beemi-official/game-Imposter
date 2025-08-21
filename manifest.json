@@ -1,0 +1,46 @@
+{
+  "id": "imposter_mel5ubg037bm",
+  "name": "Imposter",
+  "entryPoint": "index.html",
+  "icon": "icon.png",
+  "minSdk": "2.1.1",
+  "description": "Find the imposter among your friends",
+  "version": "1.0.0",
+  "category": "strategy",
+  "beemi": {
+    "sdkVersion": "2.1.1",
+    "core": { "required": true },
+    "streams": { "required": true },
+    "multiplayer-p2p": { "required": true },
+    "user": { 
+      "required": true,
+      "config": {
+        "enableProfileSync": true,
+        "cacheUserData": true
+      }
+    },
+    "app-bridge": {
+      "required": true,
+      "config": {
+        "enableAuthentication": true,
+        "enableNotifications": true
+      }
+    }
+  },
+  "development": {
+    "framework": "react",
+    "command": "npm run dev",
+    "url": "http://localhost:3000",
+    "port": 3000,
+    "emulatorPath": "/public/emulator/index.html",
+    "emulatorDir": "./public/emulator",
+    "postCreate": "npm install"
+  },
+  "production": {
+    "entryPoint": "index.html",
+    "buildCommand": "npm run build",
+    "buildOutputDir": "dist",
+    "requiresBuild": true,
+    "buildTimeout": 300000
+  }
+}

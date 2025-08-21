@@ -1,0 +1,111 @@
+.voter-circles-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 15px;
+  justify-content: center;
+  min-height: 40px;
+}
+
+.voter-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  background: #667eea;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  overflow: hidden;
+}
+
+.voter-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.voter-circle.player-vote {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  font-size: 0.7rem;
+  font-weight: 700;
+  border: 2px solid white;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.4);
+}
+
+.voter-circle.initials {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  text-transform: uppercase;
+}
+
+.voter-circle:hover {
+  transform: scale(1.2);
+  z-index: 10;
+}
+
+.voter-circle.selected {
+  transform: scale(1.3);
+  z-index: 20;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.vote-weight {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  background: #ff4444;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 4px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+  border: 1px solid white;
+}
+
+.username-label {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  z-index: 30;
+  animation: fadeIn 0.2s ease;
+  pointer-events: none;
+}
+
+.username-label::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid rgba(0, 0, 0, 0.9);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

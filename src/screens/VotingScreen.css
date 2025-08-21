@@ -1,0 +1,114 @@
+.voting-screen {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.voting-action-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 100;
+}
+
+.leader-btn {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: white;
+  background: rgba(255, 68, 68, 0.8);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.leader-btn:hover {
+  background: rgba(255, 68, 68, 1);
+  transform: scale(1.05);
+}
+
+.voting-instructions {
+  text-align: center;
+  padding: 20px;
+  color: white;
+}
+
+.voting-instructions p {
+  margin: 10px 0;
+  font-size: 0.9rem;
+}
+
+.dead-message {
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+  animation: fadeIn 0.5s ease;
+}
+
+.voting-grid-container {
+  margin-top: 50px; /* Account for fixed header */
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.word-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.word-badge {
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #667eea;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  animation: pulse 2s infinite;
+}
+
+.imposter-badge {
+  padding: 4px 12px;
+  background: rgba(255, 68, 68, 0.9);
+  color: white;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
