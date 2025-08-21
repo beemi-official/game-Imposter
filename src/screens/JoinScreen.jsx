@@ -5,7 +5,7 @@ import './JoinScreen.css'
 
 export default function JoinScreen() {
   const { isConnected, isLeader, userProfile, playerId } = useBeemiSDK()
-  const { joinGame, playerNames } = useGame()
+  const { joinGame, playerNames, resetGame } = useGame()
   const [name, setName] = useState('')
   const [isJoining, setIsJoining] = useState(false)
   const [statusMessage, setStatusMessage] = useState('')
@@ -60,6 +60,13 @@ export default function JoinScreen() {
     // If success, the useEffect above will handle resetting isJoining
   }
 
+  const handleReset = () => {
+    if (confirm('Are you sure you want to reset the entire game? This will clear all game data but keep players in the room.')) {
+      resetGame()
+      setStatusMessage('Game has been reset')
+    }
+  }
+
   return (
     <section className="join-screen">
       <div className="join-container">
@@ -71,6 +78,15 @@ export default function JoinScreen() {
             <div className={`status-message ${isLeader ? 'leader-status' : 'player-status'}`}>
               {statusMessage}
             </div>
+          )}
+          
+          {isLeader && (
+            <button
+              onClick={handleReset}
+              className="reset-btn"
+            >
+              🔄 Reset Game
+            </button>
           )}
           
           <form onSubmit={handleSubmit} className="join-form">

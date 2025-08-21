@@ -71,6 +71,18 @@ export default function VotingGrid({ speakingOrder, canVote }) {
           const voteCount = voteCounts.get(id) || 0
           const voterList = audienceVotes.get(id) || []
           
+          // Calculate total votes for this player square
+          const totalVotesForPlayer = voterList.reduce((sum, v) => sum + v.voteWeight, 0)
+          
+          // Function to calculate relative circle size
+          const getCircleScale = (weight) => {
+            if (totalVotesForPlayer === 0) return 1
+            const percentage = weight / totalVotesForPlayer
+            // Scale from 0.7 to 1.5 based on percentage
+            // Smaller voters get 0.7x size, largest gets up to 1.5x
+            return 0.7 + (percentage * 0.8)
+          }
+          
           return (
             <div 
               key={id}
@@ -95,14 +107,12 @@ export default function VotingGrid({ speakingOrder, canVote }) {
                     key={`${voter.user}-${index}`}
                     className={`voter-circle ${voter.imageUrl ? '' : 'initials'}`}
                     title={`${voter.user} (${voter.voteWeight} ${voter.voteWeight === 1 ? 'vote' : 'votes'})`}
+                    style={{ transform: `scale(${getCircleScale(voter.voteWeight)})` }}
                   >
                     {voter.imageUrl ? (
                       <img src={voter.imageUrl} alt={voter.user} />
                     ) : (
                       voter.user.substring(0, 2).toUpperCase()
-                    )}
-                    {voter.voteWeight > 1 && (
-                      <span className="vote-weight">×{voter.voteWeight}</span>
                     )}
                   </div>
                 ))}

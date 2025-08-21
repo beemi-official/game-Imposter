@@ -131,14 +131,14 @@ export default function GameProvider({ children }) {
     console.log(`🎯 Game phase changed to: ${phase}`)
     setGamePhase(phase)
     
-    // Clear votes when starting a new voting round
+    // Clear votes when starting a new voting round (but keep gift coins)
     if (phase === 'description-voting') {
       setSelectedVote(null)
       setMyLocalVote(null)
       setAudienceVotes(new Map())
       setAudienceCurrentVote(new Map())
-      setAudienceGiftCoins(new Map())
-      console.log('🔄 Cleared all votes for new voting round')
+      // Don't clear audienceGiftCoins - they should persist across rounds
+      console.log('🔄 Cleared votes for new voting round (gift coins preserved)')
     }
   }, [])
 
@@ -180,6 +180,46 @@ export default function GameProvider({ children }) {
     if (gameEndData && gameEndData.eliminatedPlayer) {
       setDeadPlayers(prev => new Set([...prev, gameEndData.eliminatedPlayer]))
     }
+  }, [])
+
+  // Handle game reset from leader
+  const handleGameReset = useCallback(() => {
+    console.log('🔄 Game reset received - clearing all local state')
+    
+    // Clear all local state for every player
+    setGamePhase('lobby')
+    setPlayerRoles({})
+    setCurrentWord(null)
+    setSpeakingOrder([])
+    setVotingResults(null)
+    setDeadPlayers(new Set())
+    setSelectedVote(null)
+    setMyLocalVote(null)
+    setAudienceVotes(new Map())
+    setAudienceCurrentVote(new Map())
+    setAudienceGiftCoins(new Map())
+    setPlayerVotes({})
+    
+    // IMPORTANT: Clear player names to force everyone back to join screen
+    setPlayerNames(new Map())
+    setGamePlayerCount(0)
+    
+    // Clear refs
+    autoSelectionTriggered.current = false
+    wordTimerActive.current = false
+    gamePlayers.current = {}
+    
+    // Clear any active timers
+    if (votingTimerRef.current) {
+      clearInterval(votingTimerRef.current)
+      votingTimerRef.current = null
+    }
+    if (wordDisplayTimerRef.current) {
+      clearTimeout(wordDisplayTimerRef.current)
+      wordDisplayTimerRef.current = null
+    }
+    
+    console.log('🔄 All local state cleared - players must rejoin')
   }, [])
 
   // Join game
@@ -417,6 +457,37 @@ export default function GameProvider({ children }) {
     }
   }, [gamePhase, audienceCurrentVote, deadPlayers, audienceGiftCoins])
 
+  // Reset entire game (leader only)
+  const resetGame = useCallback(() => {
+    if (!isLeader) return
+    
+    console.log('🔄 Resetting entire game...')
+    
+    // Clear all CRDT data
+    setCRDT('game-phase', 'lobby')
+    setCRDT('player-roles', null)
+    setCRDT('current-word', null)
+    setCRDT('speaking-order', null)
+    setCRDT('voting-results', null)
+    setCRDT('voting-timer', null)
+    setCRDT('game-end', null)
+    
+    // Clear all player vote keys
+    playerNames.forEach((_, playerId) => {
+      setCRDT(`player-votes-${playerId}`, null)
+    })
+    
+    // IMPORTANT: Clear all players to force everyone back to join screen
+    setCRDT('game-players', {})
+    setCRDT('player-requests', {})
+    gamePlayers.current = {}
+    
+    // Trigger reset for all players
+    setCRDT('game-reset', Date.now())
+    
+    console.log('🔄 Game reset triggered for all players - all players cleared')
+  }, [isLeader, setCRDT, playerNames])
+
   // Start word display timer
   const startWordDisplayTimer = useCallback((role, word) => {
     wordTimerActive.current = true
@@ -452,6 +523,7 @@ export default function GameProvider({ children }) {
     unwatchers.push(watchCRDT('speaking-order', handleSpeakingOrderUpdate))
     unwatchers.push(watchCRDT('voting-results', handleVotingResults))
     unwatchers.push(watchCRDT('game-end', handleGameEndUpdate))
+    unwatchers.push(watchCRDT('game-reset', handleGameReset))
     
     // Leader handles player requests
     if (isLeader) {
@@ -474,7 +546,8 @@ export default function GameProvider({ children }) {
     handleCurrentWordUpdate,
     handleSpeakingOrderUpdate,
     handleVotingResults,
-    handleGameEndUpdate
+    handleGameEndUpdate,
+    handleGameReset
   ])
 
   // Handle player requests (leader only)
@@ -564,6 +637,7 @@ export default function GameProvider({ children }) {
     leaveGame,
     startGame,
     submitVote,
+    resetGame,
     
     // Helper functions
     startWordDisplayTimer
