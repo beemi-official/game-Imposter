@@ -9,6 +9,7 @@ export default function JoinScreen() {
   const [name, setName] = useState('')
   const [isJoining, setIsJoining] = useState(false)
   const [statusMessage, setStatusMessage] = useState('')
+  const [isResetting, setIsResetting] = useState(false)
 
   useEffect(() => {
     // Pre-fill name from user profile
@@ -61,9 +62,17 @@ export default function JoinScreen() {
   }
 
   const handleReset = () => {
-    if (confirm('Are you sure you want to reset the entire game? This will clear all game data but keep players in the room.')) {
+    if (isResetting) return
+    
+    if (confirm('Are you sure you want to reset the entire game? This will remove all players and restart from the beginning.')) {
+      setIsResetting(true)
       resetGame()
       setStatusMessage('Game has been reset')
+      
+      // Re-enable button after 2 seconds to prevent rapid clicks
+      setTimeout(() => {
+        setIsResetting(false)
+      }, 2000)
     }
   }
 
@@ -84,8 +93,10 @@ export default function JoinScreen() {
             <button
               onClick={handleReset}
               className="reset-btn"
+              disabled={isResetting}
+              style={{ opacity: isResetting ? 0.5 : 1 }}
             >
-              🔄 Reset Game
+              {isResetting ? '⏳ Resetting...' : '🔄 Reset Game'}
             </button>
           )}
           

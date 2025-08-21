@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import './DebugConsole.css'
 
-const DEBUG_MODE = true // Set to true during development
+const DEBUG_MODE = false // Set to true during development
 
 export default function DebugConsole() {
   const [logs, setLogs] = useState([])
   const [isVisible, setIsVisible] = useState(true)
   const consoleRef = useRef(null)
   const originalConsole = useRef({})
+  const logCounter = useRef(0)
 
   useEffect(() => {
     if (!DEBUG_MODE) return
@@ -55,8 +56,9 @@ export default function DebugConsole() {
 
   const addLog = (type, message) => {
     const timestamp = new Date().toLocaleTimeString()
+    logCounter.current += 1
     const newLog = {
-      id: Date.now() + Math.random(),
+      id: `log-${logCounter.current}-${Date.now()}`,
       type,
       message,
       timestamp

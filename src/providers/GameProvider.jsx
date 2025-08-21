@@ -540,14 +540,7 @@ export default function GameProvider({ children }) {
     isConnected, 
     isLeader,
     watchCRDT,
-    handlePlayersUpdate,
-    handleGamePhaseUpdate,
-    handleRoleAssignments,
-    handleCurrentWordUpdate,
-    handleSpeakingOrderUpdate,
-    handleVotingResults,
-    handleGameEndUpdate,
-    handleGameReset
+    setCRDT
   ])
 
   // Handle player requests (leader only)
