@@ -72,23 +72,40 @@ export default function VotingGrid({ speakingOrder, canVote }) {
           const voterList = audienceVotes.get(id) || []
           
           return (
-            <div key={id} className="player-card">
-              <div className="player-header">
+            <div 
+              key={id}
+              className={`player-square ${isDead ? 'is-dead' : ''}`}
+              onClick={() => handleVote(id)}
+              data-player-id={id}
+            >
+              <div className="player-info">
                 <span className="player-square-name">{playerName}</span>
                 <span className={`player-vote-badge ${voteCount > 0 ? '' : 'empty'}`}>
                   {voteCount}
                 </span>
               </div>
-              <div 
-                className={`player-square ${isDead ? 'is-dead' : ''}`}
-                onClick={() => handleVote(id)}
-                data-player-id={id}
-              >
-                <VoterCircles 
-                  playerId={id}
-                  voters={voterList}
-                  hasPlayerVote={isSelected}
-                />
+              <div className="voter-circles-container" id={`voter-circles-${id}`}>
+                {isSelected && (
+                  <div className="voter-circle player-vote" title="Your vote (worth 5)">
+                    YOU
+                  </div>
+                )}
+                {voterList.map((voter, index) => (
+                  <div
+                    key={`${voter.user}-${index}`}
+                    className={`voter-circle ${voter.imageUrl ? '' : 'initials'}`}
+                    title={`${voter.user} (${voter.voteWeight} ${voter.voteWeight === 1 ? 'vote' : 'votes'})`}
+                  >
+                    {voter.imageUrl ? (
+                      <img src={voter.imageUrl} alt={voter.user} />
+                    ) : (
+                      voter.user.substring(0, 2).toUpperCase()
+                    )}
+                    {voter.voteWeight > 1 && (
+                      <span className="vote-weight">×{voter.voteWeight}</span>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
           )
