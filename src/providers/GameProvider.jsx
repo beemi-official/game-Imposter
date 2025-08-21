@@ -135,7 +135,10 @@ export default function GameProvider({ children }) {
     if (phase === 'description-voting') {
       setSelectedVote(null)
       setMyLocalVote(null)
-      console.log('🔄 Cleared vote selections for new voting round')
+      setAudienceVotes(new Map())
+      setAudienceCurrentVote(new Map())
+      setAudienceGiftCoins(new Map())
+      console.log('🔄 Cleared all votes for new voting round')
     }
   }, [])
 
@@ -298,95 +301,121 @@ export default function GameProvider({ children }) {
 
   // Process stream message (for audience voting)
   const processStreamMessage = useCallback((chatData) => {
-    if (gamePhase !== 'description-voting') return
+    console.log('💬 Stream message received:', chatData)
     
-    const message = chatData.message || chatData.text || ''
+    if (gamePhase !== 'description-voting') {
+      console.log('⏸️ Not processing - game phase is:', gamePhase)
+      return
+    }
+    
+    const text = (chatData.message || chatData.text || '').trim()
     const username = chatData.user?.username || chatData.user?.name || 'Anonymous'
+    const imageUrl = chatData.user?.imageUrl
     
-    // Check if message is a number (vote)
-    const voteNumber = parseInt(message.trim())
-    if (!isNaN(voteNumber) && voteNumber > 0 && voteNumber <= speakingOrder.length) {
-      const targetId = speakingOrder[voteNumber - 1]
+    if (!text) {
+      console.log('❌ No text in message')
+      return
+    }
+    
+    console.log(`🔍 Trying to match "${text}" to a player name`)
+    
+    // Try to match text to player name (case insensitive)
+    let matchedPlayer = null
+    playerNames.forEach((name, id) => {
+      if (!deadPlayers.has(id) && name.toLowerCase() === text.toLowerCase()) {
+        matchedPlayer = { id, name }
+      }
+    })
+    
+    if (matchedPlayer) {
+      const { id: targetId, name: targetName } = matchedPlayer
+      console.log(`✅ Matched! "${text}" -> ${targetName} (${targetId})`)
       
-      if (targetId && !deadPlayers.has(targetId)) {
-        // Update audience current vote
-        setAudienceCurrentVote(prev => new Map(prev).set(username, targetId))
+      // Calculate vote weight based on gifts
+      const giftCoins = audienceGiftCoins.get(username) || 0
+      const voteWeight = 1 + giftCoins
+      console.log(`💰 Vote weight for ${username}: ${voteWeight} (1 base + ${giftCoins} gift coins)`)
+      
+      // Update audience current vote
+      setAudienceCurrentVote(prev => new Map(prev).set(username, targetId))
+      
+      // Update audience votes
+      setAudienceVotes(prev => {
+        const newVotes = new Map(prev)
         
-        // Update audience votes
-        setAudienceVotes(prev => {
-          const newVotes = new Map(prev)
-          const targetVotes = newVotes.get(targetId) || []
-          
-          // Remove previous vote from this user
-          prev.forEach((votes, playerId) => {
-            const filtered = votes.filter(v => v.user !== username)
-            if (filtered.length !== votes.length) {
-              newVotes.set(playerId, filtered)
-            }
-          })
-          
-          // Add new vote
-          targetVotes.push({
-            user: username,
-            imageUrl: chatData.user?.imageUrl,
-            voteWeight: 1
-          })
-          newVotes.set(targetId, targetVotes)
-          
-          return newVotes
+        // Remove previous vote from this user
+        prev.forEach((votes, playerId) => {
+          const filtered = votes.filter(v => v.user !== username)
+          if (filtered.length !== votes.length) {
+            newVotes.set(playerId, filtered)
+          }
         })
         
-        console.log(`📺 Audience vote from ${username}: ${voteNumber} -> ${targetId}`)
-      }
+        // Add new vote with correct weight
+        const targetVotes = newVotes.get(targetId) || []
+        targetVotes.push({
+          user: username,
+          imageUrl: imageUrl,
+          voteWeight: voteWeight
+        })
+        newVotes.set(targetId, targetVotes)
+        
+        console.log(`📺 Audience vote recorded: ${username} voted for ${targetName} with weight ${voteWeight}`)
+        return newVotes
+      })
+    } else {
+      console.log(`❌ No match found for "${text}"`)
+      console.log('Available players:', Array.from(playerNames.values()))
     }
-  }, [gamePhase, speakingOrder, deadPlayers])
+  }, [gamePhase, playerNames, deadPlayers, audienceGiftCoins])
 
   // Process gift event
   const processGiftEvent = useCallback((giftData) => {
-    if (gamePhase !== 'description-voting') return
+    console.log('🎁 Gift event received:', giftData)
     
     const username = giftData.user?.username || giftData.user?.name || 'Anonymous'
     const giftValue = giftData.gift?.coin_value || giftData.gift?.value || 0
+    
+    console.log(`🎁 Gift from ${username}: ${giftValue} coins`)
     
     if (giftValue > 0) {
       // Update gift coins tracking
       setAudienceGiftCoins(prev => {
         const newCoins = new Map(prev)
         const currentCoins = newCoins.get(username) || 0
-        newCoins.set(username, currentCoins + giftValue)
+        const newTotal = currentCoins + giftValue
+        newCoins.set(username, newTotal)
+        console.log(`💰 ${username} total coins: ${currentCoins} + ${giftValue} = ${newTotal}`)
         return newCoins
       })
       
-      // Convert coins to vote weight
-      const voteWeight = Math.floor(giftValue / 100) || 1
-      
-      // Get current vote target
-      const targetId = audienceCurrentVote.get(username)
-      if (targetId && !deadPlayers.has(targetId)) {
-        setAudienceVotes(prev => {
-          const newVotes = new Map(prev)
-          const targetVotes = newVotes.get(targetId) || []
-          
-          // Update vote weight for this user
-          const existingVoteIndex = targetVotes.findIndex(v => v.user === username)
-          if (existingVoteIndex >= 0) {
-            targetVotes[existingVoteIndex].voteWeight += voteWeight
-          } else {
-            targetVotes.push({
-              user: username,
-              imageUrl: giftData.user?.imageUrl,
-              voteWeight
-            })
-          }
-          
-          newVotes.set(targetId, targetVotes)
-          return newVotes
-        })
-        
-        console.log(`🎁 Gift from ${username}: ${giftValue} coins -> ${voteWeight} votes`)
+      // If user has already voted, update their vote weight
+      if (gamePhase === 'description-voting') {
+        const targetId = audienceCurrentVote.get(username)
+        if (targetId && !deadPlayers.has(targetId)) {
+          setAudienceVotes(prev => {
+            const newVotes = new Map(prev)
+            const targetVotes = newVotes.get(targetId) || []
+            
+            // Find and update existing vote
+            const existingVoteIndex = targetVotes.findIndex(v => v.user === username)
+            if (existingVoteIndex >= 0) {
+              // Recalculate total vote weight
+              const totalCoins = (audienceGiftCoins.get(username) || 0) + giftValue
+              const newVoteWeight = 1 + totalCoins
+              targetVotes[existingVoteIndex].voteWeight = newVoteWeight
+              console.log(`🎁 Updated ${username}'s vote weight to ${newVoteWeight}`)
+            }
+            
+            newVotes.set(targetId, targetVotes)
+            return newVotes
+          })
+        } else {
+          console.log(`🎁 ${username} hasn't voted yet, coins saved for when they vote`)
+        }
       }
     }
-  }, [gamePhase, audienceCurrentVote, deadPlayers])
+  }, [gamePhase, audienceCurrentVote, deadPlayers, audienceGiftCoins])
 
   // Start word display timer
   const startWordDisplayTimer = useCallback((role, word) => {
