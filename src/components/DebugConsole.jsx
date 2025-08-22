@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import './DebugConsole.css'
 
-const DEBUG_MODE = false // Set to true during development
+const DEBUG_MODE = true // Set to true during development
 
 export default function DebugConsole() {
   const [logs, setLogs] = useState([])

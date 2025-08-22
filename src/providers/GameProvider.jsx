@@ -505,24 +505,30 @@ export default function GameProvider({ children }) {
   const submitVote = useCallback((targetId) => {
     if (!playerId || deadPlayers.has(playerId)) return
 
+    console.log(`🗳️ [VOTE] Player ${playerId} voting for ${targetId}`)
     setSelectedVote(targetId)
     setMyLocalVote(targetId)
     
     // Calculate vote counts
     const voteCounts = {}
     voteCounts[targetId] = 5 // Player vote worth 5
+    console.log(`🗳️ [VOTE] Base player vote: 5 points`)
     
     // Add audience votes
+    let audienceTotal = 0
     audienceVotes.forEach((votes, targetPlayerId) => {
       if (targetPlayerId === targetId) {
+        console.log(`🗳️ [VOTE] Found ${votes.length} audience votes for ${targetId}`)
         votes.forEach(vote => {
+          console.log(`🗳️ [VOTE]   - ${vote.user}: weight ${vote.voteWeight}`)
+          audienceTotal += vote.voteWeight
           voteCounts[targetId] = (voteCounts[targetId] || 0) + vote.voteWeight
         })
       }
     })
     
+    console.log(`🗳️ [VOTE] Total for ${targetId}: ${voteCounts[targetId]} (5 player + ${audienceTotal} audience)`)
     setCRDT(`player-votes-${playerId}`, voteCounts)
-    console.log(`🗳️ Submitted vote for ${targetId}`)
   }, [playerId, deadPlayers, audienceVotes, setCRDT])
 
   // Process stream message (for audience voting)
@@ -560,7 +566,9 @@ export default function GameProvider({ children }) {
       // Calculate vote weight based on gifts
       const giftCoins = audienceGiftCoins.get(username) || 0
       const voteWeight = 1 + giftCoins
-      console.log(`💰 Vote weight for ${username}: ${voteWeight} (1 base + ${giftCoins} gift coins)`)
+      console.log(`💰 [AUDIENCE VOTE] ${username} voting for ${targetName}`)
+      console.log(`💰 [AUDIENCE VOTE] ${username} has ${giftCoins} gift coins`)
+      console.log(`💰 [AUDIENCE VOTE] Vote weight: ${voteWeight} (1 base + ${giftCoins} coins)`)
       
       // Update audience current vote
       setAudienceCurrentVote(prev => new Map(prev).set(username, targetId))
@@ -605,19 +613,26 @@ export default function GameProvider({ children }) {
     console.log(`🎁 Gift from ${username}: ${giftValue} coins`)
     
     if (giftValue > 0) {
+      // Calculate new total coins for this user
+      const currentCoins = audienceGiftCoins.get(username) || 0
+      const newTotal = currentCoins + giftValue
+      
+      console.log(`💰 [GIFT] ${username} gifted ${giftValue} coins`)
+      console.log(`💰 [GIFT] ${username} previous total: ${currentCoins} coins`)
+      console.log(`💰 [GIFT] ${username} new total: ${newTotal} coins`)
+      
       // Update gift coins tracking
       setAudienceGiftCoins(prev => {
         const newCoins = new Map(prev)
-        const currentCoins = newCoins.get(username) || 0
-        const newTotal = currentCoins + giftValue
         newCoins.set(username, newTotal)
-        console.log(`💰 ${username} total coins: ${currentCoins} + ${giftValue} = ${newTotal}`)
         return newCoins
       })
       
       // If user has already voted, update their vote weight
       if (gamePhase === 'description-voting') {
         const targetId = audienceCurrentVote.get(username)
+        console.log(`🎁 [GIFT] Checking if ${username} has voted: ${targetId ? 'Yes' : 'No'}`)
+        
         if (targetId && !deadPlayers.has(targetId)) {
           setAudienceVotes(prev => {
             const newVotes = new Map(prev)
@@ -626,18 +641,18 @@ export default function GameProvider({ children }) {
             // Find and update existing vote
             const existingVoteIndex = targetVotes.findIndex(v => v.user === username)
             if (existingVoteIndex >= 0) {
-              // Recalculate total vote weight
-              const totalCoins = (audienceGiftCoins.get(username) || 0) + giftValue
-              const newVoteWeight = 1 + totalCoins
+              // Use the correctly calculated newTotal (not reading from state)
+              const newVoteWeight = 1 + newTotal
+              const oldVoteWeight = targetVotes[existingVoteIndex].voteWeight
               targetVotes[existingVoteIndex].voteWeight = newVoteWeight
-              console.log(`🎁 Updated ${username}'s vote weight to ${newVoteWeight}`)
+              console.log(`🎁 [GIFT] Updated ${username}'s vote weight: ${oldVoteWeight} -> ${newVoteWeight} (base 1 + ${newTotal} coins)`)
             }
             
             newVotes.set(targetId, targetVotes)
             return newVotes
           })
         } else {
-          console.log(`🎁 ${username} hasn't voted yet, coins saved for when they vote`)
+          console.log(`🎁 [GIFT] ${username} hasn't voted yet, ${newTotal} coins saved for when they vote`)
         }
       }
     }
