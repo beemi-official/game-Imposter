@@ -228,53 +228,14 @@
             transform: translateY(-1px);
         }
 
-        /* iPhone Outer Frame */
-        .iphone-frame {
-            width: 720px;
-            height: 874px;
-            background: linear-gradient(145deg, #2c2c2e, #1c1c1e);
-            border-radius: 36px;
-            padding: 15px;
-            box-shadow: 
-                0 0 0 2px #000000,
-                0 8px 32px rgba(0, 0, 0, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            position: relative;
-        }
 
-        .iphone-frame::before {
-            content: '';
-            position: absolute;
-            top: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120px;
-            height: 4px;
-            background: #1c1c1e;
-            border-radius: 2px;
-            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
-        }
-
-        .iphone-frame::after {
-            content: '';
-            position: absolute;
-            top: 15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 12px;
-            height: 12px;
-            background: radial-gradient(circle, #1a1a1a 30%, #000000 70%);
-            border-radius: 50%;
-            border: 1px solid #333;
-        }
 
         /* Phone iframe container */
         .phone-iframe-container {
-            width: 690px;
-            height: 844px;
+            width: 716px;
+            height: 882px;
             border-radius: 24px;
             overflow: hidden;
-            background: #000;
         }
 
         .phone-iframe {
@@ -392,15 +353,15 @@
             box-shadow: 0 8px 25px rgba(242, 65, 156, 0.4);
         }
 
-        .multi-client-dialog {
+                .multi-client-dialog {
             position: fixed;
             bottom: 80px;
             right: 20px;
             width: 320px;
-            max-height: 600px;
+            max-height: 667px;
             background: var(--bg-secondary);
             border-radius: var(--radius-xl);
-            box-shadow: 
+            box-shadow:
                 0 0 0 1px rgba(15, 23, 42, 0.05),
                 0 1px 3px 0 rgba(15, 23, 42, 0.1),
                 0 4px 6px -2px rgba(15, 23, 42, 0.05);
@@ -475,7 +436,7 @@
 
         .dialog-content {
             padding: var(--space-4) var(--space-6);
-            max-height: 520px;
+            max-height: 560px;
             overflow-y: auto;
             scrollbar-width: thin;
             scrollbar-color: var(--text-muted) transparent;
@@ -526,6 +487,7 @@
 
         .add-user-controls select {
             flex: 1;
+            min-width: 0;
             padding: var(--space-2) var(--space-3);
             border: 1px solid rgba(15, 23, 42, 0.15);
             border-radius: var(--radius-md);
@@ -543,7 +505,7 @@
         }
 
         .add-user-btn {
-            padding: var(--space-2) var(--space-4);
+            padding: var(--space-2) var(--space-3);
             background: var(--interactive-secondary);
             color: var(--text-inverse);
             border: none;
@@ -553,6 +515,8 @@
             cursor: pointer;
             transition: all var(--transition-normal);
             font-family: var(--font-family);
+            flex-shrink: 0;
+            white-space: nowrap;
         }
 
         .add-user-btn:hover {
@@ -563,7 +527,7 @@
 
         .active-phones-list, .removed-users-list {
             min-height: 50px;
-            max-height: 120px;
+            max-height: 150px;
             overflow-y: auto;
             border: 1px solid rgba(15, 23, 42, 0.1);
             border-radius: var(--radius-md);
@@ -806,7 +770,7 @@
                         <option value="user4">viewerlive (Viewer Live)</option>
                         <option value="user5">livestream (Live Stream)</option>
                     </select>
-                    <button onclick="addSelectedUser()" class="add-user-btn">Add User</button>
+                    <button onclick="addSelectedUser()" class="add-user-btn">Add</button>
                 </div>
             </div>
             
@@ -915,10 +879,6 @@
                     </div>
                 `;
 
-                // Create iPhone outer frame
-                const iphoneFrame = document.createElement('div');
-                iphoneFrame.className = 'iphone-frame';
-
                 // Create phone iframe container
                 const iframeContainer = document.createElement('div');
                 iframeContainer.className = 'phone-iframe-container';
@@ -931,9 +891,8 @@
                 iframe.name = clientName; // Set iframe name for easier identification
 
                 iframeContainer.appendChild(iframe);
-                iphoneFrame.appendChild(iframeContainer);
                 phoneWrapper.appendChild(phoneHeader);
-                phoneWrapper.appendChild(iphoneFrame);
+                phoneWrapper.appendChild(iframeContainer);
 
                 // Add to container
                 const container = document.getElementById('phones-container');
@@ -1141,11 +1100,25 @@
         // Dialog functions
         function toggleMultiClientDialog() {
             const dialog = document.getElementById('multi-client-dialog');
-            if (dialog.style.display === 'none') {
+            const isVisible = dialog.style.display !== 'none';
+            
+            if (isVisible) {
+                dialog.style.display = 'none';
+                localStorage.setItem('beemi-multi-client-dialog-open', 'false');
+            } else {
+                dialog.style.display = 'block';
+                localStorage.setItem('beemi-multi-client-dialog-open', 'true');
+                multiClientManager.updateUI();
+            }
+        }
+
+        // Restore dialog state on page load
+        function restoreDialogState() {
+            const dialogOpen = localStorage.getItem('beemi-multi-client-dialog-open');
+            if (dialogOpen === 'true') {
+                const dialog = document.getElementById('multi-client-dialog');
                 dialog.style.display = 'block';
                 multiClientManager.updateUI();
-            } else {
-                dialog.style.display = 'none';
             }
         }
 
@@ -1288,6 +1261,9 @@ ${debugInfo.sharedState.map(s => `  • ${s.key}: ${JSON.stringify(s.value)}`).j
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             console.log('📱 Multi-Client Emulator Ready!');
+            
+            // Restore dialog state first
+            restoreDialogState();
             
             // Wait for bridge emulator to load, then add first client
             setTimeout(() => {
