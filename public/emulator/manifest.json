@@ -1,18 +1,24 @@
 {
-  "id": "imposter_mel5ubg037bm",
-  "name": "Imposter",
+  "id": "spy",
+  "name": "Spy",
   "entryPoint": "index.html",
   "icon": "icon.png",
   "minSdk": "2.1.1",
-  "description": "Find the imposter among your friends",
+  "description": "Blend in with the rest of the group",
   "version": "1.0.0",
   "category": "strategy",
   "beemi": {
-    "sdkVersion": "2.1.1",
-    "core": { "required": true },
-    "streams": { "required": true },
-    "multiplayer-p2p": { "required": true },
-    "user": { 
+    "sdkVersion": "2.1.2",
+    "core": {
+      "required": true
+    },
+    "streams": {
+      "required": true
+    },
+    "multiplayer-p2p": {
+      "required": true
+    },
+    "user": {
       "required": true,
       "config": {
         "enableProfileSync": true,
@@ -28,19 +34,16 @@
     }
   },
   "development": {
-    "framework": "react",
-    "command": "npm run dev",
-    "url": "http://localhost:3000",
-    "port": 3000,
-    "emulatorPath": "/public/emulator/index.html",
-    "emulatorDir": "./public/emulator",
+    "framework": "generic",
+    "command": "npm run dev:emulator",
+    "url": "http://localhost:8080",
+    "port": 8080,
+    "emulatorPath": "/emulator",
+    "emulatorDir": "./emulator",
+    "replaceEmulatorFiles": false,
     "postCreate": "npm install"
   },
   "production": {
-    "entryPoint": "index.html",
-    "buildCommand": "npm run build",
-    "buildOutputDir": "dist",
-    "requiresBuild": true,
-    "buildTimeout": 300000
+    "entryPoint": "index.html"
   }
 }
