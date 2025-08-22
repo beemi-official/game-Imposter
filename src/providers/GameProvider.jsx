@@ -11,174 +11,16 @@ export const useGame = () => {
   return context
 }
 
-export const WORD_PAIRS = [
-  { civilian: 'UK', imposter: 'Ireland' },
-  { civilian: 'Lightbulb', imposter: 'Candle' },
-  { civilian: 'Beyoncé', imposter: 'Rihanna' },
-  { civilian: 'Stockholm', imposter: 'Gothenburg' },
-  { civilian: 'Rome', imposter: 'Milan' },
-  { civilian: 'Brazil', imposter: 'Argentina' },
-  { civilian: 'Wi-Fi', imposter: 'Bluetooth' },
-  { civilian: 'Rain', imposter: 'Snow' },
-  { civilian: 'Victoria Falls', imposter: 'Angel Falls' },
-  { civilian: 'Jeff Bezos', imposter: 'Elon Musk' },
-  { civilian: 'Paris', imposter: 'London' },
-  { civilian: 'Neil deGrasse Tyson', imposter: 'Stephen Hawking' },
-  { civilian: 'Apple', imposter: 'Samsung' },
-  { civilian: 'Deep', imposter: 'Shallow' },
-  { civilian: 'Munich', imposter: 'Frankfurt' },
-  { civilian: 'Neil Armstrong', imposter: 'Buzz Aldrin' },
-  { civilian: 'Berlin', imposter: 'Munich' },
-  { civilian: 'Day', imposter: 'Night' },
-  { civilian: 'Book', imposter: 'Newspaper' },
-  { civilian: 'Paris', imposter: 'Lyon' },
-  { civilian: 'Soap', imposter: 'Detergent' },
-  { civilian: 'George Washington', imposter: 'Abraham Lincoln' },
-  { civilian: 'Sydney', imposter: 'Melbourne' },
-  { civilian: 'Doha', imposter: 'Dubai' },
-  { civilian: 'Barcelona', imposter: 'Seville' },
-  { civilian: 'Spain', imposter: 'Portugal' },
-  { civilian: 'Amazon River', imposter: 'Nile River' },
-  { civilian: 'Osaka', imposter: 'Nagoya' },
-  { civilian: 'Lisbon', imposter: 'Porto' },
-  { civilian: 'Mount Everest', imposter: 'Mount Kilimanjaro' },
-  { civilian: 'Addis Ababa', imposter: 'Nairobi' },
-  { civilian: 'Key', imposter: 'Card' },
-  { civilian: 'Toronto', imposter: 'Vancouver' },
-  { civilian: 'Open', imposter: 'Close' },
-  { civilian: 'Sahara Desert', imposter: 'Amazon Rainforest' },
-  { civilian: 'Cash', imposter: 'Card' },
-  { civilian: 'KFC', imposter: 'McDonald\'s' },
-  { civilian: 'Chair', imposter: 'Sofa' },
-  { civilian: 'Tram', imposter: 'Bus' },
-  { civilian: 'Camera', imposter: 'Camcorder' },
-  { civilian: 'Tokyo', imposter: 'Seoul' },
-  { civilian: 'Madrid', imposter: 'Barcelona' },
-  { civilian: 'Clock', imposter: 'Watch' },
-  { civilian: 'Sofia', imposter: 'Plovdiv' },
-  { civilian: 'Sweden', imposter: 'Norway' },
-  { civilian: 'Shoe', imposter: 'Sock' },
-  { civilian: 'Kanye West', imposter: 'Jay-Z' },
-  { civilian: 'Doha', imposter: 'Al Rayyan' },
-  { civilian: 'Beijing', imposter: 'Shanghai' },
-  { civilian: 'Teacher', imposter: 'Student' },
-  { civilian: 'Kylian Mbappé', imposter: 'Erling Haaland' },
-  { civilian: 'Machu Picchu', imposter: 'Chichen Itza' },
-  { civilian: 'Laptop', imposter: 'Tablet' },
-  { civilian: 'Clock', imposter: 'Calendar' },
-  { civilian: 'Queen Elizabeth II', imposter: 'King Charles III' },
-  { civilian: 'Mexico City', imposter: 'Monterrey' },
-  { civilian: 'Strong', imposter: 'Weak' },
-  { civilian: 'Victoria Falls', imposter: 'Niagara Falls' },
-  { civilian: 'Greece', imposter: 'Turkey' },
-  { civilian: 'Johannesburg', imposter: 'Cape Town' },
-  { civilian: 'Bike', imposter: 'Motorcycle' },
-  { civilian: 'Coldplay', imposter: 'Maroon 5' },
-  { civilian: 'Window', imposter: 'Door' },
-  { civilian: 'Italy', imposter: 'Greece' },
-  { civilian: 'Mexico', imposter: 'Brazil' },
-  { civilian: 'Taxi', imposter: 'Uber' },
-  { civilian: 'Germany', imposter: 'France' },
-  { civilian: 'Paris', imposter: 'Marseille' },
-  { civilian: 'Johannesburg', imposter: 'Pretoria' },
-  { civilian: 'Toronto', imposter: 'Montreal' },
-  { civilian: 'Singapore', imposter: 'Hong Kong' },
-  { civilian: 'Cat', imposter: 'Dog' },
-  { civilian: 'Hot', imposter: 'Warm' },
-  { civilian: 'Washington, D.C.', imposter: 'New York City' },
-  { civilian: 'Mount Fuji', imposter: 'Mount Everest' },
-  { civilian: 'Serena Williams', imposter: 'Venus Williams' },
-  { civilian: 'Tea', imposter: 'Coffee' },
-  { civilian: 'Riyadh', imposter: 'Jeddah' },
-  { civilian: 'Lagos', imposter: 'Abuja' },
-  { civilian: 'Africa', imposter: 'Asia' },
-  { civilian: 'Madrid', imposter: 'Seville' },
-  { civilian: 'Guitar', imposter: 'Piano' },
-  { civilian: 'Knife', imposter: 'Spoon' },
-  { civilian: 'Apple', imposter: 'Banana' },
-  { civilian: 'Bacteria', imposter: 'Virus' },
-  { civilian: 'Leonardo DiCaprio', imposter: 'Brad Pitt' },
-  { civilian: 'Istanbul', imposter: 'Ankara' },
-  { civilian: 'Cairo', imposter: 'Alexandria' },
-  { civilian: 'Drake', imposter: 'Kendrick Lamar' },
-  { civilian: 'Gentle', imposter: 'Harsh' },
-  { civilian: 'Michael Jackson', imposter: 'Prince' },
-  { civilian: 'United States', imposter: 'Mexico' },
-  { civilian: 'China', imposter: 'Japan' },
-  { civilian: 'Beijing', imposter: 'Guangzhou' },
-  { civilian: 'MrBeast', imposter: 'PewDiePie' },
-  { civilian: 'Sushi', imposter: 'Pizza' },
-  { civilian: 'Taylor Swift', imposter: 'Adele' },
-  { civilian: 'Open', imposter: 'Closed' },
-  { civilian: 'Phone', imposter: 'Watch' },
-  { civilian: 'Mexico City', imposter: 'Guadalajara' },
-  { civilian: 'Bangkok', imposter: 'Phuket' },
-  { civilian: 'Inside', imposter: 'Outside' },
-  { civilian: 'Bag', imposter: 'Box' },
-  { civilian: 'Machu Picchu', imposter: 'Petra' },
-  { civilian: 'Run', imposter: 'Walk' },
-  { civilian: 'Athens', imposter: 'Rome' },
-  { civilian: 'Bike', imposter: 'Scooter' },
-  { civilian: 'Ethiopia', imposter: 'Kenya' },
-  { civilian: 'Camera', imposter: 'Phone' },
-  { civilian: 'LeBron James', imposter: 'Michael Jordan' },
-  { civilian: 'Cairo', imposter: 'Giza' },
-  { civilian: 'Sydney Opera House', imposter: 'Harbour Bridge' },
-  { civilian: 'Oprah Winfrey', imposter: 'Ellen DeGeneres' },
-  { civilian: 'New York', imposter: 'Los Angeles' },
-  { civilian: 'Washington', imposter: 'Lincoln' },
-  { civilian: 'Amsterdam', imposter: 'Rotterdam' },
-  { civilian: 'Seoul', imposter: 'Busan' },
-  { civilian: 'Bread', imposter: 'Rice' },
-  { civilian: 'Happy', imposter: 'Sad' },
-  { civilian: 'Swamp', imposter: 'Grassland' },
-  { civilian: 'Berlin', imposter: 'Hamburg' },
-  { civilian: 'Blue', imposter: 'Red' },
-  { civilian: 'Gandhi', imposter: 'Nehru' },
-  { civilian: 'Rafael Nadal', imposter: 'Roger Federer' },
-  { civilian: 'Hat', imposter: 'Scarf' },
-  { civilian: 'Dwayne Johnson', imposter: 'Kevin Hart' },
-  { civilian: 'Cup', imposter: 'Bowl' },
-  { civilian: 'Saudi Arabia', imposter: 'United Arab Emirates' },
-  { civilian: 'Pen', imposter: 'Pencil' },
-  { civilian: 'Grand Canyon', imposter: 'Great Barrier Reef' },
-  { civilian: 'Chris Evans', imposter: 'Robert Downey Jr.' },
-  { civilian: 'Tokyo', imposter: 'Osaka' },
-  { civilian: 'Early', imposter: 'Late' },
-  { civilian: 'Sahara Desert', imposter: 'Kalahari Desert' },
-  { civilian: 'Qatar', imposter: 'Bahrain' },
-  { civilian: 'United Kingdom', imposter: 'Ireland' },
-  { civilian: 'Pen', imposter: 'Marker' },
-  { civilian: 'City', imposter: 'Village' },
-  { civilian: 'Madrid', imposter: 'Valencia' },
-  { civilian: 'Serengeti', imposter: 'Maasai Mara' },
-  { civilian: 'Fork', imposter: 'Spoon' },
-  { civilian: 'Winston Churchill', imposter: 'Franklin D. Roosevelt' },
-  { civilian: 'Burger King', imposter: 'McDonald\'s' },
-  { civilian: 'Pepsi', imposter: 'Coca-Cola' },
-  { civilian: 'India', imposter: 'Pakistan' },
-  { civilian: 'Cup', imposter: 'Mug' },
-  { civilian: 'Canada', imposter: 'USA' },
-  { civilian: 'Road', imposter: 'Path' },
-  { civilian: 'Nairobi', imposter: 'Mombasa' },
-  { civilian: 'Eiffel Tower', imposter: 'Statue of Liberty' },
-  { civilian: 'Switzerland', imposter: 'Austria' },
-  { civilian: 'India', imposter: 'Bangladesh' },
-  { civilian: 'Taylor Swift', imposter: 'Ed Sheeran' },
-  { civilian: 'Bank', imposter: 'Market' },
-  { civilian: 'Push', imposter: 'Pull' },
-  { civilian: 'Steve Jobs', imposter: 'Bill Gates' },
-  { civilian: 'Battery', imposter: 'Charger' },
-  { civilian: 'Water', imposter: 'Juice' },
-  { civilian: 'Read', imposter: 'Write' },
-  { civilian: 'Dubai', imposter: 'Abu Dhabi' },
-  { civilian: 'Russia', imposter: 'Ukraine' },
-  { civilian: 'Salt', imposter: 'Pepper' },
-  { civilian: 'Hot', imposter: 'Cold' },
-  { civilian: 'Japan', imposter: 'South Korea' },
-  { civilian: 'Lionel Messi', imposter: 'Cristiano Ronaldo' },
-  { civilian: 'Times Square', imposter: 'Piccadilly Circus' },
-  { civilian: 'Bank', imposter: 'Money' }
+export const WORD_LIST = [
+  'China', 'Tree', 'Ocean', 'Mountain', 'Coffee', 'Pizza', 'Book', 'Phone', 'Car', 'House',
+  'Dog', 'Cat', 'Sun', 'Moon', 'Rain', 'Snow', 'Fire', 'Water', 'Music', 'Dance',
+  'Football', 'Basketball', 'Apple', 'Banana', 'Chair', 'Table', 'School', 'Hospital',
+  'Airport', 'Beach', 'Forest', 'Desert', 'River', 'Bridge', 'Castle', 'Tower',
+  'Garden', 'Kitchen', 'Bedroom', 'Library', 'Museum', 'Theater', 'Restaurant', 'Hotel',
+  'Bicycle', 'Train', 'Airplane', 'Boat', 'Camera', 'Computer', 'Television', 'Radio',
+  'Flower', 'Butterfly', 'Bird', 'Fish', 'Lion', 'Elephant', 'Tiger', 'Bear',
+  'Chocolate', 'Ice cream', 'Cake', 'Sandwich', 'Soup', 'Salad', 'Pasta', 'Burger',
+  'Winter', 'Summer', 'Spring', 'Autumn', 'Morning', 'Evening', 'Night', 'Midnight'
 ]
 
 export default function GameProvider({ children }) {
@@ -306,47 +148,19 @@ export default function GameProvider({ children }) {
     setPlayerRoles(roles || {})
   }, [])
 
-  // Start word display timer
-  const startWordDisplayTimer = useCallback((role, word) => {
-    wordTimerActive.current = true
-    
-    wordDisplayTimerRef.current = setTimeout(() => {
-      console.log('⏰ Word display timer ended, transitioning to voting phase')
-      wordTimerActive.current = false
-      
-      if (isLeader) {
-        setCRDT('game-phase', 'description-voting')
-        
-        // Start voting timer
-        const timerData = {
-          startTime: Date.now(),
-          duration: 90000
-        }
-        setCRDT('voting-timer', timerData)
-      }
-    }, 5000)
-  }, [isLeader, setCRDT])
-
   // Handle current word updates
-  const handleCurrentWordUpdate = useCallback((wordData) => {
-    console.log('📝 Current word updated:', wordData)
-    setCurrentWord(wordData)
+  const handleCurrentWordUpdate = useCallback((word) => {
+    console.log('📝 Current word updated:', word)
+    setCurrentWord(word)
     
-    if (gamePhase === 'game-start' && !wordTimerActive.current && wordData) {
+    if (gamePhase === 'game-start' && !wordTimerActive.current && word) {
       console.log('⏰ Word received late, starting timer now')
       const myRole = playerRoles[playerId]
       if (myRole) {
-        // Get the appropriate word for this player
-        let word = ''
-        if (wordData.civilian && wordData.imposter) {
-          word = myRole === 'imposter' ? wordData.imposter : wordData.civilian
-        } else {
-          word = myRole === 'imposter' ? 'IMPOSTER' : wordData
-        }
         startWordDisplayTimer(myRole, word)
       }
     }
-  }, [gamePhase, playerId, playerRoles, startWordDisplayTimer])
+  }, [gamePhase, playerId, playerRoles])
 
   // Handle speaking order updates
   const handleSpeakingOrderUpdate = useCallback((order) => {
@@ -486,15 +300,15 @@ export default function GameProvider({ children }) {
       roles[id] = index < imposterCount ? 'imposter' : 'civilian'
     })
     
-    // Select random word pair
-    const wordPair = WORD_PAIRS[Math.floor(Math.random() * WORD_PAIRS.length)]
+    // Select random word
+    const word = WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)]
     
     // Create speaking order
     const order = [...players].sort(() => Math.random() - 0.5)
     
     // Update CRDT state
     setCRDT('player-roles', roles)
-    setCRDT('current-word', wordPair)  // Store both civilian and imposter words
+    setCRDT('current-word', word)
     setCRDT('speaking-order', order)
     setCRDT('game-phase', 'game-start')
     
@@ -505,30 +319,24 @@ export default function GameProvider({ children }) {
   const submitVote = useCallback((targetId) => {
     if (!playerId || deadPlayers.has(playerId)) return
 
-    console.log(`🗳️ [VOTE] Player ${playerId} voting for ${targetId}`)
     setSelectedVote(targetId)
     setMyLocalVote(targetId)
     
     // Calculate vote counts
     const voteCounts = {}
     voteCounts[targetId] = 5 // Player vote worth 5
-    console.log(`🗳️ [VOTE] Base player vote: 5 points`)
     
     // Add audience votes
-    let audienceTotal = 0
     audienceVotes.forEach((votes, targetPlayerId) => {
       if (targetPlayerId === targetId) {
-        console.log(`🗳️ [VOTE] Found ${votes.length} audience votes for ${targetId}`)
         votes.forEach(vote => {
-          console.log(`🗳️ [VOTE]   - ${vote.user}: weight ${vote.voteWeight}`)
-          audienceTotal += vote.voteWeight
           voteCounts[targetId] = (voteCounts[targetId] || 0) + vote.voteWeight
         })
       }
     })
     
-    console.log(`🗳️ [VOTE] Total for ${targetId}: ${voteCounts[targetId]} (5 player + ${audienceTotal} audience)`)
     setCRDT(`player-votes-${playerId}`, voteCounts)
+    console.log(`🗳️ Submitted vote for ${targetId}`)
   }, [playerId, deadPlayers, audienceVotes, setCRDT])
 
   // Process stream message (for audience voting)
@@ -566,9 +374,7 @@ export default function GameProvider({ children }) {
       // Calculate vote weight based on gifts
       const giftCoins = audienceGiftCoins.get(username) || 0
       const voteWeight = 1 + giftCoins
-      console.log(`💰 [AUDIENCE VOTE] ${username} voting for ${targetName}`)
-      console.log(`💰 [AUDIENCE VOTE] ${username} has ${giftCoins} gift coins`)
-      console.log(`💰 [AUDIENCE VOTE] Vote weight: ${voteWeight} (1 base + ${giftCoins} coins)`)
+      console.log(`💰 Vote weight for ${username}: ${voteWeight} (1 base + ${giftCoins} gift coins)`)
       
       // Update audience current vote
       setAudienceCurrentVote(prev => new Map(prev).set(username, targetId))
@@ -605,34 +411,34 @@ export default function GameProvider({ children }) {
 
   // Process gift event
   const processGiftEvent = useCallback((giftData) => {
-    console.log('🎁 Gift event received:', giftData)
+    console.log('🎁 DEBUG: Gift event received in GameProvider:', giftData)
+    console.log('🎁 DEBUG: Current game phase:', gamePhase)
+    console.log('🎁 DEBUG: Gift data user object:', giftData.user)
+    console.log('🎁 DEBUG: Gift data gift object:', giftData.gift)
     
     const username = giftData.user?.username || giftData.user?.name || 'Anonymous'
     const giftValue = giftData.gift?.coin_value || giftData.gift?.value || 0
     
+    console.log(`🎁 DEBUG: Extracted username: "${username}", giftValue: ${giftValue}`)
     console.log(`🎁 Gift from ${username}: ${giftValue} coins`)
     
     if (giftValue > 0) {
-      // Calculate new total coins for this user
-      const currentCoins = audienceGiftCoins.get(username) || 0
-      const newTotal = currentCoins + giftValue
-      
-      console.log(`💰 [GIFT] ${username} gifted ${giftValue} coins`)
-      console.log(`💰 [GIFT] ${username} previous total: ${currentCoins} coins`)
-      console.log(`💰 [GIFT] ${username} new total: ${newTotal} coins`)
-      
+      console.log('🎁 DEBUG: Gift value > 0, processing gift...')
       // Update gift coins tracking
       setAudienceGiftCoins(prev => {
         const newCoins = new Map(prev)
+        const currentCoins = newCoins.get(username) || 0
+        const newTotal = currentCoins + giftValue
         newCoins.set(username, newTotal)
+        console.log(`💰 ${username} total coins: ${currentCoins} + ${giftValue} = ${newTotal}`)
         return newCoins
       })
       
       // If user has already voted, update their vote weight
+      console.log('🎁 DEBUG: Checking if game phase is description-voting for vote weight update')
       if (gamePhase === 'description-voting') {
+        console.log('🎁 DEBUG: Game phase is description-voting, checking for existing votes')
         const targetId = audienceCurrentVote.get(username)
-        console.log(`🎁 [GIFT] Checking if ${username} has voted: ${targetId ? 'Yes' : 'No'}`)
-        
         if (targetId && !deadPlayers.has(targetId)) {
           setAudienceVotes(prev => {
             const newVotes = new Map(prev)
@@ -641,19 +447,21 @@ export default function GameProvider({ children }) {
             // Find and update existing vote
             const existingVoteIndex = targetVotes.findIndex(v => v.user === username)
             if (existingVoteIndex >= 0) {
-              // Use the correctly calculated newTotal (not reading from state)
-              const newVoteWeight = 1 + newTotal
-              const oldVoteWeight = targetVotes[existingVoteIndex].voteWeight
+              // Recalculate total vote weight
+              const totalCoins = (audienceGiftCoins.get(username) || 0) + giftValue
+              const newVoteWeight = 1 + totalCoins
               targetVotes[existingVoteIndex].voteWeight = newVoteWeight
-              console.log(`🎁 [GIFT] Updated ${username}'s vote weight: ${oldVoteWeight} -> ${newVoteWeight} (base 1 + ${newTotal} coins)`)
+              console.log(`🎁 Updated ${username}'s vote weight to ${newVoteWeight}`)
             }
             
             newVotes.set(targetId, targetVotes)
             return newVotes
           })
         } else {
-          console.log(`🎁 [GIFT] ${username} hasn't voted yet, ${newTotal} coins saved for when they vote`)
+          console.log(`🎁 ${username} hasn't voted yet, coins saved for when they vote`)
         }
+      } else {
+        console.log(`🎁 DEBUG: Game phase is "${gamePhase}", not "description-voting", so gift coins saved but no vote weight update`)
       }
     }
   }, [gamePhase, audienceCurrentVote, deadPlayers, audienceGiftCoins])
@@ -688,6 +496,28 @@ export default function GameProvider({ children }) {
     
     console.log('🔄 Game reset triggered for all players - all players cleared')
   }, [isLeader, setCRDT, playerNames])
+
+  // Start word display timer
+  const startWordDisplayTimer = useCallback((role, word) => {
+    wordTimerActive.current = true
+    const displayWord = role === 'imposter' ? 'IMPOSTER' : word
+    
+    wordDisplayTimerRef.current = setTimeout(() => {
+      console.log('⏰ Word display timer ended, transitioning to voting phase')
+      wordTimerActive.current = false
+      
+      if (isLeader) {
+        setCRDT('game-phase', 'description-voting')
+        
+        // Start voting timer
+        const timerData = {
+          startTime: Date.now(),
+          duration: 90000
+        }
+        setCRDT('voting-timer', timerData)
+      }
+    }, 5000)
+  }, [isLeader, setCRDT])
 
   // Setup CRDT watchers
   useEffect(() => {
