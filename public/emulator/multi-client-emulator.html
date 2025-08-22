@@ -14,7 +14,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📱 Multi-Client Beemi Emulator</title>
+    <title>Multi-Client Beemi Emulator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -108,6 +108,39 @@
             line-height: 1.5;
         }
 
+        /* Page Header */
+        .page-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: var(--space-4) var(--space-6);
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: var(--text-2xl);
+            font-weight: var(--font-bold);
+            background: var(--brand-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            align-items: center;
+            gap: var(--space-2);
+        }
+
+        .page-header .icon-phone {
+            width: 28px;
+            height: 28px;
+            margin-right: 0;
+        }
+
+        .page-header .icon-phone svg {
+            fill: var(--brand-pink);
+        }
+
         /* Main phones container */
         .phones-container {
             display: flex;
@@ -115,6 +148,7 @@
             overflow-x: auto;
             overflow-y: hidden;
             padding: var(--space-5);
+            padding-top: 80px; /* Account for fixed header */
             gap: var(--space-5);
             align-items: center;
         }
@@ -145,6 +179,8 @@
             background-clip: padding-box;
             position: relative;
             transition: all var(--transition-normal);
+            width: 716px;
+            overflow: hidden;
         }
 
         .phone-header::before {
@@ -170,6 +206,34 @@
             display: flex;
             align-items: center;
             gap: var(--space-2);
+            flex: 1;
+            min-width: 0; /* Allow text truncation */
+        }
+
+        .client-info {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: var(--space-2);
+            min-width: 0; /* Allow text truncation */
+            flex: 1;
+        }
+
+        .client-name {
+            font-weight: var(--font-semibold);
+            color: var(--text-primary);
+            font-size: var(--text-sm);
+            line-height: 1.2;
+        }
+
+        .client-username {
+            font-weight: var(--font-regular);
+            color: var(--text-secondary);
+            font-size: var(--text-sm);
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .user-avatar {
@@ -245,6 +309,121 @@
             border-radius: 24px;
         }
 
+        /* SVG Icons */
+        .icon-phone {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+            margin-right: 4px;
+            margin-top: -2px;
+        }
+
+        .icon-phone svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+            vertical-align: top;
+        }
+
+        .icon-setup {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        .icon-setup svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+
+        .icon-user {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        .icon-user svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+
+        .icon-trash {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        .icon-trash svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+
+        .icon-debug {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        .icon-debug svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+
+        .icon-eye {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        .icon-eye svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+
+        .icon-plus {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        .icon-plus svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+
+        .icon-reconnect {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            vertical-align: middle;
+            margin-right: 4px;
+        }
+
+        .icon-reconnect svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+
         /* Empty state */
         .empty-state {
             display: flex;
@@ -268,6 +447,20 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             letter-spacing: -0.025em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-2);
+        }
+
+        .empty-state h2 .icon-phone {
+            width: 32px;
+            height: 32px;
+            margin-right: 0;
+        }
+
+        .empty-state h2 .icon-phone svg {
+            fill: #F34991;
         }
 
         .empty-state p {
@@ -506,7 +699,7 @@
 
         .add-user-btn {
             padding: var(--space-2) var(--space-3);
-            background: var(--interactive-secondary);
+            background: var(--brand-gradient);
             color: var(--text-inverse);
             border: none;
             border-radius: var(--radius-md);
@@ -517,12 +710,46 @@
             font-family: var(--font-family);
             flex-shrink: 0;
             white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(242, 65, 156, 0.3);
+        }
+
+        .add-user-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .add-user-btn:hover::before {
+            left: 100%;
         }
 
         .add-user-btn:hover {
-            background: #218838;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+            box-shadow: 0 6px 20px rgba(242, 65, 156, 0.4);
+        }
+
+        .add-user-btn:disabled {
+            background: var(--text-muted);
+            color: var(--text-secondary);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .add-user-btn:disabled::before {
+            display: none;
+        }
+
+        .add-user-btn:disabled:hover {
+            transform: none;
+            box-shadow: none;
         }
 
         .active-phones-list, .removed-users-list {
@@ -577,6 +804,17 @@
             gap: var(--space-2);
             color: var(--text-primary);
             font-weight: var(--font-medium);
+        }
+
+        .phone-info span:first-child {
+            color: var(--text-primary);
+            font-weight: var(--font-medium);
+        }
+
+        .phone-info span:last-child {
+            color: var(--text-secondary);
+            font-weight: var(--font-regular);
+            font-size: var(--text-sm);
         }
 
         .reconnect-btn {
@@ -732,11 +970,16 @@
 <body>
     <!-- Load multi-client bridge emulator -->
     <script src="multi-client-bridge-emulator.js"></script></body>
+    
+    <!-- Page Header -->
+    <header class="page-header">
+        <h1><span class="icon-phone"><svg viewBox="0 0 210 210"><path d="M 67.194348 10.311515 C 59.070794 10.311515 52.530644 16.851149 52.530644 24.974703 L 52.530644 185.02488 C 52.530644 193.14844 59.070794 199.68859 67.194348 199.68859 L 142.80575 199.68859 C 150.92931 199.68859 157.46894 193.14844 157.46894 185.02488 L 157.46894 24.974703 C 157.46894 16.851149 150.92931 10.311515 142.80575 10.311515 L 67.194348 10.311515 z M 88.526896 20.271631 L 121.47269 20.271631 C 124.10908 20.271631 126.23157 22.394122 126.23157 25.030514 C 126.23157 27.666905 124.10908 29.789396 121.47269 29.789396 L 88.526896 29.789396 C 85.890505 29.789396 83.76853 27.666905 83.76853 25.030514 C 83.76853 22.394122 85.890505 20.271631 88.526896 20.271631 z"/></svg></span>Multi-Client Emulator</h1>
+    </header>
+
     <!-- Main phones container -->
     <div id="phones-container" class="phones-container">
         <!-- Empty state (shown when no phones) -->
         <div id="empty-state" class="empty-state">
-            <h2>📱 Multi-Client Beemi Emulator</h2>
             <p>Add clients to test multiplayer games</p>
             <button class="add-first-phone-btn" onclick="addFirstPhone()">
                 Add First Client
@@ -746,20 +989,20 @@
 
     <!-- Multi-Client Toggle Button -->
     <button id="multi-client-toggle" class="multi-client-toggle" onclick="toggleMultiClientDialog()">
-        📱 Manage Clients
+<span class="icon-phone"><svg viewBox="0 0 210 210"><path d="M 67.194348 10.311515 C 59.070794 10.311515 52.530644 16.851149 52.530644 24.974703 L 52.530644 185.02488 C 52.530644 193.14844 59.070794 199.68859 67.194348 199.68859 L 142.80575 199.68859 C 150.92931 199.68859 157.46894 193.14844 157.46894 185.02488 L 157.46894 24.974703 C 157.46894 16.851149 150.92931 10.311515 142.80575 10.311515 L 67.194348 10.311515 z M 88.526896 20.271631 L 121.47269 20.271631 C 124.10908 20.271631 126.23157 22.394122 126.23157 25.030514 C 126.23157 27.666905 124.10908 29.789396 121.47269 29.789396 L 88.526896 29.789396 C 85.890505 29.789396 83.76853 27.666905 83.76853 25.030514 C 83.76853 22.394122 85.890505 20.271631 88.526896 20.271631 z"/></svg></span>Manage Clients
     </button>
 
     <!-- Multi-Client Dialog -->
     <div id="multi-client-dialog" class="multi-client-dialog" style="display: none;">
         <div class="dialog-header">
-            <h3>📱 Multi-Client Emulator</h3>
+            <h3><span class="icon-phone"><svg viewBox="0 0 210 210"><path d="M 67.194348 10.311515 C 59.070794 10.311515 52.530644 16.851149 52.530644 24.974703 L 52.530644 185.02488 C 52.530644 193.14844 59.070794 199.68859 67.194348 199.68859 L 142.80575 199.68859 C 150.92931 199.68859 157.46894 193.14844 157.46894 185.02488 L 157.46894 24.974703 C 157.46894 16.851149 150.92931 10.311515 142.80575 10.311515 L 67.194348 10.311515 z M 88.526896 20.271631 L 121.47269 20.271631 C 124.10908 20.271631 126.23157 22.394122 126.23157 25.030514 C 126.23157 27.666905 124.10908 29.789396 121.47269 29.789396 L 88.526896 29.789396 C 85.890505 29.789396 83.76853 27.666905 83.76853 25.030514 C 83.76853 22.394122 85.890505 20.271631 88.526896 20.271631 z"/></svg></span>Multi-Client Emulator</h3>
             <button class="dialog-close" onclick="toggleMultiClientDialog()">×</button>
         </div>
         
         <div class="dialog-content">
             <!-- Add User Section -->
             <div class="control-section">
-                <h4>➕ Add User</h4>
+                <h4><span class="icon-plus"><svg viewBox="0 0 210 210"><path d="m 105,16.412643 c -11.491962,0 -20.743439,9.251478 -20.743439,20.743438 V 84.256564 H 37.156076 c -11.491959,0 -20.743436,9.251479 -20.743436,20.743436 0,11.49196 9.251477,20.74344 20.743436,20.74344 h 47.100485 v 47.10049 c 0,11.49195 9.251477,20.74343 20.743439,20.74343 11.49196,0 20.74344,-9.25148 20.74344,-20.74343 v -47.10049 h 47.10048 c 11.49196,0 20.74344,-9.25148 20.74344,-20.74344 0,-11.491957 -9.25148,-20.743436 -20.74344,-20.743436 H 125.74344 V 37.156081 c 0,-11.49196 -9.25148,-20.743437 -20.74344,-20.743438 z"/></svg></span>Add User</h4>
                 <div class="add-user-controls">
                     <select id="availableUsersSelect" class="control-input">
                         <option value="">Select user to add...</option>
@@ -770,13 +1013,13 @@
                         <option value="user4">viewerlive (Viewer Live)</option>
                         <option value="user5">livestream (Live Stream)</option>
                     </select>
-                    <button onclick="addSelectedUser()" class="add-user-btn">Add</button>
+                                         <button id="addUserBtn" onclick="addSelectedUser()" class="add-user-btn" disabled>Add</button>
                 </div>
             </div>
             
             <!-- Active Phones Section -->
             <div class="control-section">
-                <h4>📱 Active Phones</h4>
+                <h4><span class="icon-phone"><svg viewBox="0 0 210 210"><path d="M 67.194348 10.311515 C 59.070794 10.311515 52.530644 16.851149 52.530644 24.974703 L 52.530644 185.02488 C 52.530644 193.14844 59.070794 199.68859 67.194348 199.68859 L 142.80575 199.68859 C 150.92931 199.68859 157.46894 193.14844 157.46894 185.02488 L 157.46894 24.974703 C 157.46894 16.851149 150.92931 10.311515 142.80575 10.311515 L 67.194348 10.311515 z M 88.526896 20.271631 L 121.47269 20.271631 C 124.10908 20.271631 126.23157 22.394122 126.23157 25.030514 C 126.23157 27.666905 124.10908 29.789396 121.47269 29.789396 L 88.526896 29.789396 C 85.890505 29.789396 83.76853 27.666905 83.76853 25.030514 C 83.76853 22.394122 85.890505 20.271631 88.526896 20.271631 z"/></svg></span>Active Clients</h4>
                 <div id="activePhonesList" class="active-phones-list">
                     <div class="empty-state-dialog">No active phones</div>
                 </div>
@@ -784,7 +1027,7 @@
 
             <!-- Removed Users Section -->
             <div class="control-section">
-                <h4>🔄 Reconnect Users</h4>
+                <h4><span class="icon-reconnect"><svg viewBox="0 0 210 210"><path d="m 105.00176,18.245399 c -47.740566,0 -86.756356,39.012307 -86.756356,86.752851 h 29.17654 c 0,-31.973763 25.60606,-57.579849 57.579816,-57.579849 12.1221,0 23.23089,3.738917 32.46493,10.075843 l -7.11228,7.111126 a 6.8427066,6.8427066 0 0 0 4.26055,11.652961 l 19.23603,1.634786 19.23487,1.634786 a 6.8427066,6.8427066 0 0 0 7.39594,-7.395945 l -1.63478,-19.236043 -1.63361,-19.234852 a 6.8427066,6.8427066 0 0 0 -4.4677,-5.845914 6.8427066,6.8427066 0 0 0 -7.18527,1.590071 l -7.1994,7.197028 C 143.6375,25.113576 125.05141,18.245399 105.00176,18.245399 Z m 57.57984,86.752851 c 0,31.97374 -25.60608,57.57981 -57.57984,57.57981 -13.105344,0 -25.056636,-4.32894 -34.696406,-11.63531 l 7.82196,-7.82201 a 6.8427066,6.8427066 0 0 0 -4.26049,-11.65647 l -19.23488,-1.63126 -19.23488,-1.63477 a 6.8427066,6.8427066 0 0 0 -7.3971,7.39711 l 1.6348,19.23485 1.63479,19.23134 a 6.8427066,6.8427066 0 0 0 11.65296,4.26054 l 6.63204,-6.63092 c 15.03879,12.5044 34.43239,20.06344 55.447206,20.06344 47.74051,0 86.75284,-39.01585 86.75284,-86.75635 z"/></svg></span>Reconnect Users</h4>
                 <div id="removedUsersList" class="removed-users-list">
                     <div class="empty-state-dialog">No removed users</div>
                 </div>
@@ -792,32 +1035,23 @@
 
             <!-- Quick Scenarios -->
             <div class="control-section">
-                <h4>🎬 Quick Setup</h4>
+                <h4><span class="icon-setup"><svg viewBox="0 0 210 210"><path d="M 118.68706,8.2830849 47.474572,123.50713 h 43.838995 v 78.20979 L 162.52542,86.493484 h -43.83836 z"/></svg></span>Quick Setup</h4>
                 <div class="scenario-buttons">
-                    <button onclick="loadScenario('2-players')" class="scenario-btn">👥 2 Players</button>
-                    <button onclick="loadScenario('4-players')" class="scenario-btn">👥👥 4 Players</button>
-                    <button onclick="loadScenario('voting-test')" class="scenario-btn">🗳️ Voting Test</button>
-                    <button onclick="loadScenario('clear-all')" class="scenario-btn">🗑️ Clear All</button>
+                    <button onclick="loadScenario('2-players')" class="scenario-btn">2 Players</button>
+                    <button onclick="loadScenario('4-players')" class="scenario-btn">4 Players</button>
+                    <button onclick="loadScenario('3-players')" class="scenario-btn">3 Players</button>
+                    <button onclick="loadScenario('clear-all')" class="scenario-btn"><span class="icon-trash"><svg viewBox="0 0 210 210"><path d="m 135.61458,19.63988 c -3.24557,-4e-6 -6.49118,1.243609 -8.97811,3.730527 -4.97382,4.973835 -4.97382,12.982374 0,17.956211 l 8.97811,8.977537 -8.97811,8.978673 c -4.97382,4.973835 -4.97382,12.981806 0,17.955643 4.97384,4.973835 12.98238,4.973835 17.95622,0 l 8.9781,-8.977538 8.97754,8.977538 c 4.97384,4.973835 12.98293,4.973833 17.95678,0 4.97384,-4.973837 4.97384,-12.981815 0,-17.955643 l -8.97811,-8.978673 8.97811,-8.977537 c 4.97384,-4.973837 4.97384,-12.982375 0,-17.956211 -4.97385,-4.973835 -12.98294,-4.973835 -17.95678,0 l -8.97754,8.978106 -8.9781,-8.978106 c -2.48693,-2.486911 -5.73256,-3.73053 -8.97811,-3.730527 z M 32.043391,38.59706 c -4.750283,0 -8.574882,3.824032 -8.574882,8.574315 V 62.67138 c 0,4.750282 3.824599,8.574882 8.574882,8.574882 h 61.670524 c 4.750279,0 8.574315,-3.8246 8.574315,-8.574882 V 47.171375 c 0,-4.750283 -3.824036,-8.574315 -8.574315,-8.574315 z m 0,59.032275 c -4.750283,0 -8.574882,3.824035 -8.574882,8.574315 v 15.50058 c 0,4.75028 3.824599,8.57431 8.574882,8.57431 H 178.1402 c 4.75028,0 8.57432,-3.82403 8.57432,-8.57431 v -15.50058 c 0,-4.75028 -3.82404,-8.574315 -8.57432,-8.574315 z m 0,58.372715 c -4.750283,0 -8.574882,3.82403 -8.574882,8.57431 v 15.50057 c 0,4.75029 3.824599,8.57432 8.574882,8.57432 H 178.1402 c 4.75028,0 8.57432,-3.82403 8.57432,-8.57432 v -15.50057 c 0,-4.75028 -3.82404,-8.57431 -8.57432,-8.57431 z"/></svg></span>Clear All</button>
                 </div>
             </div>
 
-            <!-- Bulk Actions -->
-            <div class="control-section">
-                <h4>⚡ Bulk Actions</h4>
-                <div class="scenario-buttons">
-                    <button onclick="bulkJoinRoom()" class="scenario-btn">🎮 All Join</button>
-                    <button onclick="bulkStartGame()" class="scenario-btn">🚀 Start Game</button>
-                    <button onclick="bulkStartVoting()" class="scenario-btn">🗳️ Start Vote</button>
-                    <button onclick="bulkResetLobby()" class="scenario-btn">🔄 Reset Lobby</button>
-                </div>
-            </div>
+
 
             <!-- Debug Section -->
             <div class="control-section">
-                <h4>🔧 Debug</h4>
+                <h4><span class="icon-debug"><svg viewBox="0 0 210 210"><path d="M 96.664851,38.96321 C 79.643525,41.95703 65.812553,53.95966 60.223147,69.90602 H 47.748457 L 29.479804,58.08659 a 8.7034554,8.7034554 0 0 0 -6.551538,-1.20355 8.7034554,8.7034554 0 0 0 -5.483903,3.7822 8.7034554,8.7034554 0 0 0 2.578654,12.03544 l 20.426144,13.21677 a 8.7043257,8.7043257 0 0 0 4.72891,1.39578 h 12.366687 v 14.73449 h -32.79283 a 8.7034554,8.7034554 0 0 0 -8.703345,8.70334 8.7034554,8.7034554 0 0 0 8.703345,8.70334 h 32.79283 v 4.86586 c 0,3.38708 0.361935,6.68496 1.030428,9.8671 H 45.178071 a 8.7043257,8.7043257 0 0 0 -4.72891,1.39733 l -20.426144,13.21676 a 8.7034554,8.7034554 0 0 0 -2.578654,12.03544 8.7034554,8.7034554 0 0 0 12.035441,2.57866 l 18.268653,-11.82099 h 18.376656 c 7.056846,10.05418 17.922926,17.22308 30.539738,19.44223 z m 16.670299,0 v 132.07358 c 12.51543,-2.20132 23.311,-9.27111 30.37179,-19.19832 h 18.54461 l 18.26865,11.82099 a 8.7034554,8.7034554 0 0 0 12.03544,-2.57866 8.7034554,8.7034554 0 0 0 -2.57866,-12.03544 l -20.42614,-13.21624 a 8.7043257,8.7043257 0 0 0 -4.72891,-1.39734 h -13.44724 c 0.70217,-3.25715 1.08055,-6.63788 1.08055,-10.11152 v -4.62143 h 32.79232 a 8.7034554,8.7034554 0 0 0 8.70386,-8.70386 8.7034554,8.7034554 0 0 0 -8.70386,-8.70334 H 152.45524 V 87.55714 h 12.36669 a 8.7043257,8.7043257 0 0 0 4.72891,-1.39578 l 20.42614,-13.21677 a 8.7034554,8.7034554 0 0 0 2.57866,-12.03492 8.7034554,8.7034554 0 0 0 -5.4839,-3.7822 8.7034554,8.7034554 0 0 0 -6.55154,1.20355 L 162.25155,70.14993 H 149.8616 C 144.32834,54.08207 130.44316,41.97227 113.33515,38.96321 Z"/></svg></span>Debug</h4>
                 <div class="scenario-buttons">
-                    <button onclick="showDebugInfo()" class="scenario-btn">📊 Debug Info</button>
-                    <button onclick="clearDebugLog()" class="scenario-btn">🗑️ Clear Log</button>
+                    <button onclick="showDebugInfo()" class="scenario-btn"><span class="icon-debug"><svg viewBox="0 0 210 210"><path d="M 96.664851,38.96321 C 79.643525,41.95703 65.812553,53.95966 60.223147,69.90602 H 47.748457 L 29.479804,58.08659 a 8.7034554,8.7034554 0 0 0 -6.551538,-1.20355 8.7034554,8.7034554 0 0 0 -5.483903,3.7822 8.7034554,8.7034554 0 0 0 2.578654,12.03544 l 20.426144,13.21677 a 8.7043257,8.7043257 0 0 0 4.72891,1.39578 h 12.366687 v 14.73449 h -32.79283 a 8.7034554,8.7034554 0 0 0 -8.703345,8.70334 8.7034554,8.7034554 0 0 0 8.703345,8.70334 h 32.79283 v 4.86586 c 0,3.38708 0.361935,6.68496 1.030428,9.8671 H 45.178071 a 8.7043257,8.7043257 0 0 0 -4.72891,1.39733 l -20.426144,13.21676 a 8.7034554,8.7034554 0 0 0 -2.578654,12.03544 8.7034554,8.7034554 0 0 0 12.035441,2.57866 l 18.268653,-11.82099 h 18.376656 c 7.056846,10.05418 17.922926,17.22308 30.539738,19.44223 z m 16.670299,0 v 132.07358 c 12.51543,-2.20132 23.311,-9.27111 30.37179,-19.19832 h 18.54461 l 18.26865,11.82099 a 8.7034554,8.7034554 0 0 0 12.03544,-2.57866 8.7034554,8.7034554 0 0 0 -2.57866,-12.03544 l -20.42614,-13.21624 a 8.7043257,8.7043257 0 0 0 -4.72891,-1.39734 h -13.44724 c 0.70217,-3.25715 1.08055,-6.63788 1.08055,-10.11152 v -4.62143 h 32.79232 a 8.7034554,8.7034554 0 0 0 8.70386,-8.70386 8.7034554,8.7034554 0 0 0 -8.70386,-8.70334 H 152.45524 V 87.55714 h 12.36669 a 8.7043257,8.7043257 0 0 0 4.72891,-1.39578 l 20.42614,-13.21677 a 8.7034554,8.7034554 0 0 0 2.57866,-12.03492 8.7034554,8.7034554 0 0 0 -5.4839,-3.7822 8.7034554,8.7034554 0 0 0 -6.55154,1.20355 L 162.25155,70.14993 H 149.8616 C 144.32834,54.08207 130.44316,41.97227 113.33515,38.96321 Z"/></svg></span>Debug Info</button>
+                    <button onclick="clearDebugLog()" class="scenario-btn"><span class="icon-trash"><svg viewBox="0 0 210 210"><path d="m 135.61458,19.63988 c -3.24557,-4e-6 -6.49118,1.243609 -8.97811,3.730527 -4.97382,4.973835 -4.97382,12.982374 0,17.956211 l 8.97811,8.977537 -8.97811,8.978673 c -4.97382,4.973835 -4.97382,12.981806 0,17.955643 4.97384,4.973835 12.98238,4.973835 17.95622,0 l 8.9781,-8.977538 8.97754,8.977538 c 4.97384,4.973835 12.98293,4.973833 17.95678,0 4.97384,-4.973837 4.97384,-12.981815 0,-17.955643 l -8.97811,-8.978673 8.97811,-8.977537 c 4.97384,-4.973837 4.97384,-12.982375 0,-17.956211 -4.97385,-4.973835 -12.98294,-4.973835 -17.95678,0 l -8.97754,8.978106 -8.9781,-8.978106 c -2.48693,-2.486911 -5.73256,-3.73053 -8.97811,-3.730527 z M 32.043391,38.59706 c -4.750283,0 -8.574882,3.824032 -8.574882,8.574315 V 62.67138 c 0,4.750282 3.824599,8.574882 8.574882,8.574882 h 61.670524 c 4.750279,0 8.574315,-3.8246 8.574315,-8.574882 V 47.171375 c 0,-4.750283 -3.824036,-8.574315 -8.574315,-8.574315 z m 0,59.032275 c -4.750283,0 -8.574882,3.824035 -8.574882,8.574315 v 15.50058 c 0,4.75028 3.824599,8.57431 8.574882,8.57431 H 178.1402 c 4.75028,0 8.57432,-3.82403 8.57432,-8.57431 v -15.50058 c 0,-4.75028 -3.82404,-8.574315 -8.57432,-8.574315 z m 0,58.372715 c -4.750283,0 -8.574882,3.82403 -8.574882,8.57431 v 15.50057 c 0,4.75029 3.824599,8.57432 8.574882,8.57432 H 178.1402 c 4.75028,0 8.57432,-3.82403 8.57432,-8.57432 v -15.50057 c 0,-4.75028 -3.82404,-8.57431 -8.57432,-8.57431 z"/></svg></span>Clear Log</button>
                 </div>
             </div>
         </div>
@@ -870,12 +1104,13 @@
                 phoneHeader.className = 'phone-header';
                 phoneHeader.innerHTML = `
                     <div class="user-info">
-                        <img src="${user.image_url}" class="user-avatar" alt="${user.username}">
-                        <span class="username">${clientName}: ${user.username}</span>
+                        <div class="client-info">
+                            <div class="client-name">${clientName}</div>
+                            <div class="client-username">${user.username}</div>
+                        </div>
                     </div>
                     <div class="phone-controls">
-                        <button class="phone-control-btn" onclick="focusPhone('${phoneId}')" title="Focus">👁️</button>
-                        <button class="remove-phone-btn" onclick="removePhone('${phoneId}')" title="Remove">×</button>
+                        <button class="remove-phone-btn" onclick="removePhone('${phoneId}')" title="Remove"><span class="icon-trash"><svg viewBox="0 0 210 210"><path d="m 90.406617,10.189496 c -4.366294,0 -7.881508,3.515205 -7.881508,7.881507 v 0.30724 H 56.939625 c -6.831976,0 -12.331884,5.499908 -12.331884,12.331883 v 9.37056 c 0,6.831976 5.499908,12.331884 12.331884,12.331884 h 96.120215 c 6.83196,0 12.33242,-5.499908 12.33242,-12.331884 v -9.37056 c 0,-6.831975 -5.50046,-12.331883 -12.33242,-12.331883 h -25.58496 v -0.30724 c 0,-4.366302 -3.51521,-7.881507 -7.88151,-7.881507 z M 56.939625,65.207759 c -6.831976,0 -12.331884,5.499908 -12.331884,12.331874 V 187.47863 c 0,6.83196 5.499908,12.33188 12.331884,12.33188 h 96.120215 c 6.83196,0 12.33242,-5.49992 12.33242,-12.33188 V 77.539633 c 0,-6.831966 -5.50046,-12.331874 -12.33242,-12.331874 z M 73.533318,85.61621 h 4.547919 c 3.052927,0 5.510823,2.457896 5.510823,5.510823 v 86.476007 c 0,3.05294 -2.457896,5.51082 -5.510823,5.51082 h -4.547919 c -3.052946,0 -5.510823,-2.45788 -5.510823,-5.51082 V 91.127033 c 0,-3.052927 2.457877,-5.510823 5.510823,-5.510823 z m 29.192722,0 h 4.54792 c 3.05293,0 5.51082,2.457896 5.51082,5.510823 v 86.476007 c 0,3.05294 -2.45789,5.51082 -5.51082,5.51082 h -4.54792 c -3.052946,0 -5.510824,-2.45788 -5.510824,-5.51082 V 91.127033 c 0,-3.052927 2.457878,-5.510823 5.510824,-5.510823 z m 29.19272,0 h 4.54792 c 3.05293,0 5.51082,2.457896 5.51082,5.510823 v 86.476007 c 0,3.05294 -2.45789,5.51082 -5.51082,5.51082 h -4.54792 c -3.05294,0 -5.51082,-2.45788 -5.51082,-5.51082 V 91.127033 c 0,-3.052927 2.45788,-5.510823 5.51082,-5.510823 z"/></svg></span></button>
                     </div>
                 `;
 
@@ -1039,12 +1274,12 @@
                     phoneItem.className = 'phone-item';
                     phoneItem.innerHTML = `
                         <div class="phone-info">
-                            <span>📱 ${phone.clientName}</span>
+                            <span><span class="icon-phone"><svg viewBox="0 0 210 210"><path d="M 67.194348 10.311515 C 59.070794 10.311515 52.530644 16.851149 52.530644 24.974703 L 52.530644 185.02488 C 52.530644 193.14844 59.070794 199.68859 67.194348 199.68859 L 142.80575 199.68859 C 150.92931 199.68859 157.46894 193.14844 157.46894 185.02488 L 157.46894 24.974703 C 157.46894 16.851149 150.92931 10.311515 142.80575 10.311515 L 67.194348 10.311515 z M 88.526896 20.271631 L 121.47269 20.271631 C 124.10908 20.271631 126.23157 22.394122 126.23157 25.030514 C 126.23157 27.666905 124.10908 29.789396 121.47269 29.789396 L 88.526896 29.789396 C 85.890505 29.789396 83.76853 27.666905 83.76853 25.030514 C 83.76853 22.394122 85.890505 20.271631 88.526896 20.271631 z"/></svg></span>${phone.clientName}</span>
                             <span>${phone.user.username}</span>
                         </div>
                         <div class="phone-controls">
-                            <button class="phone-control-btn" onclick="focusPhone('${phone.id}')">👁️</button>
-                            <button class="remove-phone-btn" onclick="removePhone('${phone.id}')">×</button>
+                            <button class="phone-control-btn" onclick="focusPhone('${phone.id}')"><span class="icon-eye"><svg viewBox="0 0 210 210"><path d="M 104.94243 65.220825 A 106.40263 106.40263 0 0 0 22.241536 104.99979 A 106.40263 106.40263 0 0 0 104.94243 144.77876 A 106.40263 106.40263 0 0 0 187.75805 104.84631 A 106.40263 106.40263 0 0 0 104.94243 65.220825 z M 104.99979 78.155436 A 26.844706 26.844706 0 0 1 131.84467 104.99979 A 26.844706 26.844706 0 0 1 104.99979 131.84467 A 26.844706 26.844706 0 0 1 78.155436 104.99979 A 26.844706 26.844706 0 0 1 104.99979 78.155436 z"/></svg></span></button>
+                            <button class="remove-phone-btn" onclick="removePhone('${phone.id}')"><span class="icon-trash"><svg viewBox="0 0 210 210"><path d="m 90.406617,10.189496 c -4.366294,0 -7.881508,3.515205 -7.881508,7.881507 v 0.30724 H 56.939625 c -6.831976,0 -12.331884,5.499908 -12.331884,12.331883 v 9.37056 c 0,6.831976 5.499908,12.331884 12.331884,12.331884 h 96.120215 c 6.83196,0 12.33242,-5.499908 12.33242,-12.331884 v -9.37056 c 0,-6.831975 -5.50046,-12.331883 -12.33242,-12.331883 h -25.58496 v -0.30724 c 0,-4.366302 -3.51521,-7.881507 -7.88151,-7.881507 z M 56.939625,65.207759 c -6.831976,0 -12.331884,5.499908 -12.331884,12.331874 V 187.47863 c 0,6.83196 5.499908,12.33188 12.331884,12.33188 h 96.120215 c 6.83196,0 12.33242,-5.49992 12.33242,-12.33188 V 77.539633 c 0,-6.831966 -5.50046,-12.331874 -12.33242,-12.331874 z M 73.533318,85.61621 h 4.547919 c 3.052927,0 5.510823,2.457896 5.510823,5.510823 v 86.476007 c 0,3.05294 -2.457896,5.51082 -5.510823,5.51082 h -4.547919 c -3.052946,0 -5.510823,-2.45788 -5.510823,-5.51082 V 91.127033 c 0,-3.052927 2.457877,-5.510823 5.510823,-5.510823 z m 29.192722,0 h 4.54792 c 3.05293,0 5.51082,2.457896 5.51082,5.510823 v 86.476007 c 0,3.05294 -2.45789,5.51082 -5.51082,5.51082 h -4.54792 c -3.052946,0 -5.510824,-2.45788 -5.510824,-5.51082 V 91.127033 c 0,-3.052927 2.457878,-5.510823 5.510824,-5.510823 z m 29.19272,0 h 4.54792 c 3.05293,0 5.51082,2.457896 5.51082,5.510823 v 86.476007 c 0,3.05294 -2.45789,5.51082 -5.51082,5.51082 h -4.54792 c -3.05294,0 -5.51082,-2.45788 -5.51082,-5.51082 V 91.127033 c 0,-3.052927 2.45788,-5.510823 5.51082,-5.510823 z"/></svg></span></button>
                         </div>
                     `;
                     list.appendChild(phoneItem);
@@ -1053,12 +1288,17 @@
 
             updateRemovedUsersList() {
                 const list = document.getElementById('removedUsersList');
+                const section = list.closest('.control-section');
                 
                 if (this.removedUsers.size === 0) {
-                    list.innerHTML = '<div class="empty-state-dialog">No removed users</div>';
+                    // Hide the entire section when no removed users
+                    section.style.display = 'none';
                     return;
                 }
 
+                // Show the section when there are removed users
+                section.style.display = 'block';
+                
                 list.innerHTML = '';
                 this.removedUsers.forEach(userId => {
                     const user = USER_DATA[userId];
@@ -1066,9 +1306,9 @@
                     userItem.className = 'removed-user-item';
                     userItem.innerHTML = `
                         <div class="phone-info">
-                            <span>👤 ${user.username}</span>
+                            <span><span class="icon-user"><svg viewBox="0 0 210 210"><path d="M 104.99967,12.769971 A 53.244517,53.244517 0 0 0 51.755633,66.014015 53.244517,53.244517 0 0 0 76.373661,110.89386 C 40.898168,122.8428 15.338523,156.35575 15.33852,195.86035 h 179.32306 c 0,-39.50485 -25.56004,-73.01776 -61.03589,-84.96649 A 53.244517,53.244517 0 0 0 158.24448,66.014015 53.244517,53.244517 0 0 0 104.99967,12.769971 Z"/></svg></span>${user.username}</span>
                         </div>
-                        <button class="reconnect-btn" onclick="reconnectUser('${userId}')">🔄 Reconnect</button>
+                        <button class="reconnect-btn" onclick="reconnectUser('${userId}')"><span class="icon-reconnect"><svg viewBox="0 0 210 210"><path d="m 105.00176,18.245399 c -47.740566,0 -86.756356,39.012307 -86.756356,86.752851 h 29.17654 c 0,-31.973763 25.60606,-57.579849 57.579816,-57.579849 12.1221,0 23.23089,3.738917 32.46493,10.075843 l -7.11228,7.111126 a 6.8427066,6.8427066 0 0 0 4.26055,11.652961 l 19.23603,1.634786 19.23487,1.634786 a 6.8427066,6.8427066 0 0 0 7.39594,-7.395945 l -1.63478,-19.236043 -1.63361,-19.234852 a 6.8427066,6.8427066 0 0 0 -4.4677,-5.845914 6.8427066,6.8427066 0 0 0 -7.18527,1.590071 l -7.1994,7.197028 C 143.6375,25.113576 125.05141,18.245399 105.00176,18.245399 Z m 57.57984,86.752851 c 0,31.97374 -25.60608,57.57981 -57.57984,57.57981 -13.105344,0 -25.056636,-4.32894 -34.696406,-11.63531 l 7.82196,-7.82201 a 6.8427066,6.8427066 0 0 0 -4.26049,-11.65647 l -19.23488,-1.63126 -19.23488,-1.63477 a 6.8427066,6.8427066 0 0 0 -7.3971,7.39711 l 1.6348,19.23485 1.63479,19.23134 a 6.8427066,6.8427066 0 0 0 11.65296,4.26054 l 6.63204,-6.63092 c 15.03879,12.5044 34.43239,20.06344 55.447206,20.06344 47.74051,0 86.75284,-39.01585 86.75284,-86.75635 z"/></svg></span>Reconnect</button>
                     `;
                     list.appendChild(userItem);
                 });
@@ -1076,6 +1316,7 @@
 
             updateAvailableUsersDropdown() {
                 const select = document.getElementById('availableUsersSelect');
+                const addBtn = document.getElementById('addUserBtn');
                 const activeUserIds = Array.from(this.phones.values()).map(p => p.userId);
                 
                 // Clear existing options except first
@@ -1091,6 +1332,14 @@
                         select.appendChild(option);
                     }
                 });
+
+                // Update button state based on current selection
+                addBtn.disabled = !select.value;
+                
+                // Add event listener to update button state when selection changes
+                select.onchange = function() {
+                    addBtn.disabled = !this.value;
+                };
             }
         }
 
@@ -1129,15 +1378,16 @@
 
         function addSelectedUser() {
             const select = document.getElementById('availableUsersSelect');
+            const addBtn = document.getElementById('addUserBtn');
             const selectedUserId = select.value;
             
             if (!selectedUserId) {
-                alert('Please select a user to add');
-                return;
+                return; // Button should be disabled, but just in case
             }
             
             multiClientManager.addPhone(selectedUserId);
             select.value = ''; // Clear selection
+            addBtn.disabled = true; // Disable button after clearing selection
         }
 
         function removePhone(phoneId) {
@@ -1166,8 +1416,8 @@
             
             const scenarios = {
                 '2-players': ['user0', 'user1'],
+                '3-players': ['user0', 'user1', 'user2'],
                 '4-players': ['user0', 'user1', 'user2', 'user3'],
-                'voting-test': ['user0', 'user1', 'user2', 'user3', 'user4'],
                 'clear-all': []
             };
             
@@ -1185,42 +1435,7 @@
             }
         }
 
-        // Bulk action functions
-        function bulkJoinRoom() {
-            if (window.multiClientBulkActions) {
-                console.log('🎮 Executing bulk action: All Join Room');
-                window.multiClientBulkActions.allJoinRoom();
-            } else {
-                console.error('❌ Multi-client bridge not ready');
-            }
-        }
 
-        function bulkStartGame() {
-            if (window.multiClientBulkActions) {
-                console.log('🚀 Executing bulk action: Start Game');
-                window.multiClientBulkActions.startGame();
-            } else {
-                console.error('❌ Multi-client bridge not ready');
-            }
-        }
-
-        function bulkStartVoting() {
-            if (window.multiClientBulkActions) {
-                console.log('🗳️ Executing bulk action: Start Voting');
-                window.multiClientBulkActions.startVoting();
-            } else {
-                console.error('❌ Multi-client bridge not ready');
-            }
-        }
-
-        function bulkResetLobby() {
-            if (window.multiClientBulkActions) {
-                console.log('🔄 Executing bulk action: Reset to Lobby');
-                window.multiClientBulkActions.resetToLobby();
-            } else {
-                console.error('❌ Multi-client bridge not ready');
-            }
-        }
 
         // Debug functions
         function showDebugInfo() {

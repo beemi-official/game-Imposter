@@ -26,6 +26,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>test1 - iPhone Preview</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -34,8 +37,10 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #1a1a1a;
+            background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.1) 1px, transparent 0);
+            background-size: 20px 20px;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -48,6 +53,45 @@
             background: transparent;
         }
 
+        /* Page Header */
+        .page-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 16px 24px;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #E038C9 0%, #F6CB2D 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+            letter-spacing: -0.025em;
+        }
+
+        .page-header .icon-phone {
+            width: 28px;
+            height: 28px;
+            margin-right: 8px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .page-header .icon-phone svg {
+            fill: #F34991;
+        }
+
+        /* Hide header when embedded */
+        body.embedded .page-header {
+            display: none;
+        }
+
         .preview-container {
             position: relative;
             width: 100%;
@@ -58,6 +102,12 @@
             align-items: center;
             justify-content: center;
             margin: 0 auto;
+            padding-top: 70px; /* Account for fixed header */
+        }
+
+        /* Remove header padding when embedded */
+        body.embedded .preview-container {
+            padding-top: 0;
         }
 
         .phone-section {
@@ -67,27 +117,34 @@
             flex-shrink: 0;
             position: relative;
             z-index: 10;
-            margin-left: -60px; /* Overlap into control panel */
+            margin-left: -90px; /* Overlap into control panel */
+            transition: all 0.3s ease;
+        }
+
+        .control-panel-frame {
+            position: relative;
+            width: 300px; /* Reduced width for embedded view */
+            height: 100%;
+            max-height: 740px;
+            margin-left: -30px;
+            margin-right: -60px;
+            transition: all 0.3s ease;
+            z-index: 5;
         }
 
         .control-panel {
-            width: 320px; /* Reduced width for embedded view */
+            width: 100%;
             height: 100%;
-            max-height: 740px;
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px);
             border-radius: 20px;
-            padding: 24px;
+            padding: 12px;
             padding-left: 54px; /* Refined padding for phone overlap area */
-            margin-left: -30px;
-            margin-right: -60px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
             display: flex;
             flex-direction: column;
             gap: 6px;
             overflow-y: auto;
             position: relative;
-            z-index: 5;
         }
 
         .control-panel h2 {
@@ -97,6 +154,41 @@
             margin: 0;
             margin-bottom: 10px;
             text-align: center;
+        }
+
+        .collapse-toggle {
+            position: absolute;
+            top: 20px;
+            right: -28px;
+            width: 30px;
+            height: 60px;
+            background: linear-gradient(135deg, #E038C9 0%, #F6CB2D 100%);
+            backdrop-filter: blur(20px);
+            border: none;
+            border-radius: 0 5px 5px 0;
+            box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            color: #ffffff;
+            transition: all 0.3s ease;
+            z-index: 0;
+        }
+
+        .collapse-toggle:hover {
+            background: linear-gradient(135deg, #E038C9 0%, #F6CB2D 100%);
+            transform: translateX(-2px);
+            box-shadow: -4px 0 12px rgba(224, 56, 201, 0.3);
+        }
+
+        .control-panel-frame.collapsed {
+            transform: translateX(-120px);
+        }
+
+        .phone-section.collapsed {
+            transform: translateX(150px);
         }
 
         .control-section {
@@ -841,8 +933,12 @@
             </div>
         </div>
 
-        <div class="control-panel">
-            <h2>🎮 Emulator Controls</h2>
+        <div class="control-panel-frame">
+            <button class="collapse-toggle" onclick="toggleControlPanel()" title="Collapse Panel">
+                ‹
+            </button>
+            <div class="control-panel">
+                <h2>Emulator Tools</h2>
 
             <!-- Streams Module Controls -->
             <div class="module-group" id="streams-module" style="display: none;">
@@ -1003,6 +1099,7 @@
                 </div>
                 </div>
             </div>
+            </div>
         </div>
     </div>
 
@@ -1012,6 +1109,25 @@
             const module = document.getElementById(moduleId);
             if (module) {
                 module.classList.toggle('collapsed');
+            }
+        }
+
+        // Control panel collapse/expand functionality
+        function toggleControlPanel() {
+            const controlPanelFrame = document.querySelector('.control-panel-frame');
+            const phoneSection = document.querySelector('.phone-section');
+            const toggleButton = document.querySelector('.collapse-toggle');
+            
+            controlPanelFrame.classList.toggle('collapsed');
+            phoneSection.classList.toggle('collapsed');
+            
+            // Update button text and title based on state
+            if (controlPanelFrame.classList.contains('collapsed')) {
+                toggleButton.innerHTML = '›';
+                toggleButton.title = 'Expand Panel';
+            } else {
+                toggleButton.innerHTML = '‹';
+                toggleButton.title = 'Collapse Panel';
             }
         }
 
@@ -2031,10 +2147,40 @@
 
     <script src="beemi-bridge-emulator.js"></script>
     
+    <!-- Page Header (hidden when embedded) -->
+    <header class="page-header">
+        <h1><span class="icon-phone"><svg viewBox="0 0 210 210"><path d="M 67.194348 10.311515 C 59.070794 10.311515 52.530644 16.851149 52.530644 24.974703 L 52.530644 185.02488 C 52.530644 193.14844 59.070794 199.68859 67.194348 199.68859 L 142.80575 199.68859 C 150.92931 199.68859 157.46894 193.14844 157.46894 185.02488 L 157.46894 24.974703 C 157.46894 16.851149 150.92931 10.311515 142.80575 10.311515 L 67.194348 10.311515 z M 88.526896 20.271631 L 121.47269 20.271631 C 124.10908 20.271631 126.23157 22.394122 126.23157 25.030514 C 126.23157 27.666905 124.10908 29.789396 121.47269 29.789396 L 88.526896 29.789396 C 85.890505 29.789396 83.76853 27.666905 83.76853 25.030514 C 83.76853 22.394122 85.890505 20.271631 88.526896 20.271631 z"/></svg></span>Client Emulator</h1>
+    </header>
+    
     <script>
         // Detect if we're embedded in an iframe and apply transparent background
         if (window.self !== window.top) {
             document.body.classList.add('embedded');
+            
+            // Auto-collapse control panel when embedded (without animation)
+            const controlPanelFrame = document.querySelector('.control-panel-frame');
+            const phoneSection = document.querySelector('.phone-section');
+            const toggleButton = document.querySelector('.collapse-toggle');
+            
+            if (controlPanelFrame && phoneSection && toggleButton) {
+                // Temporarily disable transitions
+                controlPanelFrame.style.transition = 'none';
+                phoneSection.style.transition = 'none';
+                
+                // Apply collapsed state
+                controlPanelFrame.classList.add('collapsed');
+                phoneSection.classList.add('collapsed');
+                toggleButton.innerHTML = '›';
+                toggleButton.title = 'Expand Panel';
+                
+                // Re-enable transitions after a brief delay
+                setTimeout(() => {
+                    controlPanelFrame.style.transition = '';
+                    phoneSection.style.transition = '';
+                }, 50);
+                
+                console.log('🎛️ Control panel auto-collapsed for embedded mode (no animation)');
+            }
             
             // Check if we have a client name from URL parameters
             const urlParams = new URLSearchParams(window.location.search);
