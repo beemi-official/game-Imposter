@@ -150,11 +150,29 @@ export default function BeemiSDKProvider({ children }) {
 
   const onStreamGift = useCallback((callback) => {
     if (!window.beemi || !window.beemi.streams) {
-      console.warn('Streams not available')
+      console.warn('🎁 DEBUG: Streams not available for onStreamGift')
       return () => {}
     }
 
-    window.beemi.streams.onGift(callback)
+    console.log('🎁 DEBUG: Setting up onStreamGift callback')
+    console.log('🎁 DEBUG: beemi.streams object:', window.beemi.streams)
+    
+    // Wrap callback with debugging
+    const debugCallback = (data) => {
+      console.log('🎁 DEBUG: onStreamGift callback triggered with data:', data)
+      
+      // Extract the actual gift data if it's wrapped in an event structure
+      let giftData = data
+      if (data && data.type === 'stream-gift' && data.data) {
+        console.log('🎁 DEBUG: Extracting data from event wrapper')
+        giftData = data.data
+      }
+      
+      console.log('🎁 DEBUG: Passing gift data to game:', giftData)
+      callback(giftData)
+    }
+    
+    window.beemi.streams.onGift(debugCallback)
     return () => {
       // Cleanup if needed
     }

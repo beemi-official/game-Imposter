@@ -411,14 +411,19 @@ export default function GameProvider({ children }) {
 
   // Process gift event
   const processGiftEvent = useCallback((giftData) => {
-    console.log('🎁 Gift event received:', giftData)
+    console.log('🎁 DEBUG: Gift event received in GameProvider:', giftData)
+    console.log('🎁 DEBUG: Current game phase:', gamePhase)
+    console.log('🎁 DEBUG: Gift data user object:', giftData.user)
+    console.log('🎁 DEBUG: Gift data gift object:', giftData.gift)
     
     const username = giftData.user?.username || giftData.user?.name || 'Anonymous'
     const giftValue = giftData.gift?.coin_value || giftData.gift?.value || 0
     
+    console.log(`🎁 DEBUG: Extracted username: "${username}", giftValue: ${giftValue}`)
     console.log(`🎁 Gift from ${username}: ${giftValue} coins`)
     
     if (giftValue > 0) {
+      console.log('🎁 DEBUG: Gift value > 0, processing gift...')
       // Update gift coins tracking
       setAudienceGiftCoins(prev => {
         const newCoins = new Map(prev)
@@ -430,7 +435,9 @@ export default function GameProvider({ children }) {
       })
       
       // If user has already voted, update their vote weight
+      console.log('🎁 DEBUG: Checking if game phase is description-voting for vote weight update')
       if (gamePhase === 'description-voting') {
+        console.log('🎁 DEBUG: Game phase is description-voting, checking for existing votes')
         const targetId = audienceCurrentVote.get(username)
         if (targetId && !deadPlayers.has(targetId)) {
           setAudienceVotes(prev => {
@@ -453,6 +460,8 @@ export default function GameProvider({ children }) {
         } else {
           console.log(`🎁 ${username} hasn't voted yet, coins saved for when they vote`)
         }
+      } else {
+        console.log(`🎁 DEBUG: Game phase is "${gamePhase}", not "description-voting", so gift coins saved but no vote weight update`)
       }
     }
   }, [gamePhase, audienceCurrentVote, deadPlayers, audienceGiftCoins])
