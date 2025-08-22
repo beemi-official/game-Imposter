@@ -11,16 +11,174 @@ export const useGame = () => {
   return context
 }
 
-export const WORD_LIST = [
-  'China', 'Tree', 'Ocean', 'Mountain', 'Coffee', 'Pizza', 'Book', 'Phone', 'Car', 'House',
-  'Dog', 'Cat', 'Sun', 'Moon', 'Rain', 'Snow', 'Fire', 'Water', 'Music', 'Dance',
-  'Football', 'Basketball', 'Apple', 'Banana', 'Chair', 'Table', 'School', 'Hospital',
-  'Airport', 'Beach', 'Forest', 'Desert', 'River', 'Bridge', 'Castle', 'Tower',
-  'Garden', 'Kitchen', 'Bedroom', 'Library', 'Museum', 'Theater', 'Restaurant', 'Hotel',
-  'Bicycle', 'Train', 'Airplane', 'Boat', 'Camera', 'Computer', 'Television', 'Radio',
-  'Flower', 'Butterfly', 'Bird', 'Fish', 'Lion', 'Elephant', 'Tiger', 'Bear',
-  'Chocolate', 'Ice cream', 'Cake', 'Sandwich', 'Soup', 'Salad', 'Pasta', 'Burger',
-  'Winter', 'Summer', 'Spring', 'Autumn', 'Morning', 'Evening', 'Night', 'Midnight'
+export const WORD_PAIRS = [
+  { civilian: 'UK', imposter: 'Ireland' },
+  { civilian: 'Lightbulb', imposter: 'Candle' },
+  { civilian: 'Beyoncé', imposter: 'Rihanna' },
+  { civilian: 'Stockholm', imposter: 'Gothenburg' },
+  { civilian: 'Rome', imposter: 'Milan' },
+  { civilian: 'Brazil', imposter: 'Argentina' },
+  { civilian: 'Wi-Fi', imposter: 'Bluetooth' },
+  { civilian: 'Rain', imposter: 'Snow' },
+  { civilian: 'Victoria Falls', imposter: 'Angel Falls' },
+  { civilian: 'Jeff Bezos', imposter: 'Elon Musk' },
+  { civilian: 'Paris', imposter: 'London' },
+  { civilian: 'Neil deGrasse Tyson', imposter: 'Stephen Hawking' },
+  { civilian: 'Apple', imposter: 'Samsung' },
+  { civilian: 'Deep', imposter: 'Shallow' },
+  { civilian: 'Munich', imposter: 'Frankfurt' },
+  { civilian: 'Neil Armstrong', imposter: 'Buzz Aldrin' },
+  { civilian: 'Berlin', imposter: 'Munich' },
+  { civilian: 'Day', imposter: 'Night' },
+  { civilian: 'Book', imposter: 'Newspaper' },
+  { civilian: 'Paris', imposter: 'Lyon' },
+  { civilian: 'Soap', imposter: 'Detergent' },
+  { civilian: 'George Washington', imposter: 'Abraham Lincoln' },
+  { civilian: 'Sydney', imposter: 'Melbourne' },
+  { civilian: 'Doha', imposter: 'Dubai' },
+  { civilian: 'Barcelona', imposter: 'Seville' },
+  { civilian: 'Spain', imposter: 'Portugal' },
+  { civilian: 'Amazon River', imposter: 'Nile River' },
+  { civilian: 'Osaka', imposter: 'Nagoya' },
+  { civilian: 'Lisbon', imposter: 'Porto' },
+  { civilian: 'Mount Everest', imposter: 'Mount Kilimanjaro' },
+  { civilian: 'Addis Ababa', imposter: 'Nairobi' },
+  { civilian: 'Key', imposter: 'Card' },
+  { civilian: 'Toronto', imposter: 'Vancouver' },
+  { civilian: 'Open', imposter: 'Close' },
+  { civilian: 'Sahara Desert', imposter: 'Amazon Rainforest' },
+  { civilian: 'Cash', imposter: 'Card' },
+  { civilian: 'KFC', imposter: 'McDonald\'s' },
+  { civilian: 'Chair', imposter: 'Sofa' },
+  { civilian: 'Tram', imposter: 'Bus' },
+  { civilian: 'Camera', imposter: 'Camcorder' },
+  { civilian: 'Tokyo', imposter: 'Seoul' },
+  { civilian: 'Madrid', imposter: 'Barcelona' },
+  { civilian: 'Clock', imposter: 'Watch' },
+  { civilian: 'Sofia', imposter: 'Plovdiv' },
+  { civilian: 'Sweden', imposter: 'Norway' },
+  { civilian: 'Shoe', imposter: 'Sock' },
+  { civilian: 'Kanye West', imposter: 'Jay-Z' },
+  { civilian: 'Doha', imposter: 'Al Rayyan' },
+  { civilian: 'Beijing', imposter: 'Shanghai' },
+  { civilian: 'Teacher', imposter: 'Student' },
+  { civilian: 'Kylian Mbappé', imposter: 'Erling Haaland' },
+  { civilian: 'Machu Picchu', imposter: 'Chichen Itza' },
+  { civilian: 'Laptop', imposter: 'Tablet' },
+  { civilian: 'Clock', imposter: 'Calendar' },
+  { civilian: 'Queen Elizabeth II', imposter: 'King Charles III' },
+  { civilian: 'Mexico City', imposter: 'Monterrey' },
+  { civilian: 'Strong', imposter: 'Weak' },
+  { civilian: 'Victoria Falls', imposter: 'Niagara Falls' },
+  { civilian: 'Greece', imposter: 'Turkey' },
+  { civilian: 'Johannesburg', imposter: 'Cape Town' },
+  { civilian: 'Bike', imposter: 'Motorcycle' },
+  { civilian: 'Coldplay', imposter: 'Maroon 5' },
+  { civilian: 'Window', imposter: 'Door' },
+  { civilian: 'Italy', imposter: 'Greece' },
+  { civilian: 'Mexico', imposter: 'Brazil' },
+  { civilian: 'Taxi', imposter: 'Uber' },
+  { civilian: 'Germany', imposter: 'France' },
+  { civilian: 'Paris', imposter: 'Marseille' },
+  { civilian: 'Johannesburg', imposter: 'Pretoria' },
+  { civilian: 'Toronto', imposter: 'Montreal' },
+  { civilian: 'Singapore', imposter: 'Hong Kong' },
+  { civilian: 'Cat', imposter: 'Dog' },
+  { civilian: 'Hot', imposter: 'Warm' },
+  { civilian: 'Washington, D.C.', imposter: 'New York City' },
+  { civilian: 'Mount Fuji', imposter: 'Mount Everest' },
+  { civilian: 'Serena Williams', imposter: 'Venus Williams' },
+  { civilian: 'Tea', imposter: 'Coffee' },
+  { civilian: 'Riyadh', imposter: 'Jeddah' },
+  { civilian: 'Lagos', imposter: 'Abuja' },
+  { civilian: 'Africa', imposter: 'Asia' },
+  { civilian: 'Madrid', imposter: 'Seville' },
+  { civilian: 'Guitar', imposter: 'Piano' },
+  { civilian: 'Knife', imposter: 'Spoon' },
+  { civilian: 'Apple', imposter: 'Banana' },
+  { civilian: 'Bacteria', imposter: 'Virus' },
+  { civilian: 'Leonardo DiCaprio', imposter: 'Brad Pitt' },
+  { civilian: 'Istanbul', imposter: 'Ankara' },
+  { civilian: 'Cairo', imposter: 'Alexandria' },
+  { civilian: 'Drake', imposter: 'Kendrick Lamar' },
+  { civilian: 'Gentle', imposter: 'Harsh' },
+  { civilian: 'Michael Jackson', imposter: 'Prince' },
+  { civilian: 'United States', imposter: 'Mexico' },
+  { civilian: 'China', imposter: 'Japan' },
+  { civilian: 'Beijing', imposter: 'Guangzhou' },
+  { civilian: 'MrBeast', imposter: 'PewDiePie' },
+  { civilian: 'Sushi', imposter: 'Pizza' },
+  { civilian: 'Taylor Swift', imposter: 'Adele' },
+  { civilian: 'Open', imposter: 'Closed' },
+  { civilian: 'Phone', imposter: 'Watch' },
+  { civilian: 'Mexico City', imposter: 'Guadalajara' },
+  { civilian: 'Bangkok', imposter: 'Phuket' },
+  { civilian: 'Inside', imposter: 'Outside' },
+  { civilian: 'Bag', imposter: 'Box' },
+  { civilian: 'Machu Picchu', imposter: 'Petra' },
+  { civilian: 'Run', imposter: 'Walk' },
+  { civilian: 'Athens', imposter: 'Rome' },
+  { civilian: 'Bike', imposter: 'Scooter' },
+  { civilian: 'Ethiopia', imposter: 'Kenya' },
+  { civilian: 'Camera', imposter: 'Phone' },
+  { civilian: 'LeBron James', imposter: 'Michael Jordan' },
+  { civilian: 'Cairo', imposter: 'Giza' },
+  { civilian: 'Sydney Opera House', imposter: 'Harbour Bridge' },
+  { civilian: 'Oprah Winfrey', imposter: 'Ellen DeGeneres' },
+  { civilian: 'New York', imposter: 'Los Angeles' },
+  { civilian: 'Washington', imposter: 'Lincoln' },
+  { civilian: 'Amsterdam', imposter: 'Rotterdam' },
+  { civilian: 'Seoul', imposter: 'Busan' },
+  { civilian: 'Bread', imposter: 'Rice' },
+  { civilian: 'Happy', imposter: 'Sad' },
+  { civilian: 'Swamp', imposter: 'Grassland' },
+  { civilian: 'Berlin', imposter: 'Hamburg' },
+  { civilian: 'Blue', imposter: 'Red' },
+  { civilian: 'Gandhi', imposter: 'Nehru' },
+  { civilian: 'Rafael Nadal', imposter: 'Roger Federer' },
+  { civilian: 'Hat', imposter: 'Scarf' },
+  { civilian: 'Dwayne Johnson', imposter: 'Kevin Hart' },
+  { civilian: 'Cup', imposter: 'Bowl' },
+  { civilian: 'Saudi Arabia', imposter: 'United Arab Emirates' },
+  { civilian: 'Pen', imposter: 'Pencil' },
+  { civilian: 'Grand Canyon', imposter: 'Great Barrier Reef' },
+  { civilian: 'Chris Evans', imposter: 'Robert Downey Jr.' },
+  { civilian: 'Tokyo', imposter: 'Osaka' },
+  { civilian: 'Early', imposter: 'Late' },
+  { civilian: 'Sahara Desert', imposter: 'Kalahari Desert' },
+  { civilian: 'Qatar', imposter: 'Bahrain' },
+  { civilian: 'United Kingdom', imposter: 'Ireland' },
+  { civilian: 'Pen', imposter: 'Marker' },
+  { civilian: 'City', imposter: 'Village' },
+  { civilian: 'Madrid', imposter: 'Valencia' },
+  { civilian: 'Serengeti', imposter: 'Maasai Mara' },
+  { civilian: 'Fork', imposter: 'Spoon' },
+  { civilian: 'Winston Churchill', imposter: 'Franklin D. Roosevelt' },
+  { civilian: 'Burger King', imposter: 'McDonald\'s' },
+  { civilian: 'Pepsi', imposter: 'Coca-Cola' },
+  { civilian: 'India', imposter: 'Pakistan' },
+  { civilian: 'Cup', imposter: 'Mug' },
+  { civilian: 'Canada', imposter: 'USA' },
+  { civilian: 'Road', imposter: 'Path' },
+  { civilian: 'Nairobi', imposter: 'Mombasa' },
+  { civilian: 'Eiffel Tower', imposter: 'Statue of Liberty' },
+  { civilian: 'Switzerland', imposter: 'Austria' },
+  { civilian: 'India', imposter: 'Bangladesh' },
+  { civilian: 'Taylor Swift', imposter: 'Ed Sheeran' },
+  { civilian: 'Bank', imposter: 'Market' },
+  { civilian: 'Push', imposter: 'Pull' },
+  { civilian: 'Steve Jobs', imposter: 'Bill Gates' },
+  { civilian: 'Battery', imposter: 'Charger' },
+  { civilian: 'Water', imposter: 'Juice' },
+  { civilian: 'Read', imposter: 'Write' },
+  { civilian: 'Dubai', imposter: 'Abu Dhabi' },
+  { civilian: 'Russia', imposter: 'Ukraine' },
+  { civilian: 'Salt', imposter: 'Pepper' },
+  { civilian: 'Hot', imposter: 'Cold' },
+  { civilian: 'Japan', imposter: 'South Korea' },
+  { civilian: 'Lionel Messi', imposter: 'Cristiano Ronaldo' },
+  { civilian: 'Times Square', imposter: 'Piccadilly Circus' },
+  { civilian: 'Bank', imposter: 'Money' }
 ]
 
 export default function GameProvider({ children }) {
@@ -148,19 +306,47 @@ export default function GameProvider({ children }) {
     setPlayerRoles(roles || {})
   }, [])
 
-  // Handle current word updates
-  const handleCurrentWordUpdate = useCallback((word) => {
-    console.log('📝 Current word updated:', word)
-    setCurrentWord(word)
+  // Start word display timer
+  const startWordDisplayTimer = useCallback((role, word) => {
+    wordTimerActive.current = true
     
-    if (gamePhase === 'game-start' && !wordTimerActive.current && word) {
+    wordDisplayTimerRef.current = setTimeout(() => {
+      console.log('⏰ Word display timer ended, transitioning to voting phase')
+      wordTimerActive.current = false
+      
+      if (isLeader) {
+        setCRDT('game-phase', 'description-voting')
+        
+        // Start voting timer
+        const timerData = {
+          startTime: Date.now(),
+          duration: 90000
+        }
+        setCRDT('voting-timer', timerData)
+      }
+    }, 5000)
+  }, [isLeader, setCRDT])
+
+  // Handle current word updates
+  const handleCurrentWordUpdate = useCallback((wordData) => {
+    console.log('📝 Current word updated:', wordData)
+    setCurrentWord(wordData)
+    
+    if (gamePhase === 'game-start' && !wordTimerActive.current && wordData) {
       console.log('⏰ Word received late, starting timer now')
       const myRole = playerRoles[playerId]
       if (myRole) {
+        // Get the appropriate word for this player
+        let word = ''
+        if (wordData.civilian && wordData.imposter) {
+          word = myRole === 'imposter' ? wordData.imposter : wordData.civilian
+        } else {
+          word = myRole === 'imposter' ? 'IMPOSTER' : wordData
+        }
         startWordDisplayTimer(myRole, word)
       }
     }
-  }, [gamePhase, playerId, playerRoles])
+  }, [gamePhase, playerId, playerRoles, startWordDisplayTimer])
 
   // Handle speaking order updates
   const handleSpeakingOrderUpdate = useCallback((order) => {
@@ -300,15 +486,15 @@ export default function GameProvider({ children }) {
       roles[id] = index < imposterCount ? 'imposter' : 'civilian'
     })
     
-    // Select random word
-    const word = WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)]
+    // Select random word pair
+    const wordPair = WORD_PAIRS[Math.floor(Math.random() * WORD_PAIRS.length)]
     
     // Create speaking order
     const order = [...players].sort(() => Math.random() - 0.5)
     
     // Update CRDT state
     setCRDT('player-roles', roles)
-    setCRDT('current-word', word)
+    setCRDT('current-word', wordPair)  // Store both civilian and imposter words
     setCRDT('speaking-order', order)
     setCRDT('game-phase', 'game-start')
     
@@ -487,28 +673,6 @@ export default function GameProvider({ children }) {
     
     console.log('🔄 Game reset triggered for all players - all players cleared')
   }, [isLeader, setCRDT, playerNames])
-
-  // Start word display timer
-  const startWordDisplayTimer = useCallback((role, word) => {
-    wordTimerActive.current = true
-    const displayWord = role === 'imposter' ? 'IMPOSTER' : word
-    
-    wordDisplayTimerRef.current = setTimeout(() => {
-      console.log('⏰ Word display timer ended, transitioning to voting phase')
-      wordTimerActive.current = false
-      
-      if (isLeader) {
-        setCRDT('game-phase', 'description-voting')
-        
-        // Start voting timer
-        const timerData = {
-          startTime: Date.now(),
-          duration: 90000
-        }
-        setCRDT('voting-timer', timerData)
-      }
-    }, 5000)
-  }, [isLeader, setCRDT])
 
   // Setup CRDT watchers
   useEffect(() => {
