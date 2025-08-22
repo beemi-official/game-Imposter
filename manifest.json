@@ -8,7 +8,7 @@
   "version": "1.0.0",
   "category": "strategy",
   "beemi": {
-    "sdkVersion": "2.1.1",
+    "sdkVersion": "2.1.2",
     "core": { "required": true },
     "streams": { "required": true },
     "multiplayer-p2p": { "required": true },
