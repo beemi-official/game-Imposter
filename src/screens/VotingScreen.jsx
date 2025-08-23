@@ -19,13 +19,13 @@ export default function VotingScreen() {
     submitVote
   } = useGame()
   
-  const [timeRemaining, setTimeRemaining] = useState(90)
+  const [timeRemaining, setTimeRemaining] = useState(300)
   const timerRef = useRef(null)
   const autoSelectionTriggered = useRef(false)
 
   useEffect(() => {
     // Start countdown timer
-    setTimeRemaining(90)
+    setTimeRemaining(300)
     autoSelectionTriggered.current = false
     
     timerRef.current = setInterval(() => {

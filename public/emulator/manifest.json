@@ -34,7 +34,8 @@
     "port": 3000,
     "emulatorPath": "/public/emulator/index.html",
     "emulatorDir": "./public/emulator",
-    "postCreate": "npm install"
+    "postCreate": "npm install",
+    "replaceEmulatorFiles": false
   },
   "production": {
     "entryPoint": "index.html",

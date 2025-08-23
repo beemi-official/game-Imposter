@@ -105,7 +105,7 @@ export default function ResultsScreen() {
     // Reset voting timer
     const timerData = {
       startTime: Date.now(),
-      duration: 90000
+      duration: 300000
     }
     setCRDT('voting-timer', timerData)
   }
