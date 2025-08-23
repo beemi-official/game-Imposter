@@ -1387,8 +1387,6 @@
 
         // Enhanced SDK Communication
         function sendToWebView(messageData) {
-            console.log('📡 Sending to SDK-injected game:', messageData);
-            
             const iframe = document.querySelector('.webview-iframe');
             if (!iframe || !iframe.contentWindow) {
                 console.log('❌ Iframe not accessible');
@@ -1400,18 +1398,12 @@
                 const contentWindow = iframe.contentWindow;
                 if (contentWindow.beemi && contentWindow.beemi.core && contentWindow.beemi.core.emit) {
                     
-                    // Debug: Check what's available in the game's SDK
-                    console.log('🔍 DEBUG: Game window beemi object:', contentWindow.beemi);
-                    console.log('🔍 DEBUG: Game streams module:', contentWindow.beemi.streams);
-                    
                     // For gift events, emit directly as stream-gift (not wrapped in room-event)
                     if (messageData.type === 'stream-gift') {
-                        console.log('🎁 DEBUG: Emitting stream-gift event directly to game SDK');
                         contentWindow.beemi.core.emit('stream-gift', messageData);
                         
                         // Also try triggering streams callbacks directly if available
                         if (contentWindow.beemi.streams && contentWindow.beemi.streams._giftCallbacks) {
-                            console.log('🎁 DEBUG: Triggering gift callbacks directly in game');
                             contentWindow.beemi.streams._giftCallbacks.forEach(callback => {
                                 try {
                                     callback(messageData.data);
@@ -1425,13 +1417,11 @@
                         contentWindow.beemi.core.emit('room-event', { payload: messageData });
                     }
                     
-                    console.log('✅ Message sent via Beemi SDK:', messageData);
                     return true;
                 } else {
                     // Fallback: PostMessage for backwards compatibility
                     const messageString = JSON.stringify(messageData);
                     contentWindow.postMessage(messageString, '*');
-                    console.log('✅ PostMessage sent (SDK not ready):', messageString);
                     return true;
                 }
                 
@@ -1573,7 +1563,7 @@
             const unitValue = giftValues[giftType];
             const totalValue = unitValue * giftCount;
             
-            console.log(`🎁 Sending ${giftNames[giftType]} gift to WebView/SDK`);
+            console.log(`🎁 Sending ${giftNames[giftType]} gift: ${username} x${giftCount} (${totalValue} coins)`);
             
             // Create gift data matching React Native format
             const giftData = {
@@ -1599,9 +1589,7 @@
             };
             
             // Send to WebView/Game via Beemi SDK
-            console.log('🔍 DEBUG: Sending gift data to WebView:', giftData);
             const success = sendToWebView(giftData);
-            console.log('🔍 DEBUG: Gift send result:', success);
             
             if (success) {
                 // Add to visual chat display for emulator UI feedback

@@ -290,20 +290,10 @@
                 // For single emulator mode, provide basic room state simulation
                 setTimeout(() => {
                     try {
-                        // Debug: Check for multi-client bridge
-                        console.log('🔍 [DEBUG] Checking for multi-client bridge...');
-                        console.log('🔍 [DEBUG] window.multiClientBridge:', !!window.multiClientBridge);
-                        console.log('🔍 [DEBUG] window.parent:', !!window.parent);
-                        console.log('🔍 [DEBUG] window.parent.multiClientBridge:', !!window.parent?.multiClientBridge);
-                        console.log('🔍 [DEBUG] window.top:', !!window.top);
-                        console.log('🔍 [DEBUG] window.top.multiClientBridge:', !!window.top?.multiClientBridge);
-                        console.log('🔍 [DEBUG] Are we in iframe?', window.self !== window.top);
-                        
+                        // Check for multi-client bridge
                         const hasMultiClientBridge = window.multiClientBridge || 
                                                    window.parent?.multiClientBridge || 
                                                    window.top?.multiClientBridge;
-                        
-                        console.log('🔍 [DEBUG] Multi-client bridge detected:', !!hasMultiClientBridge);
                         
                         if (iframe.contentWindow.beemi && iframe.contentWindow.beemi.multiplayer && !hasMultiClientBridge) {
                             console.log('🏠 Single emulator mode - providing basic room state simulation');
@@ -528,25 +518,7 @@
                     }
                 };
                 
-                console.log(`🎁 BeemiDev.streams: Simulating ${platform} gift`, giftEvent);
-                
-                // Debug: Check if streams module is available
-                if (window.beemi && window.beemi.streams) {
-                    console.log('🔍 DEBUG: Streams module available, triggering gift callbacks directly');
-                    // Try to trigger the callbacks directly if streams module handles it
-                    if (window.beemi.streams._giftCallbacks) {
-                        window.beemi.streams._giftCallbacks.forEach(callback => {
-                            try {
-                                callback(giftEvent.data);
-                            } catch (error) {
-                                console.error('❌ Error in gift callback:', error);
-                            }
-                        });
-                    }
-                }
-                
-                // Also emit via core for debugging
-                console.log('🔍 DEBUG: Emitting stream-gift via core');
+                console.log(`🎁 Simulating ${platform} gift: ${giftName} x${giftCount} (${totalValue} coins)`);
                 window.beemi.core.emit('stream-gift', giftEvent);
             },
             
@@ -911,20 +883,14 @@
             
             // Get iframe for user injection
             const iframe = document.querySelector('.webview-iframe');
-            console.log('🔍 [Bridge Debug] Iframe found:', !!iframe);
-            console.log('🔍 [Bridge Debug] Iframe contentWindow:', !!iframe?.contentWindow);
-            console.log('🔍 [Bridge Debug] Iframe beemi:', !!iframe?.contentWindow?.beemi);
+
             
             if (iframe && iframe.contentWindow && iframe.contentWindow.beemi) {
                 // Check if user injection is enabled and get selected user
                 const userInjectionEnabled = window.beemiUserInjectionEnabled !== false;
                 const selectedUserId = window.beemiSelectedUserId || 'user0';
                 
-                console.log('🔍 [Bridge Debug] window.beemiUserInjectionEnabled:', window.beemiUserInjectionEnabled);
-                console.log('🔍 [Bridge Debug] window.beemiSelectedUserId:', window.beemiSelectedUserId);
-                console.log('🔍 [Bridge Debug] userInjectionEnabled:', userInjectionEnabled);
-                console.log('🔍 [Bridge Debug] selectedUserId (after fallback):', selectedUserId);
-                console.log('🔍 [Bridge Debug] Checking for USER_DATA in emulator context...');
+
                 
                 // Get USER_DATA from the emulator context via postMessage
                 // User data will be injected via SDK events from the emulator

@@ -35,15 +35,11 @@ class MultiClientBridgeEmulator {
         this.messageLog = [];
         this.debug = true;
         
-        console.log('🌉 Multi-Client Bridge Emulator initialized');
         this.setupMessageListener();
     }
 
     // Register a client iframe
     registerClient(clientId, iframe, userId, user) {
-        console.log(`🌉 [BRIDGE] registerClient called for ${clientId} (${user.username})`);
-        console.log(`🌉 [BRIDGE] Current clients count:`, this.clients.size);
-        
         const isFirstClient = this.clients.size === 0;
         
         this.clients.set(clientId, {
@@ -63,16 +59,11 @@ class MultiClientBridgeEmulator {
                 isActive: true,
                 playerCount: 1
             };
-            console.log(`🏠 [BRIDGE] Created shared room: ${this.roomState.roomId} with leader: ${clientId}`);
         } else {
             this.roomState.playerCount++;
-            console.log(`📱 [BRIDGE] Added ${clientId} to shared room (${this.roomState.playerCount} players total)`);
         }
         
-        console.log(`📱 [BRIDGE] Registered ${clientId} (${user.username}) - Leader: ${this.clients.get(clientId).isLeader}`);
-        
         // Start injection process immediately (iframe should already be loaded)
-        console.log(`🔧 [BRIDGE] Starting injection process for ${clientId}...`);
         this.injectRelayIntoClient(clientId);
     }
 
@@ -126,14 +117,11 @@ class MultiClientBridgeEmulator {
                     const gameIframe = emulatorWindow.document.querySelector('.webview-iframe');
                     
                     if (gameIframe && gameIframe.contentWindow) {
-                        console.log(`🔧 Found game iframe for ${clientId}, waiting for SDK...`);
                         this.waitForSDKAndInject(clientId, gameIframe.contentWindow);
                     } else {
-                        console.log(`🔧 Game iframe not ready for ${clientId}, retrying...`);
                         setTimeout(waitForEmulatorAndGameIframe, 500);
                     }
                 } catch (error) {
-                    console.log(`🔧 Error accessing game iframe for ${clientId}, retrying...`, error.message);
                     setTimeout(waitForEmulatorAndGameIframe, 500);
                 }
             };
@@ -153,18 +141,8 @@ class MultiClientBridgeEmulator {
         const waitForSDK = () => {
             attemptCount++;
             
-            if (attemptCount <= 5 || attemptCount % 10 === 0) {
-                console.log(`🔗 [BRIDGE INJECT] ${clientId} - SDK check attempt ${attemptCount}`);
-                console.log(`🔗 [BRIDGE INJECT] ${clientId} - gameWindow.beemi:`, typeof gameWindow.beemi);
-                console.log(`🔗 [BRIDGE INJECT] ${clientId} - gameWindow.beemi.core:`, typeof gameWindow.beemi?.core);
-                console.log(`🔗 [BRIDGE INJECT] ${clientId} - gameWindow.beemi.multiplayer:`, typeof gameWindow.beemi?.multiplayer);
-            }
-            
             try {
                 if (gameWindow.beemi && gameWindow.beemi.core) {
-                    console.log(`✅ [BRIDGE INJECT] SDK ready for ${clientId}, injecting complete multiplayer module...`);
-                    console.log(`🔗 [BRIDGE INJECT] ${clientId} - Original multiplayer module:`, typeof gameWindow.beemi.multiplayer);
-                    
                     // Inject our complete multiplayer module
                     gameWindow.beemi.multiplayer = this.createMultiplayerModule(clientId);
                     
@@ -172,14 +150,6 @@ class MultiClientBridgeEmulator {
                     gameWindow.BEEMI_CLIENT_ID = clientId;
                     gameWindow.BEEMI_USER_ID = client.userId;
                     gameWindow.BEEMI_IS_LEADER = client.isLeader;
-                    
-                    console.log(`✅ [BRIDGE INJECT] Complete multiplayer module injected for ${clientId}`);
-                    console.log(`🔗 [BRIDGE INJECT] ${clientId} - New multiplayer module:`, typeof gameWindow.beemi.multiplayer);
-                    console.log(`🔗 [BRIDGE INJECT] ${clientId} - New room.getState:`, typeof gameWindow.beemi.multiplayer.room.getState);
-                    
-                    // Test the injection
-                    const testRoomState = gameWindow.beemi.multiplayer.room.getState();
-                    console.log(`🏠 [BRIDGE INJECT] Test room state for ${clientId}:`, testRoomState);
                     
                 } else {
                     if (attemptCount < 100) {
@@ -794,23 +764,9 @@ class MultiClientBridgeEmulator {
         });
     }
 
-    // Utility: Log with timestamp
+        // Utility: Log with timestamp (disabled for cleaner output)
     log(message, ...args) {
-        const timestamp = new Date().toLocaleTimeString();
-        console.log(`[${timestamp}] ${message}`, ...args);
-        
-        if (this.debug) {
-            this.messageLog.push({
-                timestamp: Date.now(),
-                message: message,
-                args: args
-            });
-            
-            // Keep only last 100 messages
-            if (this.messageLog.length > 100) {
-                this.messageLog.shift();
-            }
-        }
+        // Disabled to reduce console noise
     }
 
     // Get debug information
@@ -886,14 +842,10 @@ window.multiClientBridge = new MultiClientBridgeEmulator();
 
 // Helper functions for the multi-phone emulator
 window.registerMultiClient = (clientId, iframe, userId, user) => {
-    console.log(`🌉 [BRIDGE] registerMultiClient called for ${clientId} (${user.username})`);
-    console.log(`🌉 [BRIDGE] iframe:`, !!iframe);
-    console.log(`🌉 [BRIDGE] multiClientBridge:`, !!window.multiClientBridge);
-    
     if (window.multiClientBridge) {
         window.multiClientBridge.registerClient(clientId, iframe, userId, user);
     } else {
-        console.error(`❌ [BRIDGE] multiClientBridge not available when registering ${clientId}`);
+        console.error(`❌ Multi-client bridge not available when registering ${clientId}`);
     }
 };
 
@@ -908,12 +860,4 @@ window.getMultiClientDebugInfo = () => {
 // Expose bulk actions
 window.multiClientBulkActions = window.multiClientBridge.bulkActions;
 
-console.log('🌉 Multi-Client Bridge Emulator loaded and ready!');
-console.log('💡 Available functions:');
-console.log('  - registerMultiClient(clientId, iframe, userId, user)');
-console.log('  - unregisterMultiClient(clientId)');
-console.log('  - getMultiClientDebugInfo()');
-console.log('  - multiClientBulkActions.allJoinRoom()');
-console.log('  - multiClientBulkActions.startGame()');
-console.log('  - multiClientBulkActions.startVoting()');
-console.log('  - multiClientBulkActions.resetToLobby()');
+// Multi-Client Bridge Emulator loaded and ready
