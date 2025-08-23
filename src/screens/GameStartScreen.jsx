@@ -7,25 +7,28 @@ export default function GameStartScreen() {
   const { playerId } = useBeemiSDK()
   const { currentWord, playerRoles, startWordDisplayTimer } = useGame()
   const [displayText, setDisplayText] = useState('')
-  const [roleClass, setRoleClass] = useState('')
+  const [myWord, setMyWord] = useState('')
 
   useEffect(() => {
     if (!playerId || !playerRoles[playerId] || !currentWord) return
 
     const myRole = playerRoles[playerId]
-    const isImposter = myRole === 'imposter'
     
-    // Set display text based on role
-    if (isImposter) {
-      setDisplayText('You are an IMPOSTER')
-      setRoleClass('imposter')
+    // Get the appropriate word based on role (but don't reveal the role)
+    let word = ''
+    if (currentWord.civilian && currentWord.imposter) {
+      // New word pair format
+      word = myRole === 'imposter' ? currentWord.imposter : currentWord.civilian
     } else {
-      setDisplayText(`The word is: ${currentWord}`)
-      setRoleClass('civilian')
+      // Fallback for old format
+      word = myRole === 'imposter' ? 'IMPOSTER' : currentWord
     }
+    
+    setMyWord(word)
+    setDisplayText(`Your word is: ${word}`)
 
     // Start the 5-second timer
-    startWordDisplayTimer(myRole, currentWord)
+    startWordDisplayTimer(myRole, word)
   }, [playerId, playerRoles, currentWord, startWordDisplayTimer])
 
   return (
@@ -33,8 +36,8 @@ export default function GameStartScreen() {
       <div className="role-action-bar">
         <div></div>
         <div className="word-display">
-          {currentWord && playerRoles[playerId] !== 'imposter' && (
-            <span className="word-badge">{currentWord}</span>
+          {myWord && (
+            <span className="word-badge">{myWord}</span>
           )}
         </div>
         <div></div>
@@ -43,7 +46,7 @@ export default function GameStartScreen() {
       <div className="role-container">
         <div className="role-content">
           <div className="role-display">
-            <h2 className={`role-text ${roleClass}`}>
+            <h2 className="role-text">
               {displayText}
             </h2>
           </div>

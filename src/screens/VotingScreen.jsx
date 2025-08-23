@@ -19,13 +19,13 @@ export default function VotingScreen() {
     submitVote
   } = useGame()
   
-  const [timeRemaining, setTimeRemaining] = useState(90)
+  const [timeRemaining, setTimeRemaining] = useState(300)
   const timerRef = useRef(null)
   const autoSelectionTriggered = useRef(false)
 
   useEffect(() => {
     // Start countdown timer
-    setTimeRemaining(90)
+    setTimeRemaining(300)
     autoSelectionTriggered.current = false
     
     timerRef.current = setInterval(() => {
@@ -203,7 +203,15 @@ export default function VotingScreen() {
 
   const isAlive = !deadPlayers.has(playerId)
   const myRole = playerRoles[playerId]
-  const showWord = myRole !== 'imposter'
+  
+  // Get the player's word based on their role (but don't reveal the role)
+  let myWord = ''
+  if (currentWord && currentWord.civilian && currentWord.imposter) {
+    myWord = myRole === 'imposter' ? currentWord.imposter : currentWord.civilian
+  } else if (currentWord && typeof currentWord === 'string') {
+    // Fallback for old format
+    myWord = currentWord
+  }
 
   return (
     <section className="voting-screen">
@@ -218,11 +226,9 @@ export default function VotingScreen() {
         )}
         
         <div className="word-display">
-          {showWord && currentWord ? (
-            <span className="word-badge">The word is {currentWord}</span>
-          ) : myRole === 'imposter' ? (
-            <span className="imposter-badge">You're the Imposter</span>
-          ) : null}
+          {myWord && (
+            <span className="word-badge">Your word: {myWord}</span>
+          )}
         </div>
         
         <Timer timeRemaining={timeRemaining} />

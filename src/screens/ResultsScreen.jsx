@@ -105,7 +105,7 @@ export default function ResultsScreen() {
     // Reset voting timer
     const timerData = {
       startTime: Date.now(),
-      duration: 90000
+      duration: 300000
     }
     setCRDT('voting-timer', timerData)
   }
@@ -128,7 +128,15 @@ export default function ResultsScreen() {
           
           {showWord && currentWord && (
             <p className="word-reveal">
-              The word was: <strong>{currentWord}</strong>
+              {currentWord.civilian && currentWord.imposter ? (
+                <>
+                  The words were: <strong>{currentWord.civilian}</strong> (Civilians) / <strong>{currentWord.imposter}</strong> (Imposters)
+                </>
+              ) : (
+                <>
+                  The word was: <strong>{currentWord}</strong>
+                </>
+              )}
             </p>
           )}
           
