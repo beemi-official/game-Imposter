@@ -1086,7 +1086,6 @@
                 }
 
                 if (!userId || !USER_DATA[userId]) {
-                    console.error('❌ Invalid or unavailable user:', userId);
                     return null;
                 }
 
@@ -1094,7 +1093,6 @@
                 const clientName = `Client ${this.nextClientNumber++}`;
                 const user = USER_DATA[userId];
 
-                console.log(`📱 Adding ${clientName} (${phoneId}) with user: ${user.username}`);
 
                 // Create phone wrapper
                 const phoneWrapper = document.createElement('div');
@@ -1147,20 +1145,13 @@
 
                 // Register with multi-client bridge when iframe loads
                 iframe.onload = () => {
-                    console.log(`🔧 [DEBUG] ${clientName} emulator iframe loaded`);
                     
                     // Wait for both iframe and bridge to be ready
                     const waitForBridgeAndRegister = () => {
-                        console.log(`🔧 [DEBUG] Checking bridge readiness for ${clientName}...`);
-                        console.log(`🔧 [DEBUG] window.registerMultiClient exists:`, !!window.registerMultiClient);
-                        console.log(`🔧 [DEBUG] window.multiClientBridge exists:`, !!window.multiClientBridge);
                         
                         if (window.registerMultiClient && window.multiClientBridge) {
-                            console.log(`🔧 [DEBUG] Bridge ready! Calling registerMultiClient for ${clientName}...`);
                             window.registerMultiClient(phoneId, iframe, userId, user);
-                            console.log(`🌉 [DEBUG] Registration call completed for ${clientName}`);
                         } else {
-                            console.log(`🔧 [DEBUG] Bridge not ready for ${clientName}, retrying in 100ms...`);
                             setTimeout(waitForBridgeAndRegister, 100);
                         }
                     };
@@ -1171,7 +1162,6 @@
 
                 // Also add error handler
                 iframe.onerror = (error) => {
-                    console.error(`❌ [DEBUG] ${clientName} iframe error:`, error);
                 };
 
                 // Remove from removed users if reconnecting
@@ -1187,11 +1177,9 @@
             removePhone(phoneId) {
                 const phone = this.phones.get(phoneId);
                 if (!phone) {
-                    console.error('❌ Phone not found:', phoneId);
                     return;
                 }
 
-                console.log(`🗑️ Removing ${phone.clientName} (${phoneId}) - ${phone.user.username}`);
 
                 // Unregister from bridge emulator
                 if (window.unregisterMultiClient) {
@@ -1213,7 +1201,6 @@
             }
 
             clearAllPhones() {
-                console.log('🗑️ Clearing all phones');
                 
                 // Add all users to removed list
                 this.phones.forEach(phone => {
@@ -1408,13 +1395,11 @@
                     block: 'center',
                     inline: 'center' 
                 });
-                console.log(`👁️ Focused on ${phone.clientName} (${phone.user.username})`);
             }
         }
 
         // Scenario functions
         function loadScenario(scenarioName) {
-            console.log(`🎬 Loading scenario: ${scenarioName}`);
             
             const scenarios = {
                 '2-players': ['user0', 'user1'],
@@ -1443,7 +1428,6 @@
         function showDebugInfo() {
             if (window.getMultiClientDebugInfo) {
                 const debugInfo = window.getMultiClientDebugInfo();
-                console.log('📊 Multi-Client Debug Info:', debugInfo);
                 
                 // Show in alert for quick viewing
                 const summary = `
@@ -1464,20 +1448,17 @@ ${debugInfo.sharedState.map(s => `  • ${s.key}: ${JSON.stringify(s.value)}`).j
                 
                 alert(summary);
             } else {
-                console.error('❌ Multi-client bridge not ready');
             }
         }
 
         function clearDebugLog() {
             if (window.multiClientBridge) {
                 window.multiClientBridge.messageLog = [];
-                console.log('🗑️ Debug log cleared');
             }
         }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('📱 Multi-Client Emulator Ready!');
             
             // Restore dialog state first
             restoreDialogState();
@@ -1485,7 +1466,6 @@ ${debugInfo.sharedState.map(s => `  • ${s.key}: ${JSON.stringify(s.value)}`).j
             // Wait for bridge emulator to load, then add first client
             setTimeout(() => {
                 multiClientManager.addPhone('user0');
-                console.log('🚀 First client (Client 1) automatically created');
                 
                 multiClientManager.updateUI();
             }, 100);

@@ -1156,7 +1156,6 @@
             iframe.style.width = `${scaleCompensation * 100}%`;
             iframe.style.height = `${scaleCompensation * 100}%`;
             
-            console.log('📱 Applied scaling (matching React Native behavior for non-responsive sites)');
         }
         
         function removeScaling(iframe) {
@@ -1164,13 +1163,11 @@
             iframe.style.width = '100%';
             iframe.style.height = '100%';
             
-            console.log('📱 No scaling applied (matching React Native behavior for responsive sites)');
         }
         
         function setupPreviewMatching() {
             if (!iframe) return;
             
-            console.log('🔍 Analyzing project for React Native WebView compatibility...');
             
             setTimeout(() => {
                 try {
@@ -1180,29 +1177,15 @@
                         const viewportMeta = iframeDoc.querySelector('meta[name="viewport"]');
                         
                         if (!viewportMeta) {
-                            console.log('❌ No viewport meta tag found');
-                            console.log('🎯 React Native will auto-scale this project');
                             applyScaling(iframe);
                         } else {
-                            console.log('✅ Viewport meta tag found:', viewportMeta.content);
-                            console.log('🎯 React Native will render this project naturally');
                             removeScaling(iframe);
                         }
-                        
-                        // Log project analysis
-                        const title = iframeDoc.title || 'Untitled Project';
-                        console.log(`📊 Project Analysis: "${title}"`);
-                        console.log('   - Viewport Meta Tag:', viewportMeta ? '✅ Present' : '❌ Missing');
-                        console.log('   - Preview Scaling:', viewportMeta ? '❌ Disabled' : '✅ Enabled');
-                        console.log('   - React Native Scaling:', viewportMeta ? '❌ Disabled' : '✅ Enabled');
-                        console.log('   - Preview Accuracy: 🎯 Matches React Native WebView');
                         
                     } else {
                         throw new Error('Cannot access iframe document');
                     }
                 } catch (error) {
-                    console.log('⚠️ Cannot access iframe content (CORS restriction)');
-                    console.log('🎯 Applying scaling as fallback (safer assumption for platform)');
                     applyScaling(iframe);
                 }
             }, 100);
@@ -1296,21 +1279,14 @@
 
         // Initialize user selection IMMEDIATELY (before bridge emulator loads)
         const savedUserId = localStorage.getItem('beemi-selected-user-id');
-        console.log('🔍 [Debug] localStorage value:', savedUserId);
-        console.log('🔍 [Debug] savedUserId !== null:', savedUserId !== null);
-        console.log('🔍 [Debug] USER_DATA[savedUserId] exists:', savedUserId ? !!USER_DATA[savedUserId] : 'N/A');
         
         if (savedUserId !== null && (savedUserId === '' || USER_DATA[savedUserId])) {
             window.beemiSelectedUserId = savedUserId;
             window.beemiUserInjectionEnabled = savedUserId !== '';
-            console.log('👤 Pre-initialized user selection:', savedUserId);
-            console.log('🔍 [Debug] Set window.beemiSelectedUserId to:', window.beemiSelectedUserId);
         } else {
             // Default to user0
             window.beemiSelectedUserId = 'user0';
             window.beemiUserInjectionEnabled = true;
-            console.log('👤 Pre-initialized user selection to default: user0');
-            console.log('🔍 [Debug] Defaulted because savedUserId was:', savedUserId);
         }
 
         // Handle Enter key in message input
@@ -1333,7 +1309,6 @@
                 const username = usernameInput.value;
                 const avatarUrl = generateAvatarUrl(username);
                 userAvatar.src = avatarUrl;
-                console.log(`🎭 Avatar updated for username: "${username}"`);
             }
             
             // Add event listener for username changes
@@ -1349,17 +1324,12 @@
             const userSelector = document.getElementById('userSelector');
             const currentUserId = window.beemiSelectedUserId;
             
-            console.log('🔍 [Debug] UI Sync - currentUserId from window:', currentUserId);
-            console.log('🔍 [Debug] UI Sync - userSelector found:', !!userSelector);
-            console.log('🔍 [Debug] UI Sync - userSelector.value before:', userSelector ? userSelector.value : 'N/A');
             
             // Set dropdown to match pre-initialized value
             if (userSelector) {
                 userSelector.value = currentUserId;
-                console.log('🔍 [Debug] UI Sync - userSelector.value after:', userSelector.value);
             }
             
-            console.log('👤 User selection UI synced with pre-initialized value:', currentUserId);
             
             // Restore bridge alerts checkbox state
             const bridgeAlertsCheckbox = document.getElementById('bridgeAlertsCheckbox');
@@ -1371,16 +1341,13 @@
                 
                 // Communicate preference to iframe
                 window.beemiShowBridgeAlerts = isEnabled;
-                console.log('🌉 Bridge alerts preference restored:', isEnabled);
             } else {
                 // Default to enabled
                 window.beemiShowBridgeAlerts = true;
-                console.log('🌉 Bridge alerts preference set to default: enabled');
             }
             
             // Additional setup after DOM is ready
             setTimeout(() => {
-                console.log('🚀 Control panel ready - using React Native WebView communication...');
                 setupIframeDebugging();
             }, 500);
         });
@@ -1389,7 +1356,6 @@
         function sendToWebView(messageData) {
             const iframe = document.querySelector('.webview-iframe');
             if (!iframe || !iframe.contentWindow) {
-                console.log('❌ Iframe not accessible');
                 return false;
             }
 
@@ -1408,7 +1374,6 @@
                                 try {
                                     callback(messageData.data);
                                 } catch (error) {
-                                    console.error('❌ Error in game gift callback:', error);
                                 }
                             });
                         }
@@ -1426,14 +1391,12 @@
                 }
                 
             } catch (error) {
-                console.log('❌ Failed to send message:', error);
                 return false;
             }
         }
 
         // Control Panel Functions - Using Beemi SDK Format
         function sendChatMessage() {
-            console.log('🔥 sendChatMessage function called');
             const usernameInput = document.getElementById('usernameInput');
             const messageInput = document.getElementById('messageInput');
             const username = usernameInput.value.trim() || 'Anonymous';
@@ -1444,7 +1407,6 @@
                 return;
             }
             
-            console.log('💬 Sending chat message via Beemi SDK:', { username, message });
             
             // Add to visual chat display
             const chatContainer = document.getElementById('chatMessages');
@@ -1478,23 +1440,17 @@
             if (window.beemiDev) {
                 // Use the emulator's simulateChat function which includes imageUrl
                 window.beemiDev.streams.simulateChat(username, message);
-                console.log('✅ Chat message sent via window.beemiDev.streams.simulateChat');
             } else {
                 // Retry after a short delay if beemiDev isn't ready yet
-                console.log('⏳ beemiDev not ready, retrying in 100ms...');
                 setTimeout(() => {
                     if (window.beemiDev) {
                         window.beemiDev.streams.simulateChat(username, message);
-                        console.log('✅ Chat message sent via window.beemiDev.streams.simulateChat (delayed)');
-                    } else {
-                        console.log('❌ beemiDev still not available after retry');
                     }
                 }, 100);
             }
         }
 
         function sendLike() {
-            console.log('❤️ Note: React Native doesn\'t send likes to WebView - they stay in RN UI');
             
             // Add to visual chat display only
             const chatContainer = document.getElementById('chatMessages');
@@ -1515,7 +1471,6 @@
         }
 
         function sendFollow() {
-            console.log('👥 Note: React Native doesn\'t send follows to WebView - they stay in RN UI');
             
             // Add to visual chat display only
             const chatContainer = document.getElementById('chatMessages');
@@ -1563,7 +1518,6 @@
             const unitValue = giftValues[giftType];
             const totalValue = unitValue * giftCount;
             
-            console.log(`🎁 Sending ${giftNames[giftType]} gift: ${username} x${giftCount} (${totalValue} coins)`);
             
             // Create gift data matching React Native format
             const giftData = {
@@ -1609,7 +1563,6 @@
                     chatContainer.removeChild(chatContainer.firstChild);
                 }
             } else {
-                console.error('❌ Failed to send gift to WebView');
             }
         }
 
@@ -1627,25 +1580,21 @@
             if (selectedUserId && USER_DATA[selectedUserId]) {
                 // Inject selected user data via events
                 const userData = USER_DATA[selectedUserId];
-                console.log(`👤 User selected: ${selectedUserId} (${userData.username}) - injecting via events`);
                 userStatus.textContent = `✅ User injected: ${userData.username} (${selectedUserId})`;
                 userStatus.classList.remove('user-disabled');
                 
                 // Inject user data immediately via events (no reload needed)
                 if (iframe && iframe.contentWindow && iframe.contentWindow.beemi) {
                     iframe.contentWindow.beemi.core.emit('user-data-received', userData);
-                    console.log('👤 User data injected via events:', userData);
                 }
             } else {
                 // No user selected - clear user data via events
-                console.log('👤 No user selected - clearing user via events');
                 userStatus.textContent = '❌ No user object';
                 userStatus.classList.add('user-disabled');
                 
                 // Clear user data immediately via events (no reload needed)
                 if (iframe && iframe.contentWindow && iframe.contentWindow.beemi) {
                     iframe.contentWindow.beemi.core.emit('user-signed-out');
-                    console.log('👤 User cleared via events');
                 }
             }
             
@@ -1653,7 +1602,6 @@
             localStorage.setItem('beemi-selected-user-id', selectedUserId);
             
             // No iframe reload needed - events handle real-time updates!
-            console.log('✨ User selection changed without iframe reload - using real-time events');
         }
 
         // Toggle bridge alerts
@@ -1664,9 +1612,7 @@
             window.beemiShowBridgeAlerts = checkbox.checked;
             
             if (checkbox.checked) {
-                console.log('🌉 Bridge alerts enabled - will show alerts for app bridge calls');
             } else {
-                console.log('🌉 Bridge alerts disabled - app bridge calls will be silent');
             }
             
             // Store preference
@@ -1679,7 +1625,6 @@
             const iframe = document.querySelector('.webview-iframe');
             const selectedUserId = userSelector.value;
             
-            console.log('🔄 User selection changed to:', selectedUserId);
             
             // Update global state
             window.beemiSelectedUserId = selectedUserId;
@@ -1688,30 +1633,24 @@
             if (selectedUserId && USER_DATA[selectedUserId]) {
                 // Inject selected user data via events
                 const userData = USER_DATA[selectedUserId];
-                console.log(`👤 User selected: ${selectedUserId} (${userData.username}) - injecting via events`);
                 
                 // Inject user data immediately via events (no reload needed)
                 if (iframe && iframe.contentWindow && iframe.contentWindow.beemi && iframe.contentWindow.beemi.core) {
                     iframe.contentWindow.beemi.core.emit('user-data-received', userData);
-                    console.log('✅ User data injected via events:', userData);
                 }
             } else {
                 // No user selected - clear user data via events
-                console.log('👤 No user selected - clearing user via events');
                 
                 // Clear user data immediately via events (no reload needed)
                 if (iframe && iframe.contentWindow && iframe.contentWindow.beemi && iframe.contentWindow.beemi.core) {
                     iframe.contentWindow.beemi.core.emit('user-signed-out');
-                    console.log('✅ User signed out via events');
                 }
             }
             
             // Store preference in localStorage
             localStorage.setItem('beemi-selected-user-id', selectedUserId);
-            console.log('💾 Saved to localStorage:', selectedUserId);
             
             // No iframe reload needed - events handle real-time updates!
-            console.log('✨ User selection changed without iframe reload - using real-time events');
         }
 
         // Handle user selection change from dropdown
@@ -1720,7 +1659,6 @@
             const iframe = document.querySelector('.webview-iframe');
             const selectedUserId = userSelector.value;
             
-            console.log('👤 User selection changed to:', selectedUserId);
             
             // Update global state
             window.beemiSelectedUserId = selectedUserId;
@@ -1729,30 +1667,24 @@
             if (selectedUserId && USER_DATA[selectedUserId]) {
                 // Inject selected user data via events
                 const userData = USER_DATA[selectedUserId];
-                console.log(`👤 User selected: ${selectedUserId} (${userData.username}) - injecting via events`);
                 
                 // Inject user data immediately via events (no reload needed)
                 if (iframe && iframe.contentWindow && iframe.contentWindow.beemi && iframe.contentWindow.beemi.core) {
                     iframe.contentWindow.beemi.core.emit('user-data-received', userData);
-                    console.log('✅ User data injected via events:', userData);
                 }
             } else {
                 // No user selected - clear user data via events
-                console.log('👤 No user selected - clearing user via events');
                 
                 // Clear user data immediately via events (no reload needed)
                 if (iframe && iframe.contentWindow && iframe.contentWindow.beemi && iframe.contentWindow.beemi.core) {
                     iframe.contentWindow.beemi.core.emit('user-signed-out');
-                    console.log('✅ User signed out via events');
                 }
             }
             
             // Store preference in localStorage
             localStorage.setItem('beemi-selected-user-id', selectedUserId);
-            console.log('💾 Saved user selection to localStorage:', selectedUserId);
             
             // No iframe reload needed - events handle real-time updates!
-            console.log('✨ User selection changed without iframe reload - using real-time events');
         }
 
         // Initialize module-based controls based on manifest
@@ -1762,24 +1694,20 @@
                 const response = await fetch('./manifest.json');
                 const manifest = await response.json();
                 
-                console.log('📋 Loaded manifest for module detection:', manifest.name);
                 
                 const beemiConfig = manifest.beemi || {};
                 
                 // Show modules based on manifest configuration
                 if (beemiConfig.user && beemiConfig.user.required) {
                     document.getElementById('user-module').style.display = 'block';
-                    console.log('👤 User module enabled');
                 }
                 
                 if (beemiConfig['app-bridge'] && beemiConfig['app-bridge'].required) {
                     document.getElementById('app-bridge-module').style.display = 'block';
-                    console.log('🌉 App-Bridge module enabled');
                 }
                 
                 if (beemiConfig.streams && beemiConfig.streams.required) {
                     document.getElementById('streams-module').style.display = 'block';
-                    console.log('📺 Streams module enabled');
                 }
                 
                 // Log enabled modules for debugging
@@ -1789,10 +1717,8 @@
                 if (beemiConfig.streams?.required) enabledModules.push('Streams');
                 if (beemiConfig['multiplayer-p2p']?.required) enabledModules.push('Multiplayer');
                 
-                console.log(`📋 Active modules: ${enabledModules.join(', ')}`);
                 
             } catch (error) {
-                console.error('❌ Failed to load manifest for module detection:', error);
                 // Fallback: show all modules
                 document.getElementById('streams-module').style.display = 'block';
                 document.getElementById('user-module').style.display = 'block';
@@ -1802,7 +1728,6 @@
         
         // Simulate App-Bridge functionality
         function simulateAppBridgeCall() {
-            console.log('📱 Simulating app bridge call...');
             
             const iframe = document.querySelector('.webview-iframe');
             if (iframe && iframe.contentWindow && iframe.contentWindow.beemi) {
@@ -1818,13 +1743,11 @@
                 };
                 
                 iframe.contentWindow.beemi.core.emit('app-bridge-event', bridgeData);
-                console.log('✅ App bridge event sent:', bridgeData);
                 
                 if (window.beemiShowBridgeAlerts) {
                     alert('App Bridge Call Simulated: showNativeAlert');
                 }
             } else {
-                console.log('⚠️ App bridge simulation failed - SDK not ready');
             }
         }
 
@@ -1832,12 +1755,10 @@
         function setupIframeDebugging() {
             const iframe = document.querySelector('.webview-iframe');
             if (!iframe) {
-                console.log('❌ Iframe not found');
                 return;
             }
 
             iframe.onload = function() {
-                console.log('✅ Game iframe loaded with SDK injection');
                 
                 // Setup preview matching
                 setupPreviewMatching();
@@ -1846,15 +1767,12 @@
                 setTimeout(() => {
                     if (window.beemiDev) {
                         window.beemiDev.streams.simulateChat('System', 'Preview connected! Module-based controls are active.');
-                        console.log('📡 Test message sent via window.beemiDev.streams.simulateChat');
                     } else {
-                        console.log('⚠️ beemiDev not available for test message');
                     }
                 }, 2000);
             };
 
             iframe.onerror = function(error) {
-                console.log('❌ Iframe load error:', error);
             };
         }
         
@@ -1863,7 +1781,6 @@
             window.addEventListener('message', (event) => {
                 if (event.data.type === 'bridge-request-user-data') {
                     const userId = event.data.userId;
-                    console.log('📨 [Emulator] Bridge requested user data for:', userId);
                     
                     // Send user data back to bridge via postMessage
                     const userData = USER_DATA[userId];
@@ -1873,9 +1790,7 @@
                             userId: userId,
                             userData: userData
                         }, '*');
-                        console.log('✅ [Emulator] Sent user data to bridge:', userData);
                     } else {
-                        console.log('❌ [Emulator] User data not found for:', userId);
                     }
                 }
             });
@@ -1898,7 +1813,6 @@
                 const baseUrl = currentSrc.split('?')[0];
                 iframe.src = `${baseUrl}?${params.toString()}`;
                 
-                console.log('🔧 [Emulator] Iframe initialized with parameters:', iframe.src);
             }
         }
         
@@ -1914,10 +1828,6 @@
                 const mp = iframe.contentWindow.beemi.multiplayer;
                 const clientName = window.BEEMI_CLIENT_NAME || 'Unknown Client';
                 
-                console.log(`🎮 [${clientName}] Multiplayer Debug State:`);
-                console.log('  - isLeader():', mp.isLeader ? mp.isLeader() : 'N/A');
-                console.log('  - Room state:', mp.room ? mp.room.getState() : 'N/A');
-                console.log('  - Current room config:', mp.roomConfig || 'N/A');
                 
                 alert(`🎮 ${clientName} Multiplayer State:\n\n` +
                       `Leader: ${mp.isLeader ? mp.isLeader() : 'N/A'}\n` +
@@ -1935,15 +1845,12 @@
                 const crdt = iframe.contentWindow.beemi.multiplayer.crdt;
                 const clientName = window.BEEMI_CLIENT_NAME || 'Unknown Client';
                 
-                console.log(`📝 [${clientName}] CRDT Debug State:`);
-                
                 const keys = ['game-phase', 'game-players', 'player-roles', 'current-word', 'voting-results', 'voting-timer'];
                 const state = {};
                 
                 keys.forEach(key => {
                     const value = crdt.get(key);
                     state[key] = value;
-                    console.log(`  - ${key}:`, value);
                 });
                 
                 alert(`📝 ${clientName} CRDT State:\n\n` +
@@ -1961,14 +1868,6 @@
                 const room = iframe.contentWindow.beemi.multiplayer.room;
                 const clientName = window.BEEMI_CLIENT_NAME || 'Unknown Client';
                 
-                console.log(`🏠 [${clientName}] Room Debug State:`);
-                console.log('  - Room state:', room.getState());
-                console.log('  - Room methods:', {
-                    host: typeof room.host,
-                    join: typeof room.join,
-                    leave: typeof room.leave,
-                    getState: typeof room.getState
-                });
                 
                 const roomState = room.getState();
                 alert(`🏠 ${clientName} Room State:\n\n` +
@@ -1986,13 +1885,6 @@
             const clientName = window.BEEMI_CLIENT_NAME || 'Unknown Client';
             const iframe = document.querySelector('.webview-iframe');
             
-            console.log(`👤 [${clientName}] Client Debug Info:`);
-            console.log('  - Client Name:', clientName);
-            console.log('  - Iframe ready:', !!iframe);
-            console.log('  - ContentWindow ready:', !!iframe?.contentWindow);
-            console.log('  - SDK ready:', !!iframe?.contentWindow?.beemi);
-            console.log('  - Multi-client relay active:', !!iframe?.contentWindow?.multiClientEventCallbacks);
-            console.log('  - Is leader flag:', iframe?.contentWindow?.BEEMI_IS_LEADER);
             
             alert(`👤 ${clientName} Client Info:\n\n` +
                   `Client Name: ${clientName}\n` +
@@ -2009,13 +1901,6 @@
             if (iframe && iframe.contentWindow && iframe.contentWindow.beemi) {
                 const sdk = iframe.contentWindow.beemi;
                 
-                console.log(`⚙️ [${clientName}] SDK Debug Status:`);
-                console.log('  - SDK version:', sdk.version || 'N/A');
-                console.log('  - Core ready:', !!sdk.core);
-                console.log('  - Multiplayer ready:', !!sdk.multiplayer);
-                console.log('  - Streams ready:', !!sdk.streams);
-                console.log('  - User ready:', !!sdk.user);
-                console.log('  - SDK isReady():', sdk.isReady ? sdk.isReady() : 'N/A');
                 
                 alert(`⚙️ ${clientName} SDK Status:\n\n` +
                       `Version: ${sdk.version || 'N/A'}\n` +
@@ -2035,7 +1920,6 @@
             const clientName = window.BEEMI_CLIENT_NAME || 'Unknown Client';
             
             if (iframe && iframe.contentWindow) {
-                console.log(`🌉 [${clientName}] Testing multi-client relay...`);
                 
                 // Test sending a message to parent
                 try {
@@ -2049,10 +1933,8 @@
                         }
                     }, '*');
                     
-                    console.log(`✅ [${clientName}] Test message sent to multi-client bridge`);
                     alert(`🌉 ${clientName} Relay Test:\n\nTest message sent to bridge!\nCheck console for details.`);
                 } catch (error) {
-                    console.error(`❌ [${clientName}] Relay test failed:`, error);
                     alert(`❌ ${clientName} Relay Test Failed:\n\n${error.message}`);
                 }
             } else {
@@ -2068,12 +1950,6 @@
             if (iframe && iframe.contentWindow && iframe.contentWindow.game) {
                 const game = iframe.contentWindow.game;
                 
-                console.log(`🎯 [${clientName}] Game Debug State:`);
-                console.log('  - Game phase:', game.gamePhase);
-                console.log('  - Player ID:', game.playerId);
-                console.log('  - Is leader:', game.isLeader);
-                console.log('  - Player count:', game.gamePlayerCount);
-                console.log('  - Player names:', Array.from(game.playerNames.entries()));
                 
                 alert(`🎯 ${clientName} Game State:\n\n` +
                       `Phase: ${game.gamePhase}\n` +
@@ -2088,8 +1964,6 @@
         // Clear game console
         function clearGameConsole() {
             const clientName = window.BEEMI_CLIENT_NAME || 'Unknown Client';
-            console.clear();
-            console.log(`🗑️ [${clientName}] Console cleared`);
         }
 
         // Test room hosting
@@ -2098,20 +1972,16 @@
             const clientName = window.BEEMI_CLIENT_NAME || 'Unknown Client';
             
             if (iframe && iframe.contentWindow && iframe.contentWindow.beemi) {
-                console.log(`🏠 [${clientName}] Testing room host...`);
                 
                 try {
                     const result = iframe.contentWindow.beemi.multiplayer.room.host('spy');
-                    console.log(`✅ [${clientName}] Host result:`, result);
                     
                     // Check room state after hosting
                     setTimeout(() => {
                         const roomState = iframe.contentWindow.beemi.multiplayer.room.getState();
-                        console.log(`🏠 [${clientName}] Room state after host:`, roomState);
                         alert(`🏠 ${clientName} Host Test:\n\nRoom hosted!\nState: ${JSON.stringify(roomState)}`);
                     }, 500);
                 } catch (error) {
-                    console.error(`❌ [${clientName}] Host test failed:`, error);
                     alert(`❌ ${clientName} Host Test Failed:\n\n${error.message}`);
                 }
             } else {
@@ -2125,20 +1995,16 @@
             const clientName = window.BEEMI_CLIENT_NAME || 'Unknown Client';
             
             if (iframe && iframe.contentWindow && iframe.contentWindow.beemi) {
-                console.log(`🚪 [${clientName}] Testing room join...`);
                 
                 try {
                     const result = iframe.contentWindow.beemi.multiplayer.room.join('MULTI');
-                    console.log(`✅ [${clientName}] Join result:`, result);
                     
                     // Check room state after joining
                     setTimeout(() => {
                         const roomState = iframe.contentWindow.beemi.multiplayer.room.getState();
-                        console.log(`🏠 [${clientName}] Room state after join:`, roomState);
                         alert(`🚪 ${clientName} Join Test:\n\nRoom joined!\nState: ${JSON.stringify(roomState)}`);
                     }, 500);
                 } catch (error) {
-                    console.error(`❌ [${clientName}] Join test failed:`, error);
                     alert(`❌ ${clientName} Join Test Failed:\n\n${error.message}`);
                 }
             } else {
@@ -2151,7 +2017,6 @@
             const iframe = document.querySelector('.webview-iframe');
             const clientName = window.BEEMI_CLIENT_NAME || 'Unknown Client';
             
-            console.log(`🔍 [${clientName}] Checking injection status...`);
             
             if (!iframe) {
                 alert('❌ No iframe found');
@@ -2174,16 +2039,13 @@
                 getStateType: typeof cw.beemi?.multiplayer?.room?.getState
             };
             
-            console.log(`🔍 [${clientName}] Injection Status:`, status);
             
             // Test getState directly
             if (cw.beemi?.multiplayer?.room?.getState) {
                 try {
                     const currentState = cw.beemi.multiplayer.room.getState();
-                    console.log(`🔍 [${clientName}] Current getState result:`, currentState);
                     status.currentGetStateResult = currentState;
                 } catch (e) {
-                    console.error(`🔍 [${clientName}] getState error:`, e);
                     status.getStateError = e.message;
                 }
             }
@@ -2236,7 +2098,6 @@
                     phoneSection.style.transition = '';
                 }, 50);
                 
-                console.log('🎛️ Control panel auto-collapsed for embedded mode (no animation)');
             }
             
             // Check if we have a client name from URL parameters
@@ -2244,14 +2105,11 @@
             const clientName = urlParams.get('clientName');
             
             if (clientName) {
-                console.log(`🔗 ${clientName} emulator running in embedded mode (transparent background)`);
                 // Store client name globally for other scripts to use
                 window.BEEMI_CLIENT_NAME = clientName;
             } else {
-                console.log('🔗 Emulator running in embedded mode (transparent background)');
             }
         } else {
-            console.log('🔗 Emulator running in standalone mode (gradient background)');
         }
     </script>
 </body>

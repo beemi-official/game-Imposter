@@ -10,7 +10,6 @@ export default function CommentList({ comments, setComments }) {
 
     // Handle streaming chat events (modular approach)
     const handleStreamChat = (event) => {
-      console.log('📺 Stream chat event received:', event)
       // Fix: Check for the correct field names from bridge emulator
       if (event.data && event.data.user && event.data.message) {
         setComments(prev => [...prev, {
@@ -36,7 +35,6 @@ export default function CommentList({ comments, setComments }) {
     }
 
     const handleRoomEvent = (event) => {
-      console.log('🎮 Room event received:', event)
       
       // Handle Beemi SDK message events with structure: {payload: {user, text, timestamp}}
       if (event.payload && event.payload.user && event.payload.text) {
@@ -71,15 +69,12 @@ export default function CommentList({ comments, setComments }) {
     }
 
     const handlePlayerJoined = (data) => {
-      console.log('👤 Player joined:', data)
     }
 
     const handlePlayerLeft = (data) => {
-      console.log('👋 Player left:', data)
     }
 
     const handleRoomReady = (data) => {
-      console.log('🎮 Room ready:', data)
     }
 
     // Use proper modular event handlers

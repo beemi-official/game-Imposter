@@ -20,7 +20,6 @@ export default function BeemiProvider({ children }) {
       if (window.beemi) {
         setBeemi(window.beemi)
         setIsConnected(true)
-        console.log('✅ Beemi SDK connected')
       } else {
         setTimeout(checkForBeemi, 100)
       }

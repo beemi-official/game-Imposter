@@ -30,12 +30,9 @@ export default function BeemiSDKProvider({ children }) {
     if (!window.beemi || !window.beemi.multiplayer) return
     
     const roomState = window.beemi.multiplayer.room.getState()
-    console.log('🔍 Initial room state from SDK:', roomState)
     
     // Log the actual structure for debugging
     if (roomState) {
-      console.log('📋 Room state keys:', Object.keys(roomState))
-      console.log('📋 Room state details:', JSON.stringify(roomState, null, 2))
     }
     
     // Check if roomState exists (not checking for specific field)
@@ -58,23 +55,18 @@ export default function BeemiSDKProvider({ children }) {
       
       const players = window.beemi.multiplayer.crdt.get('game-players')
       if (players && Object.keys(players).length > 0) {
-        console.log('🔍 Existing players found:', players)
       }
       
       const gamePhase = window.beemi.multiplayer.crdt.get('game-phase')
       if (gamePhase) {
-        console.log('🎯 Existing game phase found:', gamePhase)
       }
       
-      console.log('✅ Room data received from SDK state')
       retryCount.current = 0 // Reset retry count on success
     } else {
       retryCount.current++
       if (retryCount.current < maxRetries) {
-        console.log(`⏳ No room data available yet (attempt ${retryCount.current}/${maxRetries})`)
         setTimeout(initializeFromSDKState, 500)
       } else {
-        console.error('❌ Failed to get room data after maximum retries')
         // Still mark as connected if SDK is available
         if (window.beemi && window.beemi.multiplayer) {
           setIsConnected(true)
@@ -87,12 +79,6 @@ export default function BeemiSDKProvider({ children }) {
     if (window.beemi && window.beemi.user) {
       const user = window.beemi.user.getUser()
       if (user) {
-        console.log('👤 User profile available:', {
-          id: user.id,
-          username: user.username,
-          displayName: user.display_name,
-          hasImage: !!user.image_url
-        })
         setUserProfile(user)
       }
     }
@@ -100,12 +86,10 @@ export default function BeemiSDKProvider({ children }) {
 
   const watchCRDT = useCallback((key, callback) => {
     if (!window.beemi || !window.beemi.multiplayer || !window.beemi.multiplayer.crdt) {
-      console.warn('CRDT not available yet')
       return () => {}
     }
 
     const watcher = (data) => {
-      console.log(`📡 CRDT update for ${key}:`, data)
       callback(data)
     }
 
@@ -121,16 +105,13 @@ export default function BeemiSDKProvider({ children }) {
 
   const setCRDT = useCallback((key, value) => {
     if (!window.beemi || !window.beemi.multiplayer || !window.beemi.multiplayer.crdt) {
-      console.warn('CRDT not available')
       return
     }
     window.beemi.multiplayer.crdt.set(key, value)
-    console.log(`📤 CRDT set ${key}:`, value)
   }, [])
 
   const getCRDT = useCallback((key) => {
     if (!window.beemi || !window.beemi.multiplayer || !window.beemi.multiplayer.crdt) {
-      console.warn('CRDT not available')
       return null
     }
     return window.beemi.multiplayer.crdt.get(key)
@@ -138,7 +119,6 @@ export default function BeemiSDKProvider({ children }) {
 
   const onStreamChat = useCallback((callback) => {
     if (!window.beemi || !window.beemi.streams) {
-      console.warn('Streams not available')
       return () => {}
     }
 
@@ -150,7 +130,6 @@ export default function BeemiSDKProvider({ children }) {
 
   const onStreamGift = useCallback((callback) => {
     if (!window.beemi || !window.beemi.streams) {
-      console.warn('Streams not available for onStreamGift')
       return () => {}
     }
     
@@ -174,14 +153,11 @@ export default function BeemiSDKProvider({ children }) {
   useEffect(() => {
     const checkForBeemi = () => {
       if (window.beemi && window.beemi.multiplayer && window.beemi.multiplayer.crdt) {
-        console.log('✅ Beemi SDK 2.1.1 detected')
         setBeemi(window.beemi)
         setIsConnected(true)
         
         // Listen for room-state events (from React Native or SDK)
         window.beemi.core.on('room-state', (state) => {
-          console.log('🎯 ROOM-STATE EVENT RECEIVED!', state)
-          console.log('🎯 Room state details:', JSON.stringify(state, null, 2))
           
           if (state) {
             // Update room state from event
@@ -200,14 +176,12 @@ export default function BeemiSDKProvider({ children }) {
             setRoomPlayerCount(state.playerCount || 0)
             setMaxPlayers(state.maxPlayers || 6)
             
-            console.log('✅ Room data received from room-state event')
           }
         })
         
         initializeUserProfile()
         initializeFromSDKState()
       } else {
-        console.log('⏳ Waiting for Beemi SDK 2.1.1...')
         setTimeout(checkForBeemi, 500)
       }
     }

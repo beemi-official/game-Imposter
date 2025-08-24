@@ -31,17 +31,7 @@ export default function JoinScreen() {
 
   useEffect(() => {
     // Check if player successfully joined
-    console.log('🔍 [JoinScreen] Join detection check:', {
-      isJoining,
-      playerId,
-      playerNamesSize: playerNames.size,
-      playerNamesKeys: Array.from(playerNames.keys()),
-      hasPlayerId: playerNames.has(playerId),
-      playerNameValue: playerNames.get(playerId)
-    })
-    
     if (isJoining && playerId && playerNames.has(playerId)) {
-      console.log('✅ [JoinScreen] Player successfully joined, resetting join state')
       setIsJoining(false)
       // The App.jsx will automatically transition to lobby
     }

@@ -97,7 +97,7 @@
  * window.BeemiModules                            - Direct module access
  * 
  * Quick tests:
- * - beemi.streams?.onChat((data) => console.log(`${data.user.username}: ${data.message}`))
+ * - beemi.streams?.onChat((data) => {})
  * - beemi.multiplayer?.isLeader()
  * - beemi.user?.getUser()?.username // Check current user (NEW MODULAR APPROACH)
  * - beemiDev.streams.simulateChat('Alice', 'Hello!')
@@ -107,7 +107,6 @@
 (function(window) {
     'use strict';
     
-    console.log('🚀 Beemi Bridge Emulator v2.0 loading...');
     
     // Cached manifest to avoid multiple fetches
     let _gameManifest = null;
@@ -124,15 +123,9 @@
                 throw new Error(`Failed to load manifest: ${response.status}`);
             }
             _gameManifest = await response.json();
-            console.log('📄 Game manifest loaded:', {
-                name: _gameManifest.name,
-                version: _gameManifest.version,
-                sdkVersion: _gameManifest.beemi?.sdkVersion
-            });
             return _gameManifest;
             
         } catch (error) {
-            console.error('❌ Failed to load game manifest:', error);
             throw error;
         }
     }
@@ -144,11 +137,9 @@
             
             // Extract SDK version from game manifest
             const sdkVersion = gameManifest.beemi?.sdkVersion || '2.1.0';
-            console.log(`📋 Required SDK version from game manifest: ${sdkVersion}`);
             
             // Fetch the main SDK manifest
             const sdkManifestUrl = `https://beemi-server-staging-s7ne.onrender.com/sdk-manifest.json`;
-            console.log(`🔍 Fetching SDK manifest: ${sdkManifestUrl}`);
             
             const sdkManifestResponse = await fetch(sdkManifestUrl);
             if (!sdkManifestResponse.ok) {
@@ -156,12 +147,6 @@
             }
             
             const sdkManifest = await sdkManifestResponse.json();
-            console.log(`📄 SDK manifest loaded:`, {
-                version: sdkManifest.version,
-                lastUpdated: sdkManifest.lastUpdated,
-                availableSDKs: Object.keys(sdkManifest.sdks),
-                recommended: sdkManifest.recommended
-            });
             
             // Look up the specific SDK version
             const sdkKey = `beemi-sdk-${sdkVersion}`;
@@ -175,22 +160,14 @@
             const baseUrl = 'https://beemi-server-staging-s7ne.onrender.com';
             const sdkUrl = baseUrl + sdkInfo.url;
             
-            console.log(`🔗 SDK URL from manifest (v${sdkVersion}):`, {
-                url: sdkUrl,
-                size: sdkInfo.size,
-                modules: sdkInfo.modules,
-                description: sdkInfo.description
-            });
             
             return sdkUrl;
             
         } catch (error) {
-            console.error('❌ Failed to get SDK URL from SDK manifest, using fallback:', error);
             // Fallback to constructed URL
             const gameManifest = await loadGameManifest().catch(() => null);
             const sdkVersion = gameManifest?.beemi?.sdkVersion || '2.1.0';
             const fallbackUrl = `https://beemi-server-staging-s7ne.onrender.com/sdk/beemi-sdk-${sdkVersion}.js`;
-            console.log(`🔄 Using fallback URL: ${fallbackUrl}`);
             return fallbackUrl;
         }
     }
@@ -213,18 +190,11 @@
             // 3. The user module should be available even if no user is initially present
             
             // The user module must always be included for proper event handling
-            console.log('🔧 User module kept in manifest for event handling (userInjectionEnabled:', userInjectionEnabled, ')');
             
-            console.log('🔧 Game Manifest (Beemi config):', { 
-                ...beemiConfig, 
-                userInjectionEnabled,
-                userModuleIncluded: !!beemiConfig.user 
-            });
             
             return beemiConfig;
             
         } catch (error) {
-            console.error('❌ Failed to load game manifest, falling back to basic config:', error);
             
             // Fallback configuration
             const urlParams = new URLSearchParams(window.location.search);
@@ -244,11 +214,9 @@
     
     // Load the modular SDK into the iframe
     async function loadModularSDK() {
-        console.log('📦 Loading Modular SDK into iframe...');
         
         try {
             const url = await getSDKUrl();
-            console.log(`🔗 SDK URL: ${url}`);
             
             const response = await fetch(url);
             if (!response.ok) {
@@ -263,7 +231,6 @@
                 throw new Error('Game iframe not found or not accessible');
             }
             
-            console.log('🎯 Injecting SDK into iframe...');
             
             // Create a script element in the iframe
             const script = iframe.contentDocument.createElement('script');
@@ -281,9 +248,7 @@
                 // Verify user module was created
                 setTimeout(() => {
                     if (iframe.contentWindow.BeemiModules?.user) {
-                        console.log('✅ User module initialized successfully');
                     } else {
-                        console.warn('⚠️ User module not found after initialization');
                     }
                 }, 200);
                 
@@ -296,7 +261,6 @@
                                                    window.top?.multiClientBridge;
                         
                         if (iframe.contentWindow.beemi && iframe.contentWindow.beemi.multiplayer && !hasMultiClientBridge) {
-                            console.log('🏠 Single emulator mode - providing basic room state simulation');
                             
                             const originalGetState = iframe.contentWindow.beemi.multiplayer.room.getState;
                             iframe.contentWindow.beemi.multiplayer.room.getState = function() {
@@ -319,21 +283,17 @@
                                 return basicRoomState;
                             };
                             
-                            console.log('✅ Single emulator room state simulation active');
                         }
                     } catch (error) {
-                        console.error('❌ Error setting up single emulator room state:', error);
                     }
                 }, 300);
                 
-                console.log(`✅ Modular SDK loaded successfully in iframe with game manifest`);
                 return true;
             } else {
                 throw new Error('SDK initialization function not found in iframe');
             }
             
         } catch (error) {
-            console.error(`❌ Failed to load SDK into iframe:`, error.message);
             throw new Error(`Failed to load Modular SDK: ${error.message}`);
         }
     }
@@ -369,7 +329,6 @@
                 const beemi = BeemiDev.core.checkSDK();
                 
                 if (!beemi || !beemi.user) {
-                    console.warn('⚠️ User module not loaded - user injection is disabled');
                     return;
                 }
                 
@@ -377,7 +336,6 @@
                 const userInjectionEnabled = window.beemiUserInjectionEnabled !== false;
                 
                 if (!userInjectionEnabled) {
-                    console.log('👤 User injection is disabled');
                     return;
                 }
                 
@@ -392,14 +350,12 @@
                 // The setUser method has been removed from the public API
                 beemi.core.emit('user-data-received', sampleUser);
                 
-                console.log('👤 Sample user updated:', sampleUser);
             },
             
             signOut: function() {
                 const beemi = BeemiDev.core.checkSDK();
                 
                 if (!beemi || !beemi.user) {
-                    console.log('👤 User module not loaded - no user data to clear');
                     return;
                 }
                 
@@ -407,7 +363,6 @@
                 // The setUser method has been removed from the public API
                 // We now use the user-signed-out event directly
                 beemi.core.emit('user-signed-out');
-                console.log('👤 User signed out - all user data cleared');
             }
         },
         
@@ -434,8 +389,6 @@
                     }
                 };
                 
-                console.log('📺 [Streams] Simulating chat event:', chatEvent);
-                console.log(`💬 ${username}: ${message}`);
                 
                 // Emit through beemi streams if available
                 if (beemi.streams && typeof beemi.streams.emit === 'function') {
@@ -444,7 +397,6 @@
                     // Fallback to core event system
                     beemi.core.emit('stream-chat', chatEvent);
                 } else {
-                    console.warn('⚠️ No event system found - chat simulation may not work');
                 }
                 
                 return chatEvent;
@@ -471,7 +423,6 @@
                     }
                 };
                 
-                console.log(`📺 BeemiDev.streams: Simulating ${platform} ${eventType}`, streamEvent);
                 window.beemi.core.emit(`stream-${eventType}`, streamEvent);
             },
             
@@ -518,7 +469,6 @@
                     }
                 };
                 
-                console.log(`🎁 Simulating ${platform} gift: ${giftName} x${giftCount} (${totalValue} coins)`);
                 window.beemi.core.emit('stream-gift', giftEvent);
             },
             
@@ -543,12 +493,10 @@
                     }
                 };
                 
-                console.log('👥 BeemiDev.streams: Simulating viewer join', viewerEvent);
                 window.beemi.core.emit('stream-viewer-join', viewerEvent);
             },
             
             testAllPlatforms: function() {
-                console.log('🧪 BeemiDev.streams: Testing all streaming platforms...');
                 
                 // TikTok events
                 setTimeout(() => this.simulateChat('TikTokUser', 'Hello from TikTok! 🎵', 'tiktok'), 1000);
@@ -593,7 +541,6 @@
             },
             
             stressTest: function() {
-                console.log('🧪 BeemiDev.devtools: Starting modular SDK stress test...');
                 
                 // Mixed chat and stream events
                 const usernames = ['Alice', 'Bob', 'Charlie', 'Dana', 'Eve', 'Frank', 'Grace'];
@@ -621,16 +568,12 @@
                 setTimeout(() => BeemiDev.streams.simulateGift('tiktok', 'Galaxy', '🌌'), 6000);
                 // Multiplayer stress test removed - handled by multi-client bridge
                 
-                console.log('🧪 Stress test running for 10 seconds...');
             }
         },
         
         // Show available commands (modular structure)
         help: function() {
-            console.log(`
-🛠️ Beemi Development Tools v${this.version} - Modular SDK
-
-📦 Modular Structure:
+            const helpText = `\n🛠️ Beemi Development Tools v${this.version} - Modular SDK\n\n📦 Modular Structure:
   beemiDev.core.*         - Core utilities  
   beemiDev.user.*         - User management (via events)
   beemiDev.streams.*      - Streaming simulation
@@ -671,24 +614,19 @@
   
   // User module - read-only access with event-driven updates
   const user = beemi.user.getUser()
-  console.log('Current user:', user?.username)
   beemi.user.onUserUpdated((userData) => {
-    console.log('User updated:', userData);
   })
   
   // Streaming module - callbacks receive data directly (not wrapped in event.data)
   beemi.streams.onChat((data) => {
-    console.log(\`\${data.user.username}: \${data.message}\`);
     // data = { user: {username, displayName, id, platform, imageUrl?}, message: string, messageId: string, platform: string, timestamp: number }
   });
   
   beemi.streams.onGift((data) => {
-    console.log(\`\${data.user.username} sent \${data.gift.name} x\${data.gift.count}\`);
     // data = { user: {username, displayName, id, platform, imageUrl?}, gift: {name, emoji, value, count}, platform: string, timestamp: number }
   });
   
   beemi.streams.onLike((data) => {
-    console.log(\`\${data.user.username} liked \${data.count} times\`);
     // data = { user: {username, displayName, id, platform, imageUrl?}, count: number, platform: string, timestamp: number }
   });
   
@@ -700,7 +638,6 @@
   beemi.multiplayer.crdt.set('key', value)
   beemi.multiplayer.isLeader()
   beemi.multiplayer.on('player-joined', (data) => {
-    console.log(\`\${data.playerName} joined! Players: \${data.playerCount}\`);
     // data = { playerId: string, playerName: string, playerCount: number, players: Array }
   });
   
@@ -713,39 +650,31 @@
   beemiDev.streams.testAllPlatforms()
   beemiDev.devtools.stressTest()
 
-⚡ Fail-Fast Design:
-  All methods throw errors if SDK not loaded - no silent fallbacks!
-            `);
+⚡ Fail-Fast Design:\n  All methods throw errors if SDK not loaded - no silent fallbacks!\n            `;
         },
         
         // Convenience methods for backward compatibility (deprecated)
         simulateChat: function(username, message) {
-            console.warn('⚠️ beemiDev.simulateChat() is deprecated. Use beemiDev.streams.simulateChat()');
             return this.streams.simulateChat(username, message);
         },
         
         simulateLike: function(platform) {
-            console.warn('⚠️ beemiDev.simulateLike() is deprecated. Use beemiDev.streams.simulateLike()');
             return this.streams.simulateLike(platform);
         },
         
         simulateGift: function(platform, name, emoji) {
-            console.warn('⚠️ beemiDev.simulateGift() is deprecated. Use beemiDev.streams.simulateGift()');
             return this.streams.simulateGift(platform, name, emoji);
         },
         
         testAllPlatforms: function() {
-            console.warn('⚠️ beemiDev.testAllPlatforms() is deprecated. Use beemiDev.streams.testAllPlatforms()');
             return this.streams.testAllPlatforms();
         },
         
         stressTest: function() {
-            console.warn('⚠️ beemiDev.stressTest() is deprecated. Use beemiDev.devtools.stressTest()');
             return this.devtools.stressTest();
         },
         
         getSDKInfo: function() {
-            console.warn('⚠️ beemiDev.getSDKInfo() is deprecated. Use beemiDev.devtools.getSDKInfo()');
             return this.devtools.getSDKInfo();
         }
     };
@@ -759,7 +688,6 @@
                         const message = JSON.parse(messageString);
                         
                         if (message.type === 'beemi-app-bridge') {
-                            console.log('🌉 [App-Bridge Emulator] Received bridge message:', message);
                             
                             // Show alert for bridge method calls
                             const { action, payload, fireAndForget } = message;
@@ -781,7 +709,6 @@
                                         data: getSimulatedResponse(action, payload)
                                     };
                                     
-                                    console.log('🌉 [App-Bridge Emulator] Sending simulated response:', response);
                                     
                                     // Post response back to the SDK
                                     window.postMessage(response, '*');
@@ -789,13 +716,10 @@
                             }
                         }
                     } catch (error) {
-                        console.error('🌉 [App-Bridge Emulator] Error processing message:', error);
                     }
                 }
             };
             
-            console.log('🌉 [App-Bridge Emulator] ReactNativeWebView mock initialized');
-            console.log('💡 Set window.beemiShowBridgeAlerts = false to disable alerts');
         }
     }
     
@@ -876,10 +800,6 @@
             // Make development tools available in TOP CONTEXT ONLY
             window.beemiDev = BeemiDev;
             
-            console.log('✅ Beemi Bridge Emulator v2.0 initialized');
-            console.log('🛠️ Development tools: window.beemiDev (top context)');
-            console.log('📱 Game SDK: window.beemi (iframe context)');
-            console.log('💡 Type: beemiDev.help() for available commands');
             
             // Get iframe for user injection
             const iframe = document.querySelector('.webview-iframe');
@@ -897,7 +817,6 @@
                 // No direct parent access - emulator will send user data via postMessage
                 let userData = null;
                 if (selectedUserId) {
-                    console.log('👤 [Bridge] Waiting for user data injection via SDK events for:', selectedUserId);
                     // User data will be received via message listener (see setupUserDataListener below)
                 }
                 
@@ -912,7 +831,6 @@
                     
                     if (userData) {
                         sampleUserData = userData;
-                        console.log('✅ [Bridge Debug] Using selected user data:', sampleUserData);
                     } else {
                         // Fallback to default user0 data
                         sampleUserData = {
@@ -921,51 +839,37 @@
                             display_name: 'Dev Gamer',
                             image_url: 'https://api.dicebear.com/7.x/avataaars/svg?seed=devgamer'
                         };
-                        console.log('⚠️ [Bridge Debug] Using fallback user0 data - selected user not found:', selectedUserId);
                     }
                     
                     // Set user data in iframe context using SDK events (proper architecture)
                     iframe.contentWindow.beemi.core.emit('user-data-received', sampleUserData);
                     
-                    console.log('👤 Selected user loaded in iframe context via SDK events:', sampleUserData);
                 } else {
-                    console.log('👤 User injection disabled or no user selected', {
-                        userInjectionEnabled,
-                        hasUserModule: !!iframe.contentWindow.beemi.user,
-                        selectedUserId
-                    });
-                }
+                    }
             } else {
-                console.log('👤 User module not loaded in iframe');
             }
             
         } catch (error) {
-            console.error('❌ Failed to initialize bridge emulator:', error);
             throw error;
         }
     }
     
     // Helper functions for proper SDK communication (no parent access)
     function setupUserDataMessageListener(iframe, selectedUserId, userInjectionEnabled) {
-        console.log('📡 [Bridge] Setting up user data message listener...');
         
         window.addEventListener('message', (event) => {
             if (event.data.type === 'emulator-user-data' && event.data.userId === selectedUserId) {
-                console.log('👤 [Bridge] Received user data from emulator:', event.data.userData);
                 
                 if (userInjectionEnabled && iframe.contentWindow?.beemi?.core) {
                     // Inject user data via SDK events (proper way)
                     iframe.contentWindow.beemi.core.emit('user-data-received', event.data.userData);
-                    console.log('✅ [Bridge] User data injected via SDK events');
                 } else {
-                    console.log('⚠️ [Bridge] Cannot inject user data - SDK not ready or injection disabled');
                 }
             }
         });
     }
     
     function requestUserDataFromEmulator(selectedUserId) {
-        console.log('📤 [Bridge] Requesting user data from emulator for:', selectedUserId);
         
         // Send request to emulator (proper postMessage with identification)
         window.parent.postMessage({

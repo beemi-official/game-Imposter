@@ -71,7 +71,6 @@ class MultiClientBridgeEmulator {
     unregisterClient(clientId) {
         const client = this.clients.get(clientId);
         if (client) {
-            console.log(`📱 Unregistered ${clientId} (${client.user.username})`);
             
             // Send player-left event to remaining clients
             this.broadcastToAll({
@@ -96,7 +95,6 @@ class MultiClientBridgeEmulator {
             // If no clients left, deactivate room
             if (this.clients.size === 0) {
                 this.roomState.isActive = false;
-                console.log(`🏠 Shared room deactivated - no clients remaining`);
             }
         }
     }
@@ -105,7 +103,6 @@ class MultiClientBridgeEmulator {
     injectRelayIntoClient(clientId) {
         const client = this.clients.get(clientId);
         if (!client || !client.iframe.contentWindow) {
-            console.error(`❌ Cannot inject into ${clientId} - iframe not ready`);
             return;
         }
 
@@ -129,7 +126,6 @@ class MultiClientBridgeEmulator {
             setTimeout(waitForEmulatorAndGameIframe, 1000); // Give emulator time to load
             
         } catch (error) {
-            console.error(`❌ Error setting up injection for ${clientId}:`, error);
         }
     }
 
@@ -155,11 +151,9 @@ class MultiClientBridgeEmulator {
                     if (attemptCount < 100) {
                         setTimeout(waitForSDK, 100);
                     } else {
-                        console.error(`❌ [BRIDGE INJECT] SDK never became ready for ${clientId} after 10 seconds`);
                     }
                 }
             } catch (error) {
-                console.error(`❌ [BRIDGE INJECT] Error waiting for SDK in ${clientId}:`, error);
                 if (attemptCount < 100) {
                     setTimeout(waitForSDK, 100);
                 }
@@ -172,7 +166,6 @@ class MultiClientBridgeEmulator {
     // Setup complete multiplayer module for a specific client
     setupClientRelay(clientId, contentWindow) {
         const client = this.clients.get(clientId);
-        console.log(`🔧 Setting up complete multiplayer module for ${clientId} (${client.user.username})`);
 
         // Inject complete multiplayer module
         contentWindow.beemi.multiplayer = this.createMultiplayerModule(clientId);
@@ -182,7 +175,6 @@ class MultiClientBridgeEmulator {
         contentWindow.BEEMI_USER_ID = client.userId;
         contentWindow.BEEMI_IS_LEADER = client.isLeader;
 
-        console.log(`✅ Complete multiplayer module injected for ${clientId}`);
     }
 
     // Create complete multiplayer module for a client
@@ -294,26 +286,21 @@ class MultiClientBridgeEmulator {
 
     // Sync CRDT state to all clients
     syncCRDTToAllClients(key, value, sourceClientId) {
-        console.log(`🔄 [BRIDGE] Syncing CRDT ${key} to all ${this.clients.size} clients...`);
         
         this.clients.forEach((client, clientId) => {
             try {
                 const emulatorWindow = client.iframe.contentWindow;
                 const gameIframe = emulatorWindow?.document?.querySelector('.webview-iframe');
                 
-                console.log(`🔄 [BRIDGE] Syncing to ${clientId} - gameIframe found:`, !!gameIframe);
                 
                 if (gameIframe && gameIframe.contentWindow && gameIframe.contentWindow.beemi) {
                     // Update the CRDT state directly in the game
                     const gameWindow = gameIframe.contentWindow;
                     
-                    console.log(`🔄 [BRIDGE] ${clientId} - beemi exists:`, !!gameWindow.beemi);
-                    console.log(`🔄 [BRIDGE] ${clientId} - beemi.core exists:`, !!gameWindow.beemi.core);
                     
                     // Store in a local CRDT cache for this client
                     if (!gameWindow.multiClientCRDTCache) {
                         gameWindow.multiClientCRDTCache = new Map();
-                        console.log(`🔄 [BRIDGE] Created CRDT cache for ${clientId}`);
                     }
                     gameWindow.multiClientCRDTCache.set(key, value);
                     
@@ -324,18 +311,14 @@ class MultiClientBridgeEmulator {
                             value: value,
                             playerId: sourceClientId
                         });
-                        console.log(`✅ [BRIDGE] Synced CRDT ${key} to ${clientId} and emitted event`);
                     } else {
-                        console.error(`❌ [BRIDGE] No beemi.core for ${clientId}`);
                     }
                     
                     // Trigger watch callbacks for this key
                     this.triggerWatchCallbacks(clientId, key, value);
                 } else {
-                    console.log(`⏳ [BRIDGE] Game iframe not ready for ${clientId}, skipping sync`);
                 }
             } catch (error) {
-                console.error(`❌ [BRIDGE] Error syncing CRDT to ${clientId}:`, error);
             }
         });
     }
@@ -345,13 +328,11 @@ class MultiClientBridgeEmulator {
         const client = this.clients.get(clientId);
         if (client && client.crdtWatchers && client.crdtWatchers.has(key)) {
             const callbacks = client.crdtWatchers.get(key);
-            console.log(`👁️ [BRIDGE] Triggering ${callbacks.length} watch callbacks for ${clientId}:${key}`);
             
             callbacks.forEach(callback => {
                 try {
                     callback(value);
                 } catch (error) {
-                    console.error(`❌ [BRIDGE] Error in watch callback for ${clientId}:${key}:`, error);
                 }
             });
         }
@@ -391,7 +372,6 @@ class MultiClientBridgeEmulator {
                     callback(currentValue);
                     this.log(`👁️ CRDT WATCH [${clientId}]: ${key} - Called with current value`);
                 } catch (error) {
-                    console.error(`❌ Error in CRDT watch callback for ${clientId}:`, error);
                 }
             }, 10);
         }
@@ -622,7 +602,6 @@ class MultiClientBridgeEmulator {
     sendToClient(clientId, message) {
         const client = this.clients.get(clientId);
         if (!client || !client.iframe.contentWindow) {
-            console.error(`❌ Cannot send to ${clientId} - iframe not ready`);
             return false;
         }
 
@@ -639,7 +618,6 @@ class MultiClientBridgeEmulator {
                             try {
                                 callback(message.data);
                             } catch (error) {
-                                console.error(`❌ Error in ${clientId} event callback:`, error);
                             }
                         });
                     }
@@ -664,7 +642,6 @@ class MultiClientBridgeEmulator {
                 return true;
             }
         } catch (error) {
-            console.error(`❌ Failed to send to ${clientId}:`, error);
             return false;
         }
     }
@@ -706,7 +683,6 @@ class MultiClientBridgeEmulator {
                 this.handleClientMessage(sourceClientId, data);
                 
             } catch (error) {
-                console.error('❌ Error handling client message:', error);
             }
         });
     }
@@ -845,7 +821,6 @@ window.registerMultiClient = (clientId, iframe, userId, user) => {
     if (window.multiClientBridge) {
         window.multiClientBridge.registerClient(clientId, iframe, userId, user);
     } else {
-        console.error(`❌ Multi-client bridge not available when registering ${clientId}`);
     }
 };
 

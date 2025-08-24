@@ -50,7 +50,6 @@
         // Simulate React Native WebView environment
         window.ReactNativeWebView = {
             postMessage: function(data) {
-                console.log('RN WebView postMessage:', data);
             }
         };
         
@@ -69,14 +68,11 @@
                     // Check for development configuration
                     if (manifest.development && manifest.development.url) {
                         entryPoint = manifest.development.url;
-                        console.log('Using development URL:', entryPoint);
                     } else if (manifest.entryPoint) {
                         entryPoint = './' + manifest.entryPoint;
-                        console.log('Using manifest entry point:', entryPoint);
                     }
                 }
             } catch (error) {
-                console.log('Could not load manifest, using default entry point');
             }
             
             // Load the project
@@ -84,12 +80,10 @@
             
             // Handle load events
         iframe.onload = function() {
-                console.log('Project loaded in WebView simulation:', entryPoint);
                 loading.classList.add('hidden');
         };
         
         iframe.onerror = function() {
-                console.error('Error loading project in WebView simulation:', entryPoint);
                 loading.innerHTML = 'Error loading project';
                 loading.style.color = '#ff0000';
         };

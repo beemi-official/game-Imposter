@@ -22,11 +22,9 @@
     const clientName = urlParams.get('clientName');
     
     if (!clientName) {
-        console.log('🔗 Single-client mode - no relay injection needed');
         return;
     }
     
-    console.log(`🔗 ${clientName} - Initializing relay injection...`);
     
     let originalSDK = null;
     let relayActive = false;
@@ -36,10 +34,8 @@
     // Wait for SDK to be ready, then intercept
     function waitForSDKAndIntercept() {
         if (window.beemi && window.beemi.multiplayer && window.beemi.multiplayer.room) {
-            console.log(`🔗 ${clientName} - SDK detected, setting up relay interception`);
             setupSDKInterception();
         } else {
-            console.log(`🔗 ${clientName} - Waiting for SDK... (beemi: ${!!window.beemi}, multiplayer: ${!!window.beemi?.multiplayer}, room: ${!!window.beemi?.multiplayer?.room})`);
             setTimeout(waitForSDKAndIntercept, 200);
         }
     }
@@ -75,11 +71,9 @@
             status: 'waiting'
         };
         
-        console.log(`🏠 ${clientName} - Default room state initialized:`, window.multiClientRoomState);
         
         // Intercept CRDT operations
         window.beemi.multiplayer.crdt.set = function(key, value) {
-            console.log(`📝 ${clientName} CRDT SET: ${key} =`, value);
             
             // Send to multi-client bridge
             sendToMultiClientBridge({
@@ -92,7 +86,6 @@
         };
         
         window.beemi.multiplayer.crdt.get = function(key) {
-            console.log(`📖 ${clientName} CRDT GET: ${key}`);
             
             // For now, return from local cache or null
             // In full implementation, this would be synchronous from shared state
@@ -104,7 +97,6 @@
         
         // Intercept room operations
         window.beemi.multiplayer.room.host = function(gameId) {
-            console.log(`🏠 ${clientName} ROOM HOST: ${gameId}`);
             
             // Set local room state immediately
             window.multiClientRoomState = {
@@ -128,7 +120,6 @@
         };
         
         window.beemi.multiplayer.room.join = function(code) {
-            console.log(`🚪 ${clientName} ROOM JOIN: ${code}`);
             
             // Set local room state immediately
             window.multiClientRoomState = {
@@ -152,7 +143,6 @@
         };
         
         window.beemi.multiplayer.room.leave = function() {
-            console.log(`🚶 ${clientName} ROOM LEAVE`);
             
             // Clear local room state
             window.multiClientRoomState = null;
@@ -166,13 +156,11 @@
 
         // Intercept getState to return local room state
         window.beemi.multiplayer.room.getState = function() {
-            console.log(`📖 ${clientName} ROOM GET STATE:`, window.multiClientRoomState);
             return window.multiClientRoomState;
         };
         
         // Intercept event subscriptions
         window.beemi.multiplayer.on = function(event, callback) {
-            console.log(`📡 ${clientName} EVENT SUB: ${event}`);
             
             // Store callback locally
             if (!window.multiClientEventCallbacks) {
@@ -200,7 +188,6 @@
         };
         
         relayActive = true;
-        console.log(`✅ ${clientName} - Relay interception active`);
     }
     
     // Send message to multi-client bridge
@@ -213,7 +200,6 @@
                 timestamp: Date.now()
             }, '*');
         } catch (error) {
-            console.error(`❌ ${clientName} - Failed to send to bridge:`, error);
         }
     }
     
@@ -241,7 +227,6 @@
                 if (window.multiClientRoomState) {
                     window.multiClientRoomState.isLeader = data.isLeader;
                 }
-                console.log(`👑 ${clientName} - Leader status: ${data.isLeader}`);
                 break;
                 
             case 'room-state-update':
@@ -252,13 +237,11 @@
     
     // Update local room state from bridge
     function updateRoomState(newRoomState) {
-        console.log(`🏠 ${clientName} - Room state update:`, newRoomState);
         window.multiClientRoomState = newRoomState;
     }
     
     // Handle CRDT updates from other clients
     function handleCRDTUpdate(key, value, source) {
-        console.log(`📝 ${clientName} - CRDT UPDATE from ${source}: ${key} =`, value);
         
         // Trigger crdt-update event in the game
         if (window.beemi && window.beemi.core) {
@@ -272,7 +255,6 @@
     
     // Handle multiplayer events from bridge
     function handleMultiplayerEvent(event, eventData) {
-        console.log(`🎮 ${clientName} - MULTIPLAYER EVENT: ${event}`, eventData);
         
         // Call registered callbacks
         const callbacks = window.multiClientEventCallbacks?.get(event);
@@ -281,7 +263,6 @@
                 try {
                     callback(eventData);
                 } catch (error) {
-                    console.error(`❌ ${clientName} - Error in event callback:`, error);
                 }
             });
         }
@@ -293,7 +274,6 @@
     }
     
     // Start the interception process
-    console.log(`🔗 ${clientName} - Starting SDK interception...`);
     waitForSDKAndIntercept();
     
 })();

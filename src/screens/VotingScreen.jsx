@@ -49,7 +49,6 @@ export default function VotingScreen() {
   useEffect(() => {
     if (timeRemaining === 5 && !myLocalVote && !autoSelectionTriggered.current && !deadPlayers.has(playerId)) {
       autoSelectionTriggered.current = true
-      console.log('🤖 Auto-selecting player with most TikTok votes')
       
       // Calculate TikTok vote counts
       const tikTokVoteCounts = new Map()
@@ -65,7 +64,6 @@ export default function VotingScreen() {
       let maxVotes = 0
       
       tikTokVoteCounts.forEach((votes, playerId) => {
-        console.log(`🤖 ${playerNames.get(playerId)}: ${votes} TikTok votes`)
         if (votes > maxVotes) {
           maxVotes = votes
           topPlayer = playerId
@@ -73,20 +71,17 @@ export default function VotingScreen() {
       })
       
       if (topPlayer) {
-        console.log(`🤖 Auto-selecting: ${playerNames.get(topPlayer)} (${maxVotes} TikTok votes)`)
         submitVote(topPlayer)
       } else if (speakingOrder.length > 0) {
         // If no TikTok votes, select first alive player
         const firstAlive = speakingOrder.find(id => !deadPlayers.has(id) && id !== playerId)
         if (firstAlive) {
-          console.log(`🤖 No TikTok votes, auto-selecting first player: ${playerNames.get(firstAlive)}`)
           submitVote(firstAlive)
         }
       }
     }
     
     if (timeRemaining === 0 && isLeader) {
-      console.log('⏰ Timer reached 0, ending voting phase')
       calculateAndPublishResults()
     }
   }, [timeRemaining, isLeader, myLocalVote, audienceVotes, deadPlayers, playerId, playerNames, speakingOrder, submitVote])
@@ -94,7 +89,6 @@ export default function VotingScreen() {
   const endVoting = () => {
     if (!isLeader) return
     
-    console.log('⏰ Ending voting phase')
     
     // Calculate results and transition to results screen
     calculateAndPublishResults()

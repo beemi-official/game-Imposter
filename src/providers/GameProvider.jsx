@@ -36,7 +36,6 @@ export default function GameProvider({ children }) {
     onStreamGift
   } = useBeemiSDK()
   
-  console.log('🎯 [GameProvider] Current playerId from BeemiSDK:', playerId)
 
   // Game state
   const [gamePhase, setGamePhase] = useState('lobby')
@@ -63,13 +62,8 @@ export default function GameProvider({ children }) {
 
   // Handle players update from CRDT
   const handlePlayersUpdate = useCallback((playersData) => {
-    console.log('👥 [handlePlayersUpdate] Players data updated:', playersData)
-    console.log('👥 [handlePlayersUpdate] Data type:', typeof playersData)
-    console.log('👥 [handlePlayersUpdate] Data keys:', playersData ? Object.keys(playersData) : 'null')
-    console.log('👥 [handlePlayersUpdate] Number of players in update:', playersData ? Object.keys(playersData).length : 0)
     
     if (!playersData || typeof playersData !== 'object') {
-      console.log('❌ [handlePlayersUpdate] Invalid players data received')
       return
     }
 
@@ -77,18 +71,12 @@ export default function GameProvider({ children }) {
     const currentSize = playerNames.size
     const updateSize = Object.keys(playersData).length
     
-    if (currentSize > 1 && updateSize === 1 && !isLeader) {
-      console.log('⚠️ [handlePlayersUpdate] Received partial update, this might be a bug')
-    }
 
     const newPlayerNames = new Map()
     Object.entries(playersData).forEach(([id, name]) => {
-      console.log(`  - Adding player: ${id} -> ${name}`)
       newPlayerNames.set(id, name)
     })
 
-    console.log('📊 [handlePlayersUpdate] Created Map with entries:', Array.from(newPlayerNames.entries()))
-    console.log('📊 [handlePlayersUpdate] Map size:', newPlayerNames.size)
     
     setPlayerNames(newPlayerNames)
     setGamePlayerCount(newPlayerNames.size)
@@ -109,7 +97,6 @@ export default function GameProvider({ children }) {
       const aggregatedKey = `player-votes-${playerId}`
       
       watchCRDT(aggregatedKey, (votes) => {
-        console.log(`📊 Vote counts received from ${playerId}:`, votes)
         if (votes) {
           setPlayerVotes(prev => ({
             ...prev,
@@ -128,7 +115,6 @@ export default function GameProvider({ children }) {
 
   // Handle game phase updates
   const handleGamePhaseUpdate = useCallback((phase) => {
-    console.log(`🎯 Game phase changed to: ${phase}`)
     setGamePhase(phase)
     
     // Clear votes when starting a new voting round (but keep gift coins)
@@ -138,23 +124,19 @@ export default function GameProvider({ children }) {
       setAudienceVotes(new Map())
       setAudienceCurrentVote(new Map())
       // Don't clear audienceGiftCoins - they should persist across rounds
-      console.log('🔄 Cleared votes for new voting round (gift coins preserved)')
     }
   }, [])
 
   // Handle role assignments
   const handleRoleAssignments = useCallback((roles) => {
-    console.log('🎭 Player roles updated:', roles)
     setPlayerRoles(roles || {})
   }, [])
 
   // Handle current word updates
   const handleCurrentWordUpdate = useCallback((word) => {
-    console.log('📝 Current word updated:', word)
     setCurrentWord(word)
     
     if (gamePhase === 'game-start' && !wordTimerActive.current && word) {
-      console.log('⏰ Word received late, starting timer now')
       const myRole = playerRoles[playerId]
       if (myRole) {
         startWordDisplayTimer(myRole, word)
@@ -164,19 +146,16 @@ export default function GameProvider({ children }) {
 
   // Handle speaking order updates
   const handleSpeakingOrderUpdate = useCallback((order) => {
-    console.log('📋 Speaking order updated:', order)
     setSpeakingOrder(order || [])
   }, [])
 
   // Handle voting results
   const handleVotingResults = useCallback((resultsData) => {
-    console.log('📊 Voting results updated:', resultsData)
     setVotingResults(resultsData)
   }, [])
 
   // Handle game end updates
   const handleGameEndUpdate = useCallback((gameEndData) => {
-    console.log('🎬 Game end updated:', gameEndData)
     if (gameEndData && gameEndData.eliminatedPlayer) {
       setDeadPlayers(prev => new Set([...prev, gameEndData.eliminatedPlayer]))
     }
@@ -184,7 +163,6 @@ export default function GameProvider({ children }) {
 
   // Handle game reset from leader
   const handleGameReset = useCallback(() => {
-    console.log('🔄 Game reset received - clearing all local state')
     
     // Clear all local state for every player
     setGamePhase('lobby')
@@ -219,24 +197,19 @@ export default function GameProvider({ children }) {
       wordDisplayTimerRef.current = null
     }
     
-    console.log('🔄 All local state cleared - players must rejoin')
   }, [])
 
   // Join game
   const joinGame = useCallback((name) => {
     if (!isConnected || !playerId) return false
 
-    console.log(`🎮 Requesting to join game as: ${name}`)
     
     // If player is the leader, join immediately
     if (isLeader) {
-      console.log('👑 Leader joining game directly')
       
       // Leader maintains the authoritative state locally
       gamePlayers.current[playerId] = name
       
-      console.log('👑 Leader updating game-players directly:', gamePlayers.current)
-      console.log('👑 Leader game-players keys:', Object.keys(gamePlayers.current))
       setCRDT('game-players', gamePlayers.current)
       
       // Clear any pending requests
@@ -262,12 +235,10 @@ export default function GameProvider({ children }) {
   const leaveGame = useCallback(() => {
     if (!isConnected || !playerId) return
 
-    console.log('👋 Leaving game...')
     
     if (isLeader) {
       // Leader leaves immediately
       delete gamePlayers.current[playerId]
-      console.log('👑 Leader updating game-players after leaving:', gamePlayers.current)
       setCRDT('game-players', gamePlayers.current)
     } else {
       // Non-leader sends leave request
@@ -284,11 +255,9 @@ export default function GameProvider({ children }) {
   // Start game (leader only)
   const startGame = useCallback(() => {
     if (!isLeader || gamePlayerCount < 3) {
-      console.log('❌ Cannot start game: not leader or not enough players')
       return
     }
 
-    console.log('🚀 Starting game...')
     
     // Assign roles
     const players = Array.from(playerNames.keys())
@@ -312,7 +281,6 @@ export default function GameProvider({ children }) {
     setCRDT('speaking-order', order)
     setCRDT('game-phase', 'game-start')
     
-    console.log('✅ Game started with roles:', roles)
   }, [isLeader, gamePlayerCount, playerNames, setCRDT])
 
   // Submit vote
@@ -336,15 +304,12 @@ export default function GameProvider({ children }) {
     })
     
     setCRDT(`player-votes-${playerId}`, voteCounts)
-    console.log(`🗳️ Submitted vote for ${targetId}`)
   }, [playerId, deadPlayers, audienceVotes, setCRDT])
 
   // Process stream message (for audience voting)
   const processStreamMessage = useCallback((chatData) => {
-    console.log('💬 Stream message received:', chatData)
     
     if (gamePhase !== 'description-voting') {
-      console.log('⏸️ Not processing - game phase is:', gamePhase)
       return
     }
     
@@ -353,11 +318,9 @@ export default function GameProvider({ children }) {
     const imageUrl = chatData.user?.imageUrl
     
     if (!text) {
-      console.log('❌ No text in message')
       return
     }
     
-    console.log(`🔍 Trying to match "${text}" to a player name`)
     
     // Try to match text to player name (case insensitive)
     let matchedPlayer = null
@@ -369,12 +332,10 @@ export default function GameProvider({ children }) {
     
     if (matchedPlayer) {
       const { id: targetId, name: targetName } = matchedPlayer
-      console.log(`✅ Matched! "${text}" -> ${targetName} (${targetId})`)
       
       // Calculate vote weight based on gifts
       const giftCoins = audienceGiftCoins.get(username) || 0
       const voteWeight = 1 + giftCoins
-      console.log(`💰 Vote weight for ${username}: ${voteWeight} (1 base + ${giftCoins} gift coins)`)
       
       // Update audience current vote
       setAudienceCurrentVote(prev => new Map(prev).set(username, targetId))
@@ -400,12 +361,9 @@ export default function GameProvider({ children }) {
         })
         newVotes.set(targetId, targetVotes)
         
-        console.log(`📺 Audience vote recorded: ${username} voted for ${targetName} with weight ${voteWeight}`)
         return newVotes
       })
     } else {
-      console.log(`❌ No match found for "${text}"`)
-      console.log('Available players:', Array.from(playerNames.values()))
     }
   }, [gamePhase, playerNames, deadPlayers, audienceGiftCoins])
 
@@ -414,7 +372,6 @@ export default function GameProvider({ children }) {
     const username = giftData.user?.username || giftData.user?.name || 'Anonymous'
     const giftValue = giftData.gift?.coin_value || giftData.gift?.value || 0
     
-    console.log(`🎁 Gift from ${username}: ${giftValue} coins`)
     
     if (giftValue > 0) {
       // Update gift coins tracking
@@ -423,7 +380,6 @@ export default function GameProvider({ children }) {
         const currentCoins = newCoins.get(username) || 0
         const newTotal = currentCoins + giftValue
         newCoins.set(username, newTotal)
-        console.log(`💰 ${username} total coins: ${currentCoins} + ${giftValue} = ${newTotal}`)
         return newCoins
       })
       
@@ -442,14 +398,12 @@ export default function GameProvider({ children }) {
               const totalCoins = (audienceGiftCoins.get(username) || 0) + giftValue
               const newVoteWeight = 1 + totalCoins
               targetVotes[existingVoteIndex].voteWeight = newVoteWeight
-              console.log(`🎁 Updated ${username}'s vote weight to ${newVoteWeight}`)
             }
             
             newVotes.set(targetId, targetVotes)
             return newVotes
           })
         } else {
-          console.log(`🎁 ${username} hasn't voted yet, coins saved for when they vote`)
         }
       }
     }
@@ -459,7 +413,6 @@ export default function GameProvider({ children }) {
   const resetGame = useCallback(() => {
     if (!isLeader) return
     
-    console.log('🔄 Resetting entire game...')
     
     // Clear all CRDT data
     setCRDT('game-phase', 'lobby')
@@ -483,7 +436,6 @@ export default function GameProvider({ children }) {
     // Trigger reset for all players
     setCRDT('game-reset', Date.now())
     
-    console.log('🔄 Game reset triggered for all players - all players cleared')
   }, [isLeader, setCRDT, playerNames])
 
   // Start word display timer
@@ -492,7 +444,6 @@ export default function GameProvider({ children }) {
     const displayWord = role === 'imposter' ? 'IMPOSTER' : word
     
     wordDisplayTimerRef.current = setTimeout(() => {
-      console.log('⏰ Word display timer ended, transitioning to voting phase')
       wordTimerActive.current = false
       
       if (isLeader) {
@@ -526,7 +477,6 @@ export default function GameProvider({ children }) {
     // Leader handles player requests
     if (isLeader) {
       unwatchers.push(watchCRDT('player-requests', (requests) => {
-        console.log('📨 Player requests updated:', requests)
         handlePlayerRequests(requests)
       }))
     }
@@ -545,8 +495,6 @@ export default function GameProvider({ children }) {
   const handlePlayerRequests = useCallback((requests) => {
     if (!isLeader || !requests) return
     
-    console.log('🎯 [handlePlayerRequests] Processing requests:', requests)
-    console.log('🎯 [handlePlayerRequests] Current gamePlayers.current:', gamePlayers.current)
     
     let updated = false
     
@@ -555,19 +503,14 @@ export default function GameProvider({ children }) {
         // Add to leader's authoritative local state
         gamePlayers.current[id] = request.name
         updated = true
-        console.log(`✅ Player ${request.name} joined`)
       } else if (request.action === 'leave' && gamePlayers.current[id]) {
         const leavingPlayerName = gamePlayers.current[id]
         delete gamePlayers.current[id]
         updated = true
-        console.log(`👋 Player ${leavingPlayerName} left`)
       }
     })
     
     if (updated) {
-      console.log('🎯 [handlePlayerRequests] Sending updated players list:', gamePlayers.current)
-      console.log('🎯 [handlePlayerRequests] Players in update:', Object.entries(gamePlayers.current))
-      console.log('🎯 [handlePlayerRequests] Total players in update:', Object.keys(gamePlayers.current).length)
       
       // Send the COMPLETE players list from leader's authoritative state
       setCRDT('game-players', gamePlayers.current)
@@ -634,12 +577,6 @@ export default function GameProvider({ children }) {
     startWordDisplayTimer
   }
   
-  console.log('📦 [GameProvider] Context value being provided:', {
-    gamePhase,
-    playerNamesSize: playerNames.size,
-    playerNamesEntries: Array.from(playerNames.entries()),
-    playerId
-  })
 
   return (
     <GameContext.Provider value={value}>
