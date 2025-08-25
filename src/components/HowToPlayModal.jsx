@@ -22,15 +22,14 @@ export default function HowToPlayModal({ onClose }) {
               <div className="rule-number">1</div>
               <div className="rule-content">
                 <h3>Invite Your Friends</h3>
-                <p><strong>Host:</strong> Tap ⋮ (top right) → Show Room Info → Share code<br/>
-                <strong>Friends:</strong> Open Beemi → Imposter → Join by Code → Enter code</p>
+                <p><strong>Host:</strong> Click "Options" in the top right, then "Show Room Info", and share the room code with your friends</p>
               </div>
             </div>
             
             <div className="rule-section">
               <div className="rule-number">2</div>
               <div className="rule-content">
-                <h3>Join the Game</h3>
+                <h3>Join the Lobby</h3>
                 <p>Enter your name and join the lobby. Wait for other players to join.</p>
               </div>
             </div>
@@ -39,7 +38,7 @@ export default function HowToPlayModal({ onClose }) {
               <div className="rule-number">3</div>
               <div className="rule-content">
                 <h3>Receive Your Role</h3>
-                <p>Everyone gets the same word except the Imposter, who gets "Imposter".</p>
+                <p>Everyone gets the same word except the Imposter, who gets a slightly different word.</p>
               </div>
             </div>
             
@@ -64,7 +63,7 @@ export default function HowToPlayModal({ onClose }) {
               <div className="rule-content">
                 <h3>Win Conditions</h3>
                 <p><strong>Citizens win:</strong> If the Imposter is voted out.<br/>
-                <strong>Imposter wins:</strong> If they survive the vote or correctly guess the word!</p>
+                <strong>Imposter wins:</strong> If they survive the vote.</p>
               </div>
             </div>
           </div>
