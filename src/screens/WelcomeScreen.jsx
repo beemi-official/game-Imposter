@@ -37,7 +37,7 @@ export default function WelcomeScreen({ onStartGame }) {
           <h1 className="welcome-title">IMPOSTER</h1>
           <p className="welcome-tagline">Can you spot the deceiver?</p>
           
-          <div className="welcome-buttons">
+          <div className="welcome-action-area">
             <button 
               className="welcome-btn start-btn"
               onClick={handleStartGame}
@@ -46,13 +46,13 @@ export default function WelcomeScreen({ onStartGame }) {
               <span className="btn-glow"></span>
             </button>
             
-            <button 
-              className="welcome-btn how-to-play-btn"
+            <div 
+              className="how-to-play-link"
               onClick={handleHowToPlay}
             >
-              <span className="btn-text">How to Play</span>
-              <span className="btn-glow"></span>
-            </button>
+              <span className="question-mark">?</span>
+              <span className="link-text">Learn how to play</span>
+            </div>
           </div>
         </div>
       </div>
