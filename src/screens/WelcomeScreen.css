@@ -106,7 +106,6 @@
   width: 160px;
   height: 160px;
   margin: 0 auto 15px;
-  animation: logoFloat 4s ease-in-out infinite;
 }
 
 .game-logo {
@@ -325,17 +324,6 @@
   }
 }
 
-@keyframes logoFloat {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  25% {
-    transform: translateY(-8px) rotate(1deg);
-  }
-  75% {
-    transform: translateY(8px) rotate(-1deg);
-  }
-}
 
 @keyframes logoPulse {
   0%, 100% {

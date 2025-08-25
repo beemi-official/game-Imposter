@@ -13,52 +13,32 @@
   justify-content: center;
   z-index: 1000;
   animation: backdropFadeIn 0.3s ease;
-  padding: 20px;
+  padding: 40px 20px;
+  box-sizing: border-box;
 }
 
 .modal-container {
   width: 100%;
   max-width: 550px;
-  max-height: 550px;
+  max-height: calc(100vh - 80px);
   animation: modalSlideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .modal-content {
-  background: linear-gradient(135deg, 
-    rgba(30, 30, 50, 0.95) 0%, 
-    rgba(45, 45, 70, 0.95) 100%);
+  background: rgba(20, 20, 30, 0.95);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 30px;
-  padding: 30px;
+  padding: 50px 30px 40px;
   position: relative;
   overflow-y: auto;
-  max-height: 520px;
-  height: 100%;
+  max-height: 100%;
   box-shadow: 
-    0 25px 60px rgba(0, 0, 0, 0.5),
-    0 0 100px rgba(102, 126, 234, 0.2),
-    inset 0 0 30px rgba(255, 255, 255, 0.05);
+    0 25px 60px rgba(0, 0, 0, 0.7),
+    inset 0 0 30px rgba(255, 255, 255, 0.02);
 }
 
-/* Animated border gradient */
-.modal-content::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, 
-    #667eea, #764ba2, #f093fb, #667eea);
-  background-size: 400% 400%;
-  border-radius: 30px;
-  z-index: -1;
-  opacity: 0.7;
-  animation: modalBorderGradient 6s ease infinite;
-  filter: blur(3px);
-}
 
 .modal-close {
   position: absolute;
@@ -94,6 +74,7 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-align: center;
+  margin-top: 0;
   margin-bottom: 25px;
   letter-spacing: 2px;
   text-shadow: 
@@ -128,6 +109,7 @@
 .rule-section:nth-child(3) { animation-delay: 0.3s; }
 .rule-section:nth-child(4) { animation-delay: 0.4s; }
 .rule-section:nth-child(5) { animation-delay: 0.5s; }
+.rule-section:nth-child(6) { animation-delay: 0.6s; }
 
 
 .rule-number {
@@ -180,6 +162,7 @@
   display: flex;
   justify-content: center;
   margin-top: 20px;
+  padding-bottom: 10px;
 }
 
 .got-it-btn {
@@ -261,17 +244,6 @@
   }
 }
 
-@keyframes modalBorderGradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
 
 @keyframes titleGlow {
   0% {
@@ -304,8 +276,16 @@
 
 /* Responsive design */
 @media (max-width: 600px) {
+  .modal-backdrop {
+    padding: 30px 15px;
+  }
+  
+  .modal-container {
+    height: calc(100vh - 60px);
+  }
+  
   .modal-content {
-    padding: 30px 20px;
+    padding: 40px 20px 30px;
   }
   
   .modal-title {

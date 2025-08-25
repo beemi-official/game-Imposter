@@ -21,13 +21,22 @@ export default function HowToPlayModal({ onClose }) {
             <div className="rule-section">
               <div className="rule-number">1</div>
               <div className="rule-content">
+                <h3>Invite Your Friends</h3>
+                <p><strong>Host:</strong> Tap ⋮ (top right) → Show Room Info → Share code<br/>
+                <strong>Friends:</strong> Open Beemi → Imposter → Join by Code → Enter code</p>
+              </div>
+            </div>
+            
+            <div className="rule-section">
+              <div className="rule-number">2</div>
+              <div className="rule-content">
                 <h3>Join the Game</h3>
                 <p>Enter your name and join the lobby. Wait for other players to join.</p>
               </div>
             </div>
             
             <div className="rule-section">
-              <div className="rule-number">2</div>
+              <div className="rule-number">3</div>
               <div className="rule-content">
                 <h3>Receive Your Role</h3>
                 <p>Everyone gets the same word except the Imposter, who gets "Imposter".</p>
@@ -35,7 +44,7 @@ export default function HowToPlayModal({ onClose }) {
             </div>
             
             <div className="rule-section">
-              <div className="rule-number">3</div>
+              <div className="rule-number">4</div>
               <div className="rule-content">
                 <h3>Describe the Word</h3>
                 <p>Take turns describing your word. The Imposter must blend in without knowing the real word!</p>
@@ -43,7 +52,7 @@ export default function HowToPlayModal({ onClose }) {
             </div>
             
             <div className="rule-section">
-              <div className="rule-number">4</div>
+              <div className="rule-number">5</div>
               <div className="rule-content">
                 <h3>Vote Out the Imposter</h3>
                 <p>After everyone describes, vote for who you think is the Imposter.</p>
@@ -51,7 +60,7 @@ export default function HowToPlayModal({ onClose }) {
             </div>
             
             <div className="rule-section">
-              <div className="rule-number">5</div>
+              <div className="rule-number">6</div>
               <div className="rule-content">
                 <h3>Win Conditions</h3>
                 <p><strong>Citizens win:</strong> If the Imposter is voted out.<br/>
