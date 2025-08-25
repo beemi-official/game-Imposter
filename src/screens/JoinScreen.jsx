@@ -3,7 +3,7 @@ import { useBeemiSDK } from '../providers/BeemiSDKProvider'
 import { useGame } from '../providers/GameProvider'
 import './JoinScreen.css'
 
-export default function JoinScreen() {
+export default function JoinScreen({ onExit }) {
   const { isConnected, isLeader, userProfile, playerId } = useBeemiSDK()
   const { joinGame, playerNames, resetGame } = useGame()
   const [name, setName] = useState('')
@@ -22,12 +22,10 @@ export default function JoinScreen() {
     // Update status message
     if (!isConnected) {
       setStatusMessage('Connecting to server...')
-    } else if (isLeader) {
-      setStatusMessage("You're the room leader")
     } else {
       setStatusMessage('')
     }
-  }, [isConnected, isLeader])
+  }, [isConnected])
 
   useEffect(() => {
     // Check if player successfully joined
@@ -66,6 +64,12 @@ export default function JoinScreen() {
     }
   }
 
+  const handleExit = () => {
+    if (onExit) {
+      onExit()
+    }
+  }
+
   return (
     <section className="join-screen">
       <div className="join-container">
@@ -74,20 +78,9 @@ export default function JoinScreen() {
           <p className="game-subtitle">Find the imposter among your friends</p>
           
           {statusMessage && (
-            <div className={`status-message ${isLeader ? 'leader-status' : 'player-status'}`}>
+            <div className="status-message player-status">
               {statusMessage}
             </div>
-          )}
-          
-          {isLeader && (
-            <button
-              onClick={handleReset}
-              className="reset-btn"
-              disabled={isResetting}
-              style={{ opacity: isResetting ? 0.5 : 1 }}
-            >
-              {isResetting ? 'Resetting...' : 'Reset Game'}
-            </button>
           )}
           
           <form onSubmit={handleSubmit} className="join-form">
@@ -110,6 +103,25 @@ export default function JoinScreen() {
               {isJoining ? 'Joining...' : 'Join Game'}
             </button>
           </form>
+          
+          <div className="bottom-controls">
+            {isLeader && (
+              <button
+                onClick={handleReset}
+                className="small-btn reset-btn"
+                disabled={isResetting}
+                style={{ opacity: isResetting ? 0.5 : 1 }}
+              >
+                {isResetting ? 'Resetting...' : 'Reset'}
+              </button>
+            )}
+            <button
+              onClick={handleExit}
+              className="small-btn exit-btn"
+            >
+              Exit
+            </button>
+          </div>
         </div>
       </div>
     </section>

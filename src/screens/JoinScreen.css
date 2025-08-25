@@ -147,38 +147,6 @@
   letter-spacing: 0.5px;
 }
 
-.leader-status {
-  background: linear-gradient(135deg, 
-    rgba(255, 215, 0, 0.2), 
-    rgba(255, 193, 7, 0.3));
-  color: #ffd700;
-  border: 2px solid rgba(255, 215, 0, 0.5);
-  box-shadow: 
-    0 0 30px rgba(255, 215, 0, 0.4),
-    inset 0 0 20px rgba(255, 215, 0, 0.2);
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
-}
-
-.leader-status::before {
-  content: '👑';
-  position: absolute;
-  left: 15px;
-  animation: crownBounce 2s ease-in-out infinite;
-}
-
-.leader-status::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(255, 255, 255, 0.3), 
-    transparent);
-  animation: shimmer 2s infinite;
-}
 
 .player-status {
   background: linear-gradient(135deg, 
@@ -312,12 +280,16 @@
   box-shadow: none;
 }
 
-.reset-btn {
-  margin-top: 5px;
-  margin-bottom: 15px;
-  background: linear-gradient(135deg, #ff416c, #ff4b2b);
-  color: white;
-  padding: 8px 16px;
+.bottom-controls {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 20px;
+  animation: fadeInUp 0.8s ease-out 0.7s both;
+}
+
+.small-btn {
+  padding: 8px 20px;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -329,12 +301,26 @@
   letter-spacing: 0.5px;
   position: relative;
   overflow: hidden;
+  min-width: 80px;
+}
+
+.reset-btn {
+  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  color: white;
   box-shadow: 
     0 5px 20px rgba(255, 65, 108, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-.reset-btn::before {
+.exit-btn {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  color: white;
+  box-shadow: 
+    0 5px 20px rgba(107, 114, 128, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.small-btn::before {
   content: '';
   position: absolute;
   top: 0;
@@ -348,16 +334,26 @@
   transition: left 0.5s;
 }
 
-.reset-btn:hover {
+.small-btn:hover {
   transform: translateY(-2px) scale(1.05);
+}
+
+.small-btn:hover::before {
+  left: 100%;
+}
+
+.reset-btn:hover {
   box-shadow: 
     0 10px 30px rgba(255, 65, 108, 0.4),
     0 0 40px rgba(255, 65, 108, 0.2),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
-.reset-btn:hover::before {
-  left: 100%;
+.exit-btn:hover {
+  box-shadow: 
+    0 10px 30px rgba(107, 114, 128, 0.4),
+    0 0 40px rgba(107, 114, 128, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 /* Animations */
@@ -463,26 +459,6 @@
   }
 }
 
-@keyframes crownBounce {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  25% {
-    transform: translateY(-3px) rotate(-10deg);
-  }
-  75% {
-    transform: translateY(3px) rotate(10deg);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    left: -100%;
-  }
-  100% {
-    left: 200%;
-  }
-}
 
 @keyframes buttonPulse {
   0%, 100% {

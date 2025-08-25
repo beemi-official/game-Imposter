@@ -20,6 +20,11 @@ function GameScreens() {
     setShowWelcome(false)
   }
   
+  // Handle exit from join screen back to welcome
+  const handleExit = () => {
+    setShowWelcome(true)
+  }
+  
   // Show welcome screen first
   if (showWelcome) {
     return <WelcomeScreen onStartGame={handleStartGame} />
@@ -30,7 +35,7 @@ function GameScreens() {
   
   // Render appropriate screen based on game phase
   if (!hasJoined) {
-    return <JoinScreen />
+    return <JoinScreen onExit={handleExit} />
   }
   
   switch (gamePhase) {
