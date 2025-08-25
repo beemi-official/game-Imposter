@@ -11,16 +11,73 @@ export const useGame = () => {
   return context
 }
 
-export const WORD_LIST = [
-  'China', 'Tree', 'Ocean', 'Mountain', 'Coffee', 'Pizza', 'Book', 'Phone', 'Car', 'House',
-  'Dog', 'Cat', 'Sun', 'Moon', 'Rain', 'Snow', 'Fire', 'Water', 'Music', 'Dance',
-  'Football', 'Basketball', 'Apple', 'Banana', 'Chair', 'Table', 'School', 'Hospital',
-  'Airport', 'Beach', 'Forest', 'Desert', 'River', 'Bridge', 'Castle', 'Tower',
-  'Garden', 'Kitchen', 'Bedroom', 'Library', 'Museum', 'Theater', 'Restaurant', 'Hotel',
-  'Bicycle', 'Train', 'Airplane', 'Boat', 'Camera', 'Computer', 'Television', 'Radio',
-  'Flower', 'Butterfly', 'Bird', 'Fish', 'Lion', 'Elephant', 'Tiger', 'Bear',
-  'Chocolate', 'Ice cream', 'Cake', 'Sandwich', 'Soup', 'Salad', 'Pasta', 'Burger',
-  'Winter', 'Summer', 'Spring', 'Autumn', 'Morning', 'Evening', 'Night', 'Midnight'
+export const WORD_PAIRS = [
+  { civilian: 'Pizza', imposter: 'Burger' },
+  { civilian: 'Dog', imposter: 'Cat' },
+  { civilian: 'Ocean', imposter: 'Lake' },
+  { civilian: 'Mountain', imposter: 'Hill' },
+  { civilian: 'Coffee', imposter: 'Tea' },
+  { civilian: 'Book', imposter: 'Magazine' },
+  { civilian: 'Phone', imposter: 'Tablet' },
+  { civilian: 'Car', imposter: 'Bus' },
+  { civilian: 'House', imposter: 'Apartment' },
+  { civilian: 'Sun', imposter: 'Moon' },
+  { civilian: 'Rain', imposter: 'Snow' },
+  { civilian: 'Fire', imposter: 'Ice' },
+  { civilian: 'Music', imposter: 'Podcast' },
+  { civilian: 'Dance', imposter: 'Sing' },
+  { civilian: 'Football', imposter: 'Basketball' },
+  { civilian: 'Apple', imposter: 'Orange' },
+  { civilian: 'Banana', imposter: 'Mango' },
+  { civilian: 'Chair', imposter: 'Sofa' },
+  { civilian: 'Table', imposter: 'Desk' },
+  { civilian: 'School', imposter: 'University' },
+  { civilian: 'Hospital', imposter: 'Clinic' },
+  { civilian: 'Airport', imposter: 'Train Station' },
+  { civilian: 'Beach', imposter: 'Pool' },
+  { civilian: 'Forest', imposter: 'Jungle' },
+  { civilian: 'Desert', imposter: 'Prairie' },
+  { civilian: 'River', imposter: 'Stream' },
+  { civilian: 'Bridge', imposter: 'Tunnel' },
+  { civilian: 'Castle', imposter: 'Palace' },
+  { civilian: 'Tower', imposter: 'Skyscraper' },
+  { civilian: 'Garden', imposter: 'Park' },
+  { civilian: 'Kitchen', imposter: 'Dining Room' },
+  { civilian: 'Bedroom', imposter: 'Living Room' },
+  { civilian: 'Library', imposter: 'Bookstore' },
+  { civilian: 'Museum', imposter: 'Gallery' },
+  { civilian: 'Theater', imposter: 'Cinema' },
+  { civilian: 'Restaurant', imposter: 'Cafe' },
+  { civilian: 'Hotel', imposter: 'Motel' },
+  { civilian: 'Bicycle', imposter: 'Motorcycle' },
+  { civilian: 'Train', imposter: 'Subway' },
+  { civilian: 'Airplane', imposter: 'Helicopter' },
+  { civilian: 'Boat', imposter: 'Ship' },
+  { civilian: 'Camera', imposter: 'Video Camera' },
+  { civilian: 'Computer', imposter: 'Laptop' },
+  { civilian: 'Television', imposter: 'Monitor' },
+  { civilian: 'Radio', imposter: 'Podcast Player' },
+  { civilian: 'Flower', imposter: 'Tree' },
+  { civilian: 'Butterfly', imposter: 'Moth' },
+  { civilian: 'Bird', imposter: 'Bat' },
+  { civilian: 'Fish', imposter: 'Dolphin' },
+  { civilian: 'Lion', imposter: 'Tiger' },
+  { civilian: 'Elephant', imposter: 'Rhino' },
+  { civilian: 'Bear', imposter: 'Panda' },
+  { civilian: 'Chocolate', imposter: 'Candy' },
+  { civilian: 'Ice cream', imposter: 'Frozen Yogurt' },
+  { civilian: 'Cake', imposter: 'Pie' },
+  { civilian: 'Sandwich', imposter: 'Wrap' },
+  { civilian: 'Soup', imposter: 'Stew' },
+  { civilian: 'Salad', imposter: 'Coleslaw' },
+  { civilian: 'Pasta', imposter: 'Noodles' },
+  { civilian: 'Winter', imposter: 'Fall' },
+  { civilian: 'Summer', imposter: 'Spring' },
+  { civilian: 'Morning', imposter: 'Afternoon' },
+  { civilian: 'Evening', imposter: 'Night' },
+  { civilian: 'China', imposter: 'Japan' },
+  { civilian: 'Water', imposter: 'Juice' },
+  { civilian: 'Midnight', imposter: 'Dawn' }
 ]
 
 export default function GameProvider({ children }) {
@@ -269,15 +326,15 @@ export default function GameProvider({ children }) {
       roles[id] = index < imposterCount ? 'imposter' : 'civilian'
     })
     
-    // Select random word
-    const word = WORD_LIST[Math.floor(Math.random() * WORD_LIST.length)]
+    // Select random word pair
+    const wordPair = WORD_PAIRS[Math.floor(Math.random() * WORD_PAIRS.length)]
     
     // Create speaking order
     const order = [...players].sort(() => Math.random() - 0.5)
     
     // Update CRDT state
     setCRDT('player-roles', roles)
-    setCRDT('current-word', word)
+    setCRDT('current-word', wordPair)
     setCRDT('speaking-order', order)
     setCRDT('game-phase', 'game-start')
     
@@ -441,7 +498,6 @@ export default function GameProvider({ children }) {
   // Start word display timer
   const startWordDisplayTimer = useCallback((role, word) => {
     wordTimerActive.current = true
-    const displayWord = role === 'imposter' ? 'IMPOSTER' : word
     
     wordDisplayTimerRef.current = setTimeout(() => {
       wordTimerActive.current = false

@@ -201,9 +201,10 @@ export default function VotingScreen() {
   // Get the player's word based on their role (but don't reveal the role)
   let myWord = ''
   if (currentWord && currentWord.civilian && currentWord.imposter) {
+    // Word pair format - imposters see different word
     myWord = myRole === 'imposter' ? currentWord.imposter : currentWord.civilian
   } else if (currentWord && typeof currentWord === 'string') {
-    // Fallback for old format
+    // Fallback for old format (shouldn't happen with new implementation)
     myWord = currentWord
   }
 
