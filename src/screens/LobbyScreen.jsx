@@ -25,10 +25,7 @@ export default function LobbyScreen() {
       cards.push(
         <div key={i} className={`player-card ${name ? '' : 'empty'}`}>
           {name ? (
-            <>
-              <span className="player-number">{i + 1}</span>
-              <span className="player-name">{name}</span>
-            </>
+            <span className="player-name">{name}</span>
           ) : (
             <span className="waiting-text">Waiting for player...</span>
           )}
@@ -55,7 +52,9 @@ export default function LobbyScreen() {
       
       <div className="lobby-container">
         <div className="lobby-content">
+          <h1 className="lobby-title">Game Lobby</h1>
           <div className="players-section">
+            <h2 className="section-title">Players</h2>
             <div className="players-grid">
               {renderPlayerCards()}
             </div>

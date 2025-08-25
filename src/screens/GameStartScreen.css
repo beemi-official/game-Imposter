@@ -3,7 +3,21 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #1a1a2e, #16213e);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.role-screen::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: moveGrid 20s linear infinite;
 }
 
 .role-action-bar {
@@ -11,7 +25,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  background: rgba(0, 0, 0, 0.3);
+  background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%);
+  backdrop-filter: blur(10px);
+  z-index: 10;
+  position: relative;
 }
 
 .word-display {
@@ -20,14 +37,17 @@
 
 .word-badge {
   display: inline-block;
-  padding: 10px 20px;
-  background: rgba(255, 255, 255, 0.2);
+  padding: 12px 24px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.15) 100%);
   color: white;
-  border-radius: 20px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  animation: pulse 2s infinite;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.2);
+  animation: glow 3s ease-in-out infinite;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .role-container {
@@ -36,30 +56,56 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
+  position: relative;
+  z-index: 5;
 }
 
 .role-content {
   width: 100%;
   max-width: 500px;
   text-align: center;
+  animation: slideUp 0.6s ease-out;
 }
 
 .role-display {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 60px 40px;
-  margin-bottom: 30px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.08) 100%);
+  backdrop-filter: blur(20px);
+  border-radius: 30px;
+  padding: 80px 40px;
+  margin-bottom: 40px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3), inset 0 2px 8px rgba(255,255,255,0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.role-display::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
+  border-radius: 30px;
+  opacity: 0.3;
+  z-index: -1;
+  animation: rotateGradient 3s linear infinite;
 }
 
 .role-text {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 2.5rem;
+  font-weight: 800;
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 2px;
-  animation: fadeInScale 0.5s ease;
+  letter-spacing: 3px;
+  animation: fadeInScale 0.8s ease;
+  color: white;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.9) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .role-text.imposter {
@@ -77,31 +123,64 @@
 }
 
 .waiting-msg {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 1rem;
-  font-style: italic;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+  font-weight: 500;
   animation: fadeIn 1s ease;
+  padding: 15px 30px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 25px;
+  display: inline-block;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
 }
 
 @keyframes fadeInScale {
   from {
     opacity: 0;
-    transform: scale(0.8);
+    transform: scale(0.8) translateY(20px);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1) translateY(0);
   }
 }
 
-@keyframes pulse {
+@keyframes glow {
   0%, 100% {
-    transform: scale(1);
-    opacity: 1;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 2px 4px rgba(255,255,255,0.2);
   }
   50% {
-    transform: scale(1.05);
-    opacity: 0.9;
+    box-shadow: 0 8px 40px rgba(255,255,255,0.3), inset 0 2px 8px rgba(255,255,255,0.3);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes moveGrid {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+@keyframes rotateGradient {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 

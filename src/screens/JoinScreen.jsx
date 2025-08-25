@@ -100,7 +100,7 @@ export default function JoinScreen({ onExit }) {
               className="join-btn"
               disabled={!isConnected || !name.trim() || isJoining}
             >
-              {isJoining ? 'Joining...' : 'Join Game'}
+              {isJoining ? 'Joining...' : 'Join Lobby'}
             </button>
           </form>
           

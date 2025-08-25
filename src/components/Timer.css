@@ -1,14 +1,14 @@
 .timer-display {
   display: inline-block;
-  padding: 4px 12px;
+  padding: 3px 8px;
   background: rgba(255, 255, 255, 0.9);
   color: #667eea;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 700;
-  min-width: 60px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  min-width: 45px;
   text-align: center;
-  border: 2px solid #667eea;
+  border: 1px solid #667eea;
   transition: all 0.3s ease;
 }
 
