@@ -70,7 +70,7 @@ export default function JoinScreen() {
     <section className="join-screen">
       <div className="join-container">
         <div className="join-content">
-          <h1 className="game-title">🕵️‍♂️ Imposter</h1>
+          <h1 className="game-title">Imposter</h1>
           <p className="game-subtitle">Find the imposter among your friends</p>
           
           {statusMessage && (
@@ -86,7 +86,7 @@ export default function JoinScreen() {
               disabled={isResetting}
               style={{ opacity: isResetting ? 0.5 : 1 }}
             >
-              {isResetting ? '⏳ Resetting...' : '🔄 Reset Game'}
+              {isResetting ? 'Resetting...' : 'Reset Game'}
             </button>
           )}
           

@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 import BeemiSDKProvider, { useBeemiSDK } from './providers/BeemiSDKProvider'
 import GameProvider, { useGame } from './providers/GameProvider'
+import WelcomeScreen from './screens/WelcomeScreen'
 import JoinScreen from './screens/JoinScreen'
 import LobbyScreen from './screens/LobbyScreen'
 import GameStartScreen from './screens/GameStartScreen'
@@ -12,6 +13,17 @@ import DebugConsole from './components/DebugConsole'
 function GameScreens() {
   const gameContext = useGame()
   const { gamePhase, playerNames, playerId } = gameContext
+  const [showWelcome, setShowWelcome] = useState(true)
+  
+  // Handle start game from welcome screen
+  const handleStartGame = () => {
+    setShowWelcome(false)
+  }
+  
+  // Show welcome screen first
+  if (showWelcome) {
+    return <WelcomeScreen onStartGame={handleStartGame} />
+  }
   
   // Check if player has joined the game
   const hasJoined = playerNames.has(playerId)

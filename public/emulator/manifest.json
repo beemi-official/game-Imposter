@@ -5,14 +5,20 @@
   "icon": "icon.png",
   "minSdk": "2.1.1",
   "description": "Find the imposter among your friends",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "category": "strategy",
   "beemi": {
     "sdkVersion": "2.1.2",
-    "core": { "required": true },
-    "streams": { "required": true },
-    "multiplayer-p2p": { "required": true },
-    "user": { 
+    "core": {
+      "required": true
+    },
+    "streams": {
+      "required": true
+    },
+    "multiplayer-p2p": {
+      "required": true
+    },
+    "user": {
       "required": true,
       "config": {
         "enableProfileSync": true,
