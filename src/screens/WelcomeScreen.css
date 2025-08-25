@@ -239,17 +239,6 @@
   letter-spacing: 0.5px;
 }
 
-.how-to-play-link:hover .question-mark {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.15));
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: scale(1.1);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-}
-
-.how-to-play-link:hover .link-text {
-  color: rgba(255, 255, 255, 0.95);
-  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-}
 
 .btn-text {
   position: relative;
@@ -269,42 +258,15 @@
   z-index: 1;
 }
 
-.welcome-btn:hover {
-  transform: translateY(-4px) scale(1.05);
-  background-position: right center;
-  box-shadow: 
-    0 20px 50px rgba(102, 126, 234, 0.5),
-    0 0 80px rgba(102, 126, 234, 0.3),
-    inset 0 2px 0 rgba(255, 255, 255, 0.3);
-}
-
-.welcome-btn:hover .btn-glow {
-  width: 500px;
-  height: 500px;
-}
 
 .welcome-btn:active {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 
+    0 5px 20px rgba(102, 126, 234, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 /* Special shine effect for start button */
-.start-btn::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, 
-    transparent, 
-    rgba(255, 255, 255, 0.3), 
-    transparent);
-  transition: left 0.7s;
-}
-
-.start-btn:hover::after {
-  left: 100%;
-}
 
 /* Animations */
 @keyframes floatingGradient {

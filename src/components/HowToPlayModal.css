@@ -80,11 +80,9 @@
   z-index: 10;
 }
 
-.modal-close:hover {
+.modal-close:active {
   background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: rotate(90deg) scale(1.1);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  transform: scale(0.95);
 }
 
 .modal-title {
@@ -131,15 +129,6 @@
 .rule-section:nth-child(4) { animation-delay: 0.4s; }
 .rule-section:nth-child(5) { animation-delay: 0.5s; }
 
-.rule-section:hover {
-  background: linear-gradient(135deg, 
-    rgba(255, 255, 255, 0.08) 0%, 
-    rgba(255, 255, 255, 0.04) 100%);
-  transform: translateX(5px);
-  box-shadow: 
-    0 5px 20px rgba(102, 126, 234, 0.2),
-    inset 0 0 20px rgba(255, 255, 255, 0.03);
-}
 
 .rule-number {
   flex-shrink: 0;
@@ -227,22 +216,12 @@
   transition: width 0.6s, height 0.6s;
 }
 
-.got-it-btn:hover {
-  transform: translateY(-3px) scale(1.05);
-  background-position: right center;
-  box-shadow: 
-    0 15px 40px rgba(102, 126, 234, 0.5),
-    0 0 60px rgba(102, 126, 234, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-}
-
-.got-it-btn:hover::before {
-  width: 400px;
-  height: 400px;
-}
 
 .got-it-btn:active {
-  transform: translateY(-1px) scale(0.98);
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 
+    0 5px 20px rgba(102, 126, 234, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 /* Scrollbar styling for modal content */
@@ -260,9 +239,6 @@
   border-radius: 10px;
 }
 
-.modal-content::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #764ba2, #f093fb);
-}
 
 /* Animations */
 @keyframes backdropFadeIn {
