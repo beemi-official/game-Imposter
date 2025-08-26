@@ -16,8 +16,9 @@ export default function VotingGrid({ speakingOrder, canVote }) {
   } = useGame()
   
   const [voteCounts, setVoteCounts] = useState(new Map())
-  const [showUserLabel, setShowUserLabel] = useState(null) // {user, giftAmount, x, y}
+  const [clickedUserLabel, setClickedUserLabel] = useState(null) // {user, giftAmount, targetId, x, y}
   const labelTimeoutRef = useRef(null)
+  const topGifterRefs = useRef({}) // Store refs to top gifter elements
   
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -80,7 +81,7 @@ export default function VotingGrid({ speakingOrder, canVote }) {
     submitVote(targetId)
   }
   
-  const handleVoterClick = (voter, event) => {
+  const handleVoterClick = (voter, targetId, event) => {
     event.stopPropagation() // Prevent triggering the square's vote handler
     
     // Clear existing timeout
@@ -91,22 +92,24 @@ export default function VotingGrid({ speakingOrder, canVote }) {
     // Calculate gift amount (subtract 1 for base vote)
     const giftAmount = voter.voteWeight - 1
     
-    // Get click position relative to viewport
+    // Get click position
     const rect = event.currentTarget.getBoundingClientRect()
     
     // Set label to show
-    setShowUserLabel({
+    setClickedUserLabel({
       user: voter.user,
       giftAmount: giftAmount,
+      targetId: targetId,
       x: rect.left + rect.width / 2,
-      y: rect.top - 10
+      y: rect.top - 35
     })
     
     // Set timeout to hide after 5 seconds
     labelTimeoutRef.current = setTimeout(() => {
-      setShowUserLabel(null)
+      setClickedUserLabel(null)
     }, 5000)
   }
+  
 
   const getGridClass = () => {
     const playerCount = speakingOrder.length
@@ -148,6 +151,14 @@ export default function VotingGrid({ speakingOrder, canVote }) {
           const isSelected = selectedVote === id
           const voteCount = voteCounts.get(id) || 0
           const voterList = audienceVotes.get(id) || []
+          
+          // Find top gifter for this square
+          const topGifter = voterList.reduce((top, voter) => {
+            if (!top || voter.voteWeight > top.voteWeight) {
+              return voter
+            }
+            return top
+          }, null)
           
           // Function to calculate relative circle size based on GLOBAL vote weight
           const getCircleScale = (weight) => {
@@ -194,14 +205,18 @@ export default function VotingGrid({ speakingOrder, canVote }) {
                   )}
                   {voterList.map((voter, index) => {
                     const scale = getCircleScale(voter.voteWeight)
-                    console.log(`Circle scale for ${voter.user}: ${scale.toFixed(2)} (${voter.voteWeight}/${totalVotesInGame})`)
+                    const isTopGifter = topGifter && topGifter.user === voter.user
+                    const elementId = `${id}-${voter.user}`
+                    
                     return (
                       <div
                         key={`${voter.user}-${index}`}
+                        ref={isTopGifter ? (el) => { topGifterRefs.current[id] = el } : null}
+                        id={elementId}
                         className={`voter-circle ${voter.imageUrl ? '' : 'initials'}`}
                         title={`${voter.user} (${voter.voteWeight} ${voter.voteWeight === 1 ? 'vote' : 'votes'})`}
                         style={{ transform: `scale(${scale})` }}
-                        onClick={(e) => handleVoterClick(voter, e)}
+                        onClick={(e) => handleVoterClick(voter, id, e)}
                       >
                         {voter.imageUrl ? (
                           <img src={voter.imageUrl} alt={voter.user} />
@@ -218,27 +233,75 @@ export default function VotingGrid({ speakingOrder, canVote }) {
         })}
       </div>
       
-      {/* User label tooltip */}
-      {showUserLabel && (
+      {/* Permanent top gifter labels */}
+      {speakingOrder.map((targetId) => {
+        const voterList = audienceVotes.get(targetId) || []
+        const topGifter = voterList.reduce((top, voter) => {
+          if (!top || voter.voteWeight > top.voteWeight) {
+            return voter
+          }
+          return top
+        }, null)
+        
+        // Don't show top gifter label if it's currently clicked in this square
+        const shouldHideTopGifter = clickedUserLabel && 
+          clickedUserLabel.targetId === targetId &&
+          clickedUserLabel.user !== topGifter?.user
+        
+        if (!topGifter || shouldHideTopGifter) return null
+        
+        const element = topGifterRefs.current[targetId]
+        if (!element) return null
+        
+        const rect = element.getBoundingClientRect()
+        
+        return (
+          <div
+            key={`top-${targetId}`}
+            className="voter-label"
+            style={{
+              position: 'fixed',
+              left: `${rect.left + rect.width / 2}px`,
+              top: `${rect.top - 35}px`,
+              transform: 'translateX(-50%)',
+              background: 'rgba(0, 0, 0, 0.85)',
+              color: 'white',
+              padding: '4px 8px',
+              borderRadius: '4px',
+              fontSize: '12px',
+              fontWeight: '600',
+              zIndex: 999,
+              pointerEvents: 'none',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            @{topGifter.user} 🎁: {topGifter.voteWeight - 1}
+          </div>
+        )
+      })}
+      
+      {/* Clicked user label (temporary) */}
+      {clickedUserLabel && (
         <div 
-          className="voter-label"
+          className="voter-label clicked"
           style={{
             position: 'fixed',
-            left: `${showUserLabel.x}px`,
-            top: `${showUserLabel.y}px`,
+            left: `${clickedUserLabel.x}px`,
+            top: `${clickedUserLabel.y}px`,
             transform: 'translateX(-50%)',
-            background: 'rgba(0, 0, 0, 0.85)',
-            color: 'white',
-            padding: '4px 8px',
-            borderRadius: '4px',
-            fontSize: '12px',
-            fontWeight: '600',
-            zIndex: 1000,
+            background: 'rgba(255, 255, 102, 0.95)',
+            color: 'black',
+            padding: '6px 12px',
+            borderRadius: '6px',
+            fontSize: '14px',
+            fontWeight: '700',
+            zIndex: 1001,
             pointerEvents: 'none',
-            whiteSpace: 'nowrap'
+            whiteSpace: 'nowrap',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
           }}
         >
-          @{showUserLabel.user} 🎁: {showUserLabel.giftAmount}
+          @{clickedUserLabel.user} 🎁: {clickedUserLabel.giftAmount}
         </div>
       )}
     </div>
