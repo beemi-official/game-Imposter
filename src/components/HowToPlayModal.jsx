@@ -22,7 +22,7 @@ export default function HowToPlayModal({ onClose }) {
               <div className="rule-number">1</div>
               <div className="rule-content">
                 <h3>Invite Your Friends</h3>
-                <p><strong>Host:</strong> Click "Options" in the top right, then "Show Room Info", and share the room code with your friends</p>
+                <p>Click "Options" in the top right of Beemi app, then "Show Room Info", and share the room code with your friends</p>
               </div>
             </div>
             
@@ -54,7 +54,7 @@ export default function HowToPlayModal({ onClose }) {
               <div className="rule-number">5</div>
               <div className="rule-content">
                 <h3>Vote Out the Imposter</h3>
-                <p>After everyone describes, vote for who you think is the Imposter.</p>
+                <p>Vote for who you think is the Imposter. Your live audience can vote via the chat too.</p>
               </div>
             </div>
             
