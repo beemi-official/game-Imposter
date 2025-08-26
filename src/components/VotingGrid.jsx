@@ -27,26 +27,42 @@ export default function VotingGrid({ speakingOrder, canVote }) {
     })
     
     // Sum player votes
+    let playerVoteTotals = {}
     Object.entries(playerVotes).forEach(([voterId, votes]) => {
       if (!deadPlayers.has(voterId) && typeof votes === 'object') {
         Object.entries(votes).forEach(([targetId, count]) => {
           if (counts.has(targetId)) {
             counts.set(targetId, counts.get(targetId) + count)
+            playerVoteTotals[targetId] = (playerVoteTotals[targetId] || 0) + count
           }
         })
       }
     })
     
     // Add audience votes
+    let audienceVoteTotals = {}
     audienceVotes.forEach((votes, targetId) => {
       if (counts.has(targetId)) {
         const audienceTotal = votes.reduce((sum, v) => sum + v.voteWeight, 0)
         counts.set(targetId, counts.get(targetId) + audienceTotal)
+        audienceVoteTotals[targetId] = audienceTotal
       }
     })
     
+    // Log final vote counts
+    console.log('📊 Vote Count Calculation:', {
+      playerVotes: playerVoteTotals,
+      audienceVotes: audienceVoteTotals,
+      totalCounts: Object.fromEntries(counts),
+      playerNames: Object.fromEntries(
+        Array.from(counts.entries()).map(([id, count]) => 
+          [playerNames.get(id), count]
+        )
+      )
+    })
+    
     setVoteCounts(counts)
-  }, [playerVotes, audienceVotes, speakingOrder, deadPlayers])
+  }, [playerVotes, audienceVotes, speakingOrder, deadPlayers, playerNames])
 
   const handleVote = (targetId) => {
     if (!canVote || deadPlayers.has(targetId)) return

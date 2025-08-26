@@ -116,6 +116,8 @@ export default function GameProvider({ children }) {
   const autoSelectionTriggered = useRef(false)
   const wordTimerActive = useRef(false)
   const gamePlayers = useRef({})
+  const processStreamMessageRef = useRef(null)
+  const processGiftEventRef = useRef(null)
 
   // Handle players update from CRDT
   const handlePlayersUpdate = useCallback((playersData) => {
@@ -344,24 +346,27 @@ export default function GameProvider({ children }) {
   const submitVote = useCallback((targetId) => {
     if (!playerId || deadPlayers.has(playerId)) return
 
+    console.log('🎯 Player submitting vote:', {
+      voter: playerId,
+      target: targetId,
+      targetName: playerNames.get(targetId)
+    })
+
     setSelectedVote(targetId)
     setMyLocalVote(targetId)
     
-    // Calculate vote counts
+    // Only store the player's vote (worth 5)
+    // Don't add audience votes here - they're tracked separately
     const voteCounts = {}
     voteCounts[targetId] = 5 // Player vote worth 5
     
-    // Add audience votes
-    audienceVotes.forEach((votes, targetPlayerId) => {
-      if (targetPlayerId === targetId) {
-        votes.forEach(vote => {
-          voteCounts[targetId] = (voteCounts[targetId] || 0) + vote.voteWeight
-        })
-      }
+    console.log('📝 Storing player vote to CRDT:', {
+      key: `player-votes-${playerId}`,
+      voteCounts
     })
     
     setCRDT(`player-votes-${playerId}`, voteCounts)
-  }, [playerId, deadPlayers, audienceVotes, setCRDT])
+  }, [playerId, deadPlayers, playerNames, setCRDT])
 
   // Process stream message (for audience voting)
   const processStreamMessage = useCallback((chatData) => {
@@ -378,6 +383,11 @@ export default function GameProvider({ children }) {
       return
     }
     
+    console.log('💬 Stream Message:', {
+      username,
+      text,
+      gamePhase
+    })
     
     // Try to match text to player name (case insensitive)
     let matchedPlayer = null
@@ -393,6 +403,14 @@ export default function GameProvider({ children }) {
       // Calculate vote weight based on gifts
       const giftCoins = audienceGiftCoins.get(username) || 0
       const voteWeight = 1 + giftCoins
+      
+      console.log('🗳️ Audience Vote Matched:', {
+        username,
+        targetName,
+        targetId,
+        giftCoins,
+        voteWeight
+      })
       
       // Update audience current vote
       setAudienceCurrentVote(prev => new Map(prev).set(username, targetId))
@@ -418,17 +436,34 @@ export default function GameProvider({ children }) {
         })
         newVotes.set(targetId, targetVotes)
         
+        console.log(`📊 Updated audience votes for ${targetName}:`, {
+          totalVoters: targetVotes.length,
+          totalWeight: targetVotes.reduce((sum, v) => sum + v.voteWeight, 0),
+          voters: targetVotes.map(v => `${v.user} (${v.voteWeight})`)
+        })
+        
         return newVotes
       })
     } else {
+      console.log(`❌ No player match for text: "${text}"`)
     }
   }, [gamePhase, playerNames, deadPlayers, audienceGiftCoins])
+  
+  // Keep ref updated with latest callback
+  useEffect(() => {
+    processStreamMessageRef.current = processStreamMessage
+  }, [processStreamMessage])
 
   // Process gift event
   const processGiftEvent = useCallback((giftData) => {
     const username = giftData.user?.username || giftData.user?.name || 'Anonymous'
     const giftValue = giftData.gift?.coin_value || giftData.gift?.value || 0
     
+    console.log('🎁 Gift Event:', {
+      username,
+      giftValue,
+      giftData: giftData.gift
+    })
     
     if (giftValue > 0) {
       // Update gift coins tracking
@@ -437,6 +472,11 @@ export default function GameProvider({ children }) {
         const currentCoins = newCoins.get(username) || 0
         const newTotal = currentCoins + giftValue
         newCoins.set(username, newTotal)
+        console.log(`💰 Gift Coins Updated for ${username}:`, {
+          previousCoins: currentCoins,
+          giftValue,
+          newTotal
+        })
         return newCoins
       })
       
@@ -454,17 +494,29 @@ export default function GameProvider({ children }) {
               // Recalculate total vote weight
               const totalCoins = (audienceGiftCoins.get(username) || 0) + giftValue
               const newVoteWeight = 1 + totalCoins
+              const oldWeight = targetVotes[existingVoteIndex].voteWeight
               targetVotes[existingVoteIndex].voteWeight = newVoteWeight
+              console.log(`🔄 Updated vote weight for ${username} voting for ${targetId}:`, {
+                oldWeight,
+                newVoteWeight,
+                totalCoins
+              })
             }
             
             newVotes.set(targetId, targetVotes)
             return newVotes
           })
         } else {
+          console.log(`⚠️ User ${username} hasn't voted yet or target is dead`)
         }
       }
     }
   }, [gamePhase, audienceCurrentVote, deadPlayers, audienceGiftCoins])
+  
+  // Keep ref updated with latest callback
+  useEffect(() => {
+    processGiftEventRef.current = processGiftEvent
+  }, [processGiftEvent])
 
   // Reset entire game (leader only)
   const resetGame = useCallback(() => {
@@ -578,24 +630,27 @@ export default function GameProvider({ children }) {
   useEffect(() => {
     if (!isConnected) return
     
+    console.log('🔌 Setting up stream listeners (should only happen once per connection)')
+    
     const unsubChat = onStreamChat((event) => {
       let chatData = event?.data || event
-      if (chatData) {
-        processStreamMessage(chatData)
+      if (chatData && processStreamMessageRef.current) {
+        processStreamMessageRef.current(chatData)
       }
     })
     
     const unsubGift = onStreamGift((data) => {
-      if (data) {
-        processGiftEvent(data)
+      if (data && processGiftEventRef.current) {
+        processGiftEventRef.current(data)
       }
     })
     
     return () => {
+      console.log('🔌 Cleaning up stream listeners')
       if (unsubChat) unsubChat()
       if (unsubGift) unsubGift()
     }
-  }, [isConnected, onStreamChat, onStreamGift, processStreamMessage, processGiftEvent])
+  }, [isConnected, onStreamChat, onStreamGift])
 
   // Clean up timers on unmount
   useEffect(() => {
