@@ -113,11 +113,21 @@ export default function VotingGrid({ speakingOrder, canVote }) {
           // Function to calculate relative circle size based on GLOBAL vote weight
           const getCircleScale = (weight) => {
             if (totalVotesInGame === 0) return 1
+            
+            // Use a hybrid approach: consider both absolute weight and percentage
+            // This ensures circles grow as users accumulate more gifts
             const percentage = weight / totalVotesInGame
-            // Use square root for more gradual scaling
-            // Scale from 0.8x (minimum) to 1.5x (maximum)
-            // Gentler range prevents any circle from being too dominant
-            return 0.8 + (Math.sqrt(percentage) * 0.7)
+            
+            // Logarithmic component based on absolute weight (grows with more gifts)
+            // This ensures viewer circles grow as they gift more
+            const absoluteScale = Math.log(weight + 1) / Math.log(101) // log base 101 for 0-100 range
+            
+            // Combine percentage and absolute scaling
+            // 60% weight to absolute scale, 40% to percentage
+            const combinedScale = (absoluteScale * 0.6) + (Math.sqrt(percentage) * 0.4)
+            
+            // Scale from 0.7x to 2.5x to allow more growth
+            return 0.7 + (combinedScale * 1.8)
           }
           
           return (
