@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useBeemiSDK } from '../providers/BeemiSDKProvider'
 import { useGame } from '../providers/GameProvider'
 import VoterCircles from './VoterCircles'
@@ -16,6 +16,17 @@ export default function VotingGrid({ speakingOrder, canVote }) {
   } = useGame()
   
   const [voteCounts, setVoteCounts] = useState(new Map())
+  const [showUserLabel, setShowUserLabel] = useState(null) // {user, giftAmount, x, y}
+  const labelTimeoutRef = useRef(null)
+  
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (labelTimeoutRef.current) {
+        clearTimeout(labelTimeoutRef.current)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     // Calculate vote counts from all sources
@@ -67,6 +78,34 @@ export default function VotingGrid({ speakingOrder, canVote }) {
   const handleVote = (targetId) => {
     if (!canVote || deadPlayers.has(targetId)) return
     submitVote(targetId)
+  }
+  
+  const handleVoterClick = (voter, event) => {
+    event.stopPropagation() // Prevent triggering the square's vote handler
+    
+    // Clear existing timeout
+    if (labelTimeoutRef.current) {
+      clearTimeout(labelTimeoutRef.current)
+    }
+    
+    // Calculate gift amount (subtract 1 for base vote)
+    const giftAmount = voter.voteWeight - 1
+    
+    // Get click position relative to viewport
+    const rect = event.currentTarget.getBoundingClientRect()
+    
+    // Set label to show
+    setShowUserLabel({
+      user: voter.user,
+      giftAmount: giftAmount,
+      x: rect.left + rect.width / 2,
+      y: rect.top - 10
+    })
+    
+    // Set timeout to hide after 5 seconds
+    labelTimeoutRef.current = setTimeout(() => {
+      setShowUserLabel(null)
+    }, 5000)
   }
 
   const getGridClass = () => {
@@ -162,6 +201,7 @@ export default function VotingGrid({ speakingOrder, canVote }) {
                         className={`voter-circle ${voter.imageUrl ? '' : 'initials'}`}
                         title={`${voter.user} (${voter.voteWeight} ${voter.voteWeight === 1 ? 'vote' : 'votes'})`}
                         style={{ transform: `scale(${scale})` }}
+                        onClick={(e) => handleVoterClick(voter, e)}
                       >
                         {voter.imageUrl ? (
                           <img src={voter.imageUrl} alt={voter.user} />
@@ -177,6 +217,30 @@ export default function VotingGrid({ speakingOrder, canVote }) {
           )
         })}
       </div>
+      
+      {/* User label tooltip */}
+      {showUserLabel && (
+        <div 
+          className="voter-label"
+          style={{
+            position: 'fixed',
+            left: `${showUserLabel.x}px`,
+            top: `${showUserLabel.y}px`,
+            transform: 'translateX(-50%)',
+            background: 'rgba(0, 0, 0, 0.85)',
+            color: 'white',
+            padding: '4px 8px',
+            borderRadius: '4px',
+            fontSize: '12px',
+            fontWeight: '600',
+            zIndex: 1000,
+            pointerEvents: 'none',
+            whiteSpace: 'nowrap'
+          }}
+        >
+          @{showUserLabel.user} 🎁: {showUserLabel.giftAmount}
+        </div>
+      )}
     </div>
   )
 }
