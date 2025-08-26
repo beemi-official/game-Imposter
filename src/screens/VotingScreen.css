@@ -3,7 +3,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+  background: var(--gradient-primary);
   position: relative;
   overflow: hidden;
 }
@@ -32,10 +32,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 15px;
-  background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 100%);
+  background: linear-gradient(180deg, var(--color-black-rgba-30) 0%, var(--color-black-rgba-10) 100%);
   backdrop-filter: blur(15px);
   z-index: 100;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 1px solid var(--color-white-rgba-10);
 }
 
 .leader-btn {
@@ -43,19 +43,19 @@
   font-size: 0.75rem;
   font-weight: 600;
   color: white;
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  background: var(--gradient-danger);
   border: none;
   border-radius: 15px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 10px rgba(238, 90, 36, 0.3);
+  box-shadow: var(--shadow-danger-sm);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 .leader-btn:hover {
   transform: translateY(-1px) scale(1.02);
-  box-shadow: 0 3px 12px rgba(238, 90, 36, 0.4);
+  box-shadow: var(--shadow-danger-md);
 }
 
 .leader-btn:active {
@@ -85,10 +85,10 @@
   font-weight: 600;
   font-size: 0.9rem;
   animation: fadeInShake 0.8s ease;
-  background: rgba(255, 68, 68, 0.2);
+  background: var(--color-danger-rgba-20);
   padding: 12px 20px;
   border-radius: 12px;
-  border: 1px solid rgba(255, 68, 68, 0.4);
+  border: 1px solid var(--color-danger-rgba-40);
   backdrop-filter: blur(10px);
   display: inline-block;
 }
@@ -115,8 +115,8 @@
 
 .word-badge {
   padding: 5px 12px;
-  background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
-  color: #ff6b9d;
+  background: linear-gradient(135deg, var(--color-white-rgba-95) 0%, var(--color-white-rgba-85) 100%);
+  color: var(--color-primary);
   border-radius: 15px;
   font-size: 0.8rem;
   font-weight: 600;
@@ -129,7 +129,7 @@
 
 .imposter-badge {
   padding: 5px 12px;
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  background: var(--gradient-danger);
   color: white;
   border-radius: 15px;
   font-size: 0.8rem;

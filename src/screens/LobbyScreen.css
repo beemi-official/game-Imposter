@@ -3,7 +3,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+  background: var(--gradient-primary);
   position: relative;
   overflow: hidden;
 }
@@ -87,7 +87,7 @@
 }
 
 .leader-badge {
-  background: linear-gradient(135deg, #FFD700, #FFA500);
+  background: var(--gradient-gold);
   color: #fff;
   box-shadow: 0 3px 15px rgba(255, 215, 0, 0.5);
   animation: pulseGold 2s ease-in-out infinite;
@@ -110,7 +110,7 @@
   text-transform: uppercase;
   letter-spacing: 1.5px;
   margin-bottom: 8px;
-  background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -161,7 +161,7 @@
   text-align: center;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #ff6b9d;
+  color: var(--color-primary);
   margin-bottom: 6px;
   text-transform: uppercase;
   letter-spacing: 0.8px;
@@ -200,10 +200,10 @@
 .player-card:nth-child(4) { animation-delay: 0.4s; }
 
 .player-card:not(.empty) {
-  background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
+  background: var(--gradient-primary);
   border: 2px solid rgba(255,255,255,0.3);
   box-shadow: 
-    0 8px 20px rgba(255, 107, 157, 0.3),
+    0 8px 20px var(--color-primary-rgba-30),
     inset 0 2px 4px rgba(255,255,255,0.3);
 }
 
@@ -262,7 +262,7 @@
   font-size: 0.8rem;
   font-weight: 700;
   color: white;
-  background: linear-gradient(135deg, #00C851, #00BFA5);
+  background: var(--gradient-success);
   border: none;
   border-radius: 15px;
   cursor: pointer;
@@ -302,7 +302,7 @@
 }
 
 .start-btn:disabled {
-  background: linear-gradient(135deg, #9e9e9e, #757575);
+  background: var(--gradient-gray-disabled);
   cursor: not-allowed;
   opacity: 0.7;
   box-shadow: none;

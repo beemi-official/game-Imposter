@@ -1,3 +1,6 @@
+/* Import the theme variables - must be first */
+@import './styles/theme.css';
+
 * {
   margin: 0;
   padding: 0;
