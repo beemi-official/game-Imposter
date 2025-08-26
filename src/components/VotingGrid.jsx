@@ -84,38 +84,39 @@ export default function VotingGrid({ speakingOrder, canVote }) {
           }
           
           return (
-            <div 
-              key={id}
-              className={`player-square ${isDead ? 'is-dead' : ''}`}
-              onClick={() => handleVote(id)}
-              data-player-id={id}
-            >
-              <div className="player-info">
+            <div key={id} className="player-vote-slot">
+              <div className="player-info-header">
                 <span className="player-square-name">{playerName}</span>
                 <span className={`player-vote-badge ${voteCount > 0 ? '' : 'empty'}`}>
                   {voteCount}
                 </span>
               </div>
-              <div className="voter-circles-container" id={`voter-circles-${id}`}>
-                {isSelected && (
-                  <div className="voter-circle player-vote" title="Your vote (worth 5)">
-                    YOU
-                  </div>
-                )}
-                {voterList.map((voter, index) => (
-                  <div
-                    key={`${voter.user}-${index}`}
-                    className={`voter-circle ${voter.imageUrl ? '' : 'initials'}`}
-                    title={`${voter.user} (${voter.voteWeight} ${voter.voteWeight === 1 ? 'vote' : 'votes'})`}
-                    style={{ transform: `scale(${getCircleScale(voter.voteWeight)})` }}
-                  >
-                    {voter.imageUrl ? (
-                      <img src={voter.imageUrl} alt={voter.user} />
-                    ) : (
-                      voter.user.substring(0, 2).toUpperCase()
-                    )}
-                  </div>
-                ))}
+              <div 
+                className={`player-square ${isDead ? 'is-dead' : ''}`}
+                onClick={() => handleVote(id)}
+                data-player-id={id}
+              >
+                <div className="voter-circles-container" id={`voter-circles-${id}`}>
+                  {isSelected && (
+                    <div className="voter-circle player-vote" title="Your vote (worth 5)">
+                      YOU
+                    </div>
+                  )}
+                  {voterList.map((voter, index) => (
+                    <div
+                      key={`${voter.user}-${index}`}
+                      className={`voter-circle ${voter.imageUrl ? '' : 'initials'}`}
+                      title={`${voter.user} (${voter.voteWeight} ${voter.voteWeight === 1 ? 'vote' : 'votes'})`}
+                      style={{ transform: `scale(${getCircleScale(voter.voteWeight)})` }}
+                    >
+                      {voter.imageUrl ? (
+                        <img src={voter.imageUrl} alt={voter.user} />
+                      ) : (
+                        voter.user.substring(0, 2).toUpperCase()
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           )
