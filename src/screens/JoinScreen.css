@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+  background: linear-gradient(135deg, #ff6b9d 0%, #feca57 50%, #ffb347 100%);
   position: relative;
   overflow: hidden;
 }
@@ -221,7 +221,7 @@
   font-size: 0.9rem;
   font-weight: 700;
   color: white;
-  background: linear-gradient(135deg, #667eea, #764ba2, #f093fb);
+  background: linear-gradient(135deg, #ff6b9d, #feca57, #ffb347);
   background-size: 200% 200%;
   border: none;
   border-radius: 14px;

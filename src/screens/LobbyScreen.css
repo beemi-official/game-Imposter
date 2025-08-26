@@ -3,7 +3,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
   position: relative;
   overflow: hidden;
 }
@@ -110,7 +110,7 @@
   text-transform: uppercase;
   letter-spacing: 1.5px;
   margin-bottom: 8px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -161,7 +161,7 @@
   text-align: center;
   font-size: 0.75rem;
   font-weight: 600;
-  color: #667eea;
+  color: #ff6b9d;
   margin-bottom: 6px;
   text-transform: uppercase;
   letter-spacing: 0.8px;
@@ -200,23 +200,23 @@
 .player-card:nth-child(4) { animation-delay: 0.4s; }
 
 .player-card:not(.empty) {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
   border: 2px solid rgba(255,255,255,0.3);
   box-shadow: 
-    0 8px 20px rgba(102, 126, 234, 0.3),
+    0 8px 20px rgba(255, 107, 157, 0.3),
     inset 0 2px 4px rgba(255,255,255,0.3);
 }
 
 .player-card:not(.empty):hover {
   transform: translateY(-5px) scale(1.05) rotateX(5deg);
   box-shadow: 
-    0 15px 40px rgba(102, 126, 234, 0.4),
+    0 15px 40px rgba(255, 107, 157, 0.4),
     inset 0 2px 8px rgba(255,255,255,0.4);
 }
 
 .player-card.empty {
-  border: 2px dashed rgba(102, 126, 234, 0.3);
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  border: 2px dashed rgba(255, 107, 157, 0.3);
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.05) 0%, rgba(254, 202, 87, 0.05) 100%);
   animation: pulseEmpty 3s ease-in-out infinite;
 }
 
@@ -250,9 +250,9 @@
   font-size: 0.8rem;
   font-weight: 500;
   padding: 8px 14px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.08) 0%, rgba(254, 202, 87, 0.08) 100%);
   border-radius: 8px;
-  border: 1px solid rgba(102, 126, 234, 0.2);
+  border: 1px solid rgba(255, 107, 157, 0.2);
   display: inline-block;
 }
 
@@ -396,11 +396,11 @@
 @keyframes pulseEmpty {
   0%, 100% {
     opacity: 0.6;
-    border-color: rgba(102, 126, 234, 0.3);
+    border-color: rgba(255, 107, 157, 0.3);
   }
   50% {
     opacity: 0.8;
-    border-color: rgba(102, 126, 234, 0.5);
+    border-color: rgba(255, 107, 157, 0.5);
   }
 }
 

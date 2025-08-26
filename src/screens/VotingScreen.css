@@ -3,7 +3,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
   position: relative;
   overflow: hidden;
 }
@@ -116,7 +116,7 @@
 .word-badge {
   padding: 5px 12px;
   background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
-  color: #764ba2;
+  color: #ff6b9d;
   border-radius: 15px;
   font-size: 0.8rem;
   font-weight: 600;

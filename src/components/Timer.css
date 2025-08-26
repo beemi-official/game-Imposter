@@ -2,13 +2,13 @@
   display: inline-block;
   padding: 3px 8px;
   background: rgba(255, 255, 255, 0.9);
-  color: #667eea;
+  color: #ff6b9d;
   border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 600;
   min-width: 45px;
   text-align: center;
-  border: 1px solid #667eea;
+  border: 1px solid #ff6b9d;
   transition: all 0.3s ease;
 }
 

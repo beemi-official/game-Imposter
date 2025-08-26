@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #ff6b9d 0%, #feca57 100%);
   position: relative;
   overflow: hidden;
 }
@@ -126,13 +126,13 @@
   margin: 15px 0;
   animation: fadeInUp 1s ease 0.4s both;
   padding: 12px;
-  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(255, 107, 157, 0.05) 0%, rgba(254, 202, 87, 0.05) 100%);
   border-radius: 12px;
-  border: 1px solid rgba(102, 126, 234, 0.2);
+  border: 1px solid rgba(255, 107, 157, 0.2);
 }
 
 .word-reveal strong {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b9d, #feca57);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -153,14 +153,14 @@
   font-size: 0.85rem;
   font-weight: 600;
   color: white;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b9d, #feca57);
   border: none;
   border-radius: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
-  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 6px 20px rgba(255, 107, 157, 0.3);
   position: relative;
   overflow: hidden;
 }
@@ -180,7 +180,7 @@
 
 .return-btn:hover {
   transform: translateY(-2px) scale(1.03);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
 }
 
 .return-btn:hover::before {

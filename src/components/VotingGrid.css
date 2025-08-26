@@ -82,7 +82,7 @@
 .player-vote-badge {
   display: inline-block;
   padding: 3px 8px;
-  background: #667eea;
+  background: #ff6b9d;
   color: white;
   border-radius: 12px;
   font-size: 0.85rem;
@@ -115,7 +115,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  background: #667eea;
+  background: #ff6b9d;
   color: white;
   font-size: 0.7rem;
   font-weight: 600;
@@ -138,7 +138,7 @@
 }
 
 .voter-circle.initials {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #ff6b9d, #feca57);
   text-transform: uppercase;
 }
 
