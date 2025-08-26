@@ -76,6 +76,29 @@ export default function VotingGrid({ speakingOrder, canVote }) {
     return 'voting-grid'
   }
 
+  // Calculate total audience votes across ALL players in the game
+  const totalAudienceVotesInGame = Array.from(audienceVotes.values()).reduce((total, voterList) => {
+    return total + voterList.reduce((sum, v) => sum + v.voteWeight, 0)
+  }, 0)
+  
+  // Calculate total player votes (each player vote is worth 5)
+  const totalPlayerVotes = Array.from(playerVotes).reduce((total, [voterId, votes]) => {
+    if (!deadPlayers.has(voterId) && typeof votes === 'object') {
+      // Sum all the vote values for this player
+      return total + Object.values(votes).reduce((sum, count) => sum + count, 0)
+    }
+    return total
+  }, 0)
+  
+  // Total votes in game includes both player and audience votes
+  const totalVotesInGame = totalAudienceVotesInGame + totalPlayerVotes
+
+  console.log('🎯 Vote totals:', {
+    audience: totalAudienceVotesInGame,
+    players: totalPlayerVotes,
+    total: totalVotesInGame
+  })
+
   return (
     <div className="voting-grid-container">
       <div className={getGridClass()}>
@@ -87,16 +110,14 @@ export default function VotingGrid({ speakingOrder, canVote }) {
           const voteCount = voteCounts.get(id) || 0
           const voterList = audienceVotes.get(id) || []
           
-          // Calculate total votes for this player square
-          const totalVotesForPlayer = voterList.reduce((sum, v) => sum + v.voteWeight, 0)
-          
-          // Function to calculate relative circle size
+          // Function to calculate relative circle size based on GLOBAL vote weight
           const getCircleScale = (weight) => {
-            if (totalVotesForPlayer === 0) return 1
-            const percentage = weight / totalVotesForPlayer
-            // Scale from 0.7 to 1.5 based on percentage
-            // Smaller voters get 0.7x size, largest gets up to 1.5x
-            return 0.7 + (percentage * 0.8)
+            if (totalVotesInGame === 0) return 1
+            const percentage = weight / totalVotesInGame
+            // Use square root for more gradual scaling
+            // Scale from 0.8x (minimum) to 1.5x (maximum)
+            // Gentler range prevents any circle from being too dominant
+            return 0.8 + (Math.sqrt(percentage) * 0.7)
           }
           
           return (
@@ -114,24 +135,32 @@ export default function VotingGrid({ speakingOrder, canVote }) {
               >
                 <div className="voter-circles-container" id={`voter-circles-${id}`}>
                   {isSelected && (
-                    <div className="voter-circle player-vote" title="Your vote (worth 5)">
+                    <div 
+                      className="voter-circle player-vote" 
+                      title="Your vote (worth 5)"
+                      style={{ transform: `scale(${getCircleScale(5)})` }}
+                    >
                       YOU
                     </div>
                   )}
-                  {voterList.map((voter, index) => (
-                    <div
-                      key={`${voter.user}-${index}`}
-                      className={`voter-circle ${voter.imageUrl ? '' : 'initials'}`}
-                      title={`${voter.user} (${voter.voteWeight} ${voter.voteWeight === 1 ? 'vote' : 'votes'})`}
-                      style={{ transform: `scale(${getCircleScale(voter.voteWeight)})` }}
-                    >
-                      {voter.imageUrl ? (
-                        <img src={voter.imageUrl} alt={voter.user} />
-                      ) : (
-                        voter.user.substring(0, 2).toUpperCase()
-                      )}
-                    </div>
-                  ))}
+                  {voterList.map((voter, index) => {
+                    const scale = getCircleScale(voter.voteWeight)
+                    console.log(`Circle scale for ${voter.user}: ${scale.toFixed(2)} (${voter.voteWeight}/${totalVotesInGame})`)
+                    return (
+                      <div
+                        key={`${voter.user}-${index}`}
+                        className={`voter-circle ${voter.imageUrl ? '' : 'initials'}`}
+                        title={`${voter.user} (${voter.voteWeight} ${voter.voteWeight === 1 ? 'vote' : 'votes'})`}
+                        style={{ transform: `scale(${scale})` }}
+                      >
+                        {voter.imageUrl ? (
+                          <img src={voter.imageUrl} alt={voter.user} />
+                        ) : (
+                          voter.user.substring(0, 2).toUpperCase()
+                        )}
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
             </div>
