@@ -203,7 +203,8 @@ export default function VotingGrid({ speakingOrder, canVote }) {
                       YOU
                     </div>
                   )}
-                  {voterList.map((voter, index) => {
+                  {/* Sort voters by weight (ascending) so top gifter renders last (on top) */}
+                  {[...voterList].sort((a, b) => a.voteWeight - b.voteWeight).map((voter, index) => {
                     const scale = getCircleScale(voter.voteWeight)
                     const isTopGifter = topGifter && topGifter.user === voter.user
                     const elementId = `${id}-${voter.user}`
@@ -215,7 +216,11 @@ export default function VotingGrid({ speakingOrder, canVote }) {
                         id={elementId}
                         className={`voter-circle ${voter.imageUrl ? '' : 'initials'}`}
                         title={`${voter.user} (${voter.voteWeight} ${voter.voteWeight === 1 ? 'vote' : 'votes'})`}
-                        style={{ transform: `scale(${scale})` }}
+                        style={{ 
+                          transform: `scale(${scale})`,
+                          zIndex: isTopGifter ? 50 : 10,
+                          position: 'relative'
+                        }}
                         onClick={(e) => handleVoterClick(voter, id, e)}
                       >
                         {voter.imageUrl ? (
