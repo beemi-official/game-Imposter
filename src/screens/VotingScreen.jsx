@@ -197,6 +197,7 @@ export default function VotingScreen() {
 
   const isAlive = !deadPlayers.has(playerId)
   const myRole = playerRoles[playerId]
+  const myName = playerNames.get(playerId)
   
   // Get the player's word based on their role (but don't reveal the role)
   let myWord = ''
@@ -221,8 +222,8 @@ export default function VotingScreen() {
         )}
         
         <div className="word-display">
-          {myWord && (
-            <span className="word-badge">Your word: {myWord}</span>
+          {myWord && myName && (
+            <span className="word-badge">{myName}'s word: {myWord}</span>
           )}
         </div>
         
