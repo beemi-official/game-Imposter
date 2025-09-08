@@ -135,7 +135,7 @@ export default function ResultsScreen() {
           
           {showWord && currentWord && (
             <p className="word-reveal">
-              {currentWord.civilian && currentWord.imposter ? (
+              {currentWord.civilian && currentWord.impostor ? (
                 <>
                   The words were: <strong>{currentWord.civilian}</strong> (Civilians) / <strong>{currentWord.impostor}</strong> (Impostors)
                 </>

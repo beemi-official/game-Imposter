@@ -157,8 +157,8 @@
 
 .welcome-tagline {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-size: 1.2rem;
+  font-weight: 1000;
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 20px;
   letter-spacing: 1px;
@@ -411,7 +411,7 @@
   }
   
   .welcome-tagline {
-    font-size: 0.75rem;
+    font-size: 1.2rem;
     margin-bottom: 15px;
   }
   

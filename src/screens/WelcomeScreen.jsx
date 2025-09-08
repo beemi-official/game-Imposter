@@ -33,8 +33,7 @@ export default function WelcomeScreen({ onStartGame }) {
             />
             <div className="logo-glow"></div>
           </div>
-          
-          <h1 className="welcome-title">IMPOSTOR</h1>
+
           <p className="welcome-tagline">Can you spot the deceiver?</p>
           
           <div className="welcome-action-area">
