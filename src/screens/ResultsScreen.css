@@ -79,7 +79,7 @@
   letter-spacing: 1.5px;
 }
 
-.elimination-title.imposter {
+.elimination-title.impostor {
   background: linear-gradient(135deg, #ff6b6b, #ee5a24);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -104,7 +104,7 @@
   letter-spacing: 2px;
 }
 
-.winner-title.imposter-win {
+.winner-title.impostor-win {
   background: linear-gradient(135deg, #ff6b6b, #ee5a24);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

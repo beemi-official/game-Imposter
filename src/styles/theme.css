@@ -1,5 +1,5 @@
 /* ================================
-   IMPOSTER GAME THEME SYSTEM
+   IMPOSTOR GAME THEME SYSTEM
    ================================
    Single source of truth for all colors and gradients.
    Change these values to instantly update the entire app's theme.
@@ -46,7 +46,7 @@
   --color-success-light: #20c997;
   --color-success-rgba-40: rgba(40, 167, 69, 0.4);
   
-  /* Danger - Used for imposters, warnings */
+  /* Danger - Used for impostors, warnings */
   --gradient-danger: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
   --color-danger: #ff6b6b;
   --color-danger-dark: #ee5a24;

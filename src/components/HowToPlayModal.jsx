@@ -38,7 +38,7 @@ export default function HowToPlayModal({ onClose }) {
               <div className="rule-number">3</div>
               <div className="rule-content">
                 <h3>Receive Your Role</h3>
-                <p>Everyone gets the same word except the Imposter, who gets a slightly different word.</p>
+                <p>Everyone gets the same word except the Impostor, who gets a slightly different word.</p>
               </div>
             </div>
             
@@ -46,15 +46,15 @@ export default function HowToPlayModal({ onClose }) {
               <div className="rule-number">4</div>
               <div className="rule-content">
                 <h3>Describe the Word</h3>
-                <p>Take turns describing your word. The Imposter must blend in without knowing the real word!</p>
+                <p>Take turns describing your word. The Impostor must blend in without knowing the real word!</p>
               </div>
             </div>
             
             <div className="rule-section">
               <div className="rule-number">5</div>
               <div className="rule-content">
-                <h3>Vote Out the Imposter</h3>
-                <p>Vote for who you think is the Imposter. Your live audience can vote via the chat too.</p>
+                <h3>Vote Out the Impostor</h3>
+                <p>Vote for who you think is the Impostor. Your live audience can vote via the chat too.</p>
               </div>
             </div>
             
@@ -62,8 +62,8 @@ export default function HowToPlayModal({ onClose }) {
               <div className="rule-number">6</div>
               <div className="rule-content">
                 <h3>Win Conditions</h3>
-                <p><strong>Citizens win:</strong> If the Imposter is voted out.<br/>
-                <strong>Imposter wins:</strong> If they survive the vote.</p>
+                <p><strong>Citizens win:</strong> If the Impostor is voted out.<br/>
+                <strong>Impostor wins:</strong> If they survive the vote.</p>
               </div>
             </div>
           </div>

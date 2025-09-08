@@ -43,7 +43,7 @@ export default function DebugConsole() {
     }
 
     // Initial log
-    addLog('info', '🚀 Imposter Game Debug Console')
+    addLog('info', '🚀 Impostor Game Debug Console')
 
     // Cleanup
     return () => {

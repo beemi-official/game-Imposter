@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './WelcomeScreen.css'
-import imposterLogo from '../assets/imposter_logo.jpeg'
+import impostorLogo from '../assets/impostor_logo.png'
 import HowToPlayModal from '../components/HowToPlayModal'
 
 export default function WelcomeScreen({ onStartGame }) {
@@ -27,14 +27,14 @@ export default function WelcomeScreen({ onStartGame }) {
         <div className="welcome-content">
           <div className="logo-container">
             <img 
-              src={imposterLogo} 
-              alt="Imposter Game Logo" 
+              src={impostorLogo} 
+              alt="Impostor Game Logo" 
               className="game-logo"
             />
             <div className="logo-glow"></div>
           </div>
           
-          <h1 className="welcome-title">IMPOSTER</h1>
+          <h1 className="welcome-title">IMPOSTOR</h1>
           <p className="welcome-tagline">Can you spot the deceiver?</p>
           
           <div className="welcome-action-area">

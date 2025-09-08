@@ -127,7 +127,7 @@
   border: 1px solid rgba(255,255,255,0.3);
 }
 
-.imposter-badge {
+.impostor-badge {
   padding: 5px 12px;
   background: var(--gradient-danger);
   color: white;

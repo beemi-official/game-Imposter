@@ -12,72 +12,72 @@ export const useGame = () => {
 }
 
 export const WORD_PAIRS = [
-  { civilian: 'Pizza', imposter: 'Burger' },
-  { civilian: 'Dog', imposter: 'Cat' },
-  { civilian: 'Ocean', imposter: 'Lake' },
-  { civilian: 'Mountain', imposter: 'Hill' },
-  { civilian: 'Coffee', imposter: 'Tea' },
-  { civilian: 'Book', imposter: 'Magazine' },
-  { civilian: 'Phone', imposter: 'Tablet' },
-  { civilian: 'Car', imposter: 'Bus' },
-  { civilian: 'House', imposter: 'Apartment' },
-  { civilian: 'Sun', imposter: 'Moon' },
-  { civilian: 'Rain', imposter: 'Snow' },
-  { civilian: 'Fire', imposter: 'Ice' },
-  { civilian: 'Music', imposter: 'Podcast' },
-  { civilian: 'Dance', imposter: 'Sing' },
-  { civilian: 'Football', imposter: 'Basketball' },
-  { civilian: 'Apple', imposter: 'Orange' },
-  { civilian: 'Banana', imposter: 'Mango' },
-  { civilian: 'Chair', imposter: 'Sofa' },
-  { civilian: 'Table', imposter: 'Desk' },
-  { civilian: 'School', imposter: 'University' },
-  { civilian: 'Hospital', imposter: 'Clinic' },
-  { civilian: 'Airport', imposter: 'Train Station' },
-  { civilian: 'Beach', imposter: 'Pool' },
-  { civilian: 'Forest', imposter: 'Jungle' },
-  { civilian: 'Desert', imposter: 'Prairie' },
-  { civilian: 'River', imposter: 'Stream' },
-  { civilian: 'Bridge', imposter: 'Tunnel' },
-  { civilian: 'Castle', imposter: 'Palace' },
-  { civilian: 'Tower', imposter: 'Skyscraper' },
-  { civilian: 'Garden', imposter: 'Park' },
-  { civilian: 'Kitchen', imposter: 'Dining Room' },
-  { civilian: 'Bedroom', imposter: 'Living Room' },
-  { civilian: 'Library', imposter: 'Bookstore' },
-  { civilian: 'Museum', imposter: 'Gallery' },
-  { civilian: 'Theater', imposter: 'Cinema' },
-  { civilian: 'Restaurant', imposter: 'Cafe' },
-  { civilian: 'Hotel', imposter: 'Motel' },
-  { civilian: 'Bicycle', imposter: 'Motorcycle' },
-  { civilian: 'Train', imposter: 'Subway' },
-  { civilian: 'Airplane', imposter: 'Helicopter' },
-  { civilian: 'Boat', imposter: 'Ship' },
-  { civilian: 'Camera', imposter: 'Video Camera' },
-  { civilian: 'Computer', imposter: 'Laptop' },
-  { civilian: 'Television', imposter: 'Monitor' },
-  { civilian: 'Radio', imposter: 'Podcast Player' },
-  { civilian: 'Flower', imposter: 'Tree' },
-  { civilian: 'Butterfly', imposter: 'Moth' },
-  { civilian: 'Bird', imposter: 'Bat' },
-  { civilian: 'Fish', imposter: 'Dolphin' },
-  { civilian: 'Lion', imposter: 'Tiger' },
-  { civilian: 'Elephant', imposter: 'Rhino' },
-  { civilian: 'Bear', imposter: 'Panda' },
-  { civilian: 'Chocolate', imposter: 'Candy' },
-  { civilian: 'Ice cream', imposter: 'Frozen Yogurt' },
-  { civilian: 'Cake', imposter: 'Pie' },
-  { civilian: 'Sandwich', imposter: 'Wrap' },
-  { civilian: 'Soup', imposter: 'Stew' },
-  { civilian: 'Salad', imposter: 'Coleslaw' },
-  { civilian: 'Pasta', imposter: 'Noodles' },
-  { civilian: 'Winter', imposter: 'Fall' },
-  { civilian: 'Summer', imposter: 'Spring' },
-  { civilian: 'Morning', imposter: 'Afternoon' },
-  { civilian: 'Evening', imposter: 'Night' },
-  { civilian: 'China', imposter: 'Japan' },
-  { civilian: 'Water', imposter: 'Juice' },
-  { civilian: 'Midnight', imposter: 'Dawn' }
+  { civilian: 'Pizza', impostor: 'Burger' },
+  { civilian: 'Dog', impostor: 'Cat' },
+  { civilian: 'Ocean', impostor: 'Lake' },
+  { civilian: 'Mountain', impostor: 'Hill' },
+  { civilian: 'Coffee', impostor: 'Tea' },
+  { civilian: 'Book', impostor: 'Magazine' },
+  { civilian: 'Phone', impostor: 'Tablet' },
+  { civilian: 'Car', impostor: 'Bus' },
+  { civilian: 'House', impostor: 'Apartment' },
+  { civilian: 'Sun', impostor: 'Moon' },
+  { civilian: 'Rain', impostor: 'Snow' },
+  { civilian: 'Fire', impostor: 'Ice' },
+  { civilian: 'Music', impostor: 'Podcast' },
+  { civilian: 'Dance', impostor: 'Sing' },
+  { civilian: 'Football', impostor: 'Basketball' },
+  { civilian: 'Apple', impostor: 'Orange' },
+  { civilian: 'Banana', impostor: 'Mango' },
+  { civilian: 'Chair', impostor: 'Sofa' },
+  { civilian: 'Table', impostor: 'Desk' },
+  { civilian: 'School', impostor: 'University' },
+  { civilian: 'Hospital', impostor: 'Clinic' },
+  { civilian: 'Airport', impostor: 'Train Station' },
+  { civilian: 'Beach', impostor: 'Pool' },
+  { civilian: 'Forest', impostor: 'Jungle' },
+  { civilian: 'Desert', impostor: 'Prairie' },
+  { civilian: 'River', impostor: 'Stream' },
+  { civilian: 'Bridge', impostor: 'Tunnel' },
+  { civilian: 'Castle', impostor: 'Palace' },
+  { civilian: 'Tower', impostor: 'Skyscraper' },
+  { civilian: 'Garden', impostor: 'Park' },
+  { civilian: 'Kitchen', impostor: 'Dining Room' },
+  { civilian: 'Bedroom', impostor: 'Living Room' },
+  { civilian: 'Library', impostor: 'Bookstore' },
+  { civilian: 'Museum', impostor: 'Gallery' },
+  { civilian: 'Theater', impostor: 'Cinema' },
+  { civilian: 'Restaurant', impostor: 'Cafe' },
+  { civilian: 'Hotel', impostor: 'Motel' },
+  { civilian: 'Bicycle', impostor: 'Motorcycle' },
+  { civilian: 'Train', impostor: 'Subway' },
+  { civilian: 'Airplane', impostor: 'Helicopter' },
+  { civilian: 'Boat', impostor: 'Ship' },
+  { civilian: 'Camera', impostor: 'Video Camera' },
+  { civilian: 'Computer', impostor: 'Laptop' },
+  { civilian: 'Television', impostor: 'Monitor' },
+  { civilian: 'Radio', impostor: 'Podcast Player' },
+  { civilian: 'Flower', impostor: 'Tree' },
+  { civilian: 'Butterfly', impostor: 'Moth' },
+  { civilian: 'Bird', impostor: 'Bat' },
+  { civilian: 'Fish', impostor: 'Dolphin' },
+  { civilian: 'Lion', impostor: 'Tiger' },
+  { civilian: 'Elephant', impostor: 'Rhino' },
+  { civilian: 'Bear', impostor: 'Panda' },
+  { civilian: 'Chocolate', impostor: 'Candy' },
+  { civilian: 'Ice cream', impostor: 'Frozen Yogurt' },
+  { civilian: 'Cake', impostor: 'Pie' },
+  { civilian: 'Sandwich', impostor: 'Wrap' },
+  { civilian: 'Soup', impostor: 'Stew' },
+  { civilian: 'Salad', impostor: 'Coleslaw' },
+  { civilian: 'Pasta', impostor: 'Noodles' },
+  { civilian: 'Winter', impostor: 'Fall' },
+  { civilian: 'Summer', impostor: 'Spring' },
+  { civilian: 'Morning', impostor: 'Afternoon' },
+  { civilian: 'Evening', impostor: 'Night' },
+  { civilian: 'China', impostor: 'Japan' },
+  { civilian: 'Water', impostor: 'Juice' },
+  { civilian: 'Midnight', impostor: 'Dawn' }
 ]
 
 export default function GameProvider({ children }) {
@@ -213,6 +213,13 @@ export default function GameProvider({ children }) {
     setVotingResults(resultsData)
   }, [])
 
+  // Handle dead players updates
+  const handleDeadPlayersUpdate = useCallback((deadPlayersList) => {
+    if (deadPlayersList && Array.isArray(deadPlayersList)) {
+      setDeadPlayers(new Set(deadPlayersList))
+    }
+  }, [])
+  
   // Handle game end updates
   const handleGameEndUpdate = useCallback((gameEndData) => {
     if (gameEndData && gameEndData.eliminatedPlayer) {
@@ -321,11 +328,11 @@ export default function GameProvider({ children }) {
     // Assign roles
     const players = Array.from(playerNames.keys())
     const shuffled = [...players].sort(() => Math.random() - 0.5)
-    const imposterCount = gamePlayerCount <= 4 ? 1 : 2
+    const impostorCount = gamePlayerCount <= 4 ? 1 : 2
     
     const roles = {}
     shuffled.forEach((id, index) => {
-      roles[id] = index < imposterCount ? 'imposter' : 'civilian'
+      roles[id] = index < impostorCount ? 'impostor' : 'civilian'
     })
     
     // Select random word pair
@@ -530,6 +537,7 @@ export default function GameProvider({ children }) {
     setCRDT('speaking-order', null)
     setCRDT('voting-results', null)
     setCRDT('voting-timer', null)
+    setCRDT('dead-players', null)
     setCRDT('game-end', null)
     
     // Clear all player vote keys
@@ -579,6 +587,7 @@ export default function GameProvider({ children }) {
     unwatchers.push(watchCRDT('current-word', handleCurrentWordUpdate))
     unwatchers.push(watchCRDT('speaking-order', handleSpeakingOrderUpdate))
     unwatchers.push(watchCRDT('voting-results', handleVotingResults))
+    unwatchers.push(watchCRDT('dead-players', handleDeadPlayersUpdate))
     unwatchers.push(watchCRDT('game-end', handleGameEndUpdate))
     unwatchers.push(watchCRDT('game-reset', handleGameReset))
     

@@ -11,12 +11,7 @@ export default function JoinScreen({ onExit }) {
   const [statusMessage, setStatusMessage] = useState('')
   const [isResetting, setIsResetting] = useState(false)
 
-  useEffect(() => {
-    // Pre-fill name from user profile
-    if (userProfile && !name) {
-      setName(userProfile.display_name || userProfile.username || '')
-    }
-  }, [userProfile, name])
+  // Removed auto-fill from user profile - name input starts empty
 
   useEffect(() => {
     // Update status message
@@ -74,8 +69,8 @@ export default function JoinScreen({ onExit }) {
     <section className="join-screen">
       <div className="join-container">
         <div className="join-content">
-          <h1 className="game-title">Imposter</h1>
-          <p className="game-subtitle">Find the imposter among your friends</p>
+          <h1 className="game-title">Impostor</h1>
+          <p className="game-subtitle">Find the impostor among your friends</p>
           
           {statusMessage && (
             <div className="status-message player-status">

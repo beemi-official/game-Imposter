@@ -16,9 +16,9 @@ export default function GameStartScreen() {
     
     // Get the appropriate word based on role (but don't reveal the role)
     let word = ''
-    if (currentWord && currentWord.civilian && currentWord.imposter) {
-      // Word pair format - imposters see different word
-      word = myRole === 'imposter' ? currentWord.imposter : currentWord.civilian
+    if (currentWord && currentWord.civilian && currentWord.impostor) {
+      // Word pair format - impostors see different word
+      word = myRole === 'impostor' ? currentWord.impostor : currentWord.civilian
     } else if (currentWord && typeof currentWord === 'string') {
       // Fallback for old format (shouldn't happen with new implementation)
       word = currentWord

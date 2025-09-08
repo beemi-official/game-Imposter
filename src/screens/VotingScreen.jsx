@@ -132,18 +132,18 @@ export default function VotingScreen() {
       
       // Check win conditions
       const alivePlayers = Array.from(playerNames.keys()).filter(id => !deadPlayers.has(id) && id !== eliminatedPlayer)
-      const aliveImposters = alivePlayers.filter(id => playerRoles[id] === 'imposter').length
+      const aliveImpostors = alivePlayers.filter(id => playerRoles[id] === 'impostor').length
       const aliveCivilians = alivePlayers.filter(id => playerRoles[id] === 'civilian').length
       
-      if (eliminatedRole === 'imposter') {
-        if (aliveImposters === 0) {
+      if (eliminatedRole === 'impostor') {
+        if (aliveImpostors === 0) {
           gameOver = true
           winner = 'civilians'
         }
       } else {
-        if (aliveImposters >= aliveCivilians) {
+        if (aliveImpostors >= aliveCivilians) {
           gameOver = true
-          winner = 'imposters'
+          winner = 'impostors'
         }
       }
       
@@ -201,9 +201,9 @@ export default function VotingScreen() {
   
   // Get the player's word based on their role (but don't reveal the role)
   let myWord = ''
-  if (currentWord && currentWord.civilian && currentWord.imposter) {
-    // Word pair format - imposters see different word
-    myWord = myRole === 'imposter' ? currentWord.imposter : currentWord.civilian
+  if (currentWord && currentWord.civilian && currentWord.impostor) {
+    // Word pair format - impostors see different word
+    myWord = myRole === 'impostor' ? currentWord.impostor : currentWord.civilian
   } else if (currentWord && typeof currentWord === 'string') {
     // Fallback for old format (shouldn't happen with new implementation)
     myWord = currentWord

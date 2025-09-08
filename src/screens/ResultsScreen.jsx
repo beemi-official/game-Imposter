@@ -9,7 +9,8 @@ export default function ResultsScreen() {
     votingResults, 
     currentWord, 
     playerNames,
-    playerRoles 
+    playerRoles,
+    deadPlayers 
   } = useGame()
   
   const [eliminationMessage, setEliminationMessage] = useState('')
@@ -49,12 +50,12 @@ export default function ResultsScreen() {
       const playerName = playerNames.get(eliminatedPlayer)
       const role = eliminatedRole || playerRoles[eliminatedPlayer]
       
-      setEliminationMessage(`${playerName} was ${role === 'imposter' ? 'an Imposter' : 'a Civilian'}`)
+      setEliminationMessage(`${playerName} was ${role === 'impostor' ? 'an Impostor' : 'a Civilian'}`)
       
       if (gameOver) {
-        if (winner === 'imposters') {
-          setWinnerMessage('🕵️ The Imposters Win!')
-          setWinnerClass('imposter-win')
+        if (winner === 'impostors') {
+          setWinnerMessage('🕵️ The Impostors Win!')
+          setWinnerClass('impostor-win')
         } else {
           setWinnerMessage('👥 The Civilians Win!')
           setWinnerClass('civilian-win')
@@ -93,6 +94,12 @@ export default function ResultsScreen() {
   }
 
   const continueGame = () => {
+    // Add eliminated player to dead players before continuing
+    if (votingResults?.eliminatedPlayer) {
+      const updatedDeadPlayers = new Set([...deadPlayers, votingResults.eliminatedPlayer])
+      setCRDT('dead-players', Array.from(updatedDeadPlayers))
+    }
+    
     // Clear all player votes for fresh start
     playerNames.forEach((_, playerId) => {
       setCRDT(`player-votes-${playerId}`, null)
@@ -130,7 +137,7 @@ export default function ResultsScreen() {
             <p className="word-reveal">
               {currentWord.civilian && currentWord.imposter ? (
                 <>
-                  The words were: <strong>{currentWord.civilian}</strong> (Civilians) / <strong>{currentWord.imposter}</strong> (Imposters)
+                  The words were: <strong>{currentWord.civilian}</strong> (Civilians) / <strong>{currentWord.impostor}</strong> (Impostors)
                 </>
               ) : (
                 <>
