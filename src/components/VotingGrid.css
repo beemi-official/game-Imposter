@@ -50,6 +50,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .player-square:hover:not(.is-dead) {
@@ -145,6 +146,34 @@
 .voter-circle:hover {
   transform: scale(1.2);
   z-index: 10;
+}
+
+.vote-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+  margin-top: -10px;
+}
+
+.vote-placeholder-icon {
+  font-size: 1.6rem;
+  filter: none;
+}
+
+.vote-placeholder-text {
+  font-size: 0.72rem;
+  color: white;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.player-square:hover .vote-placeholder {
+  opacity: 0.8;
 }
 
 .vote-weight {

@@ -19,6 +19,35 @@ export default function VotingGrid({ speakingOrder, canVote }) {
   const [clickedUserLabel, setClickedUserLabel] = useState(null) // {user, giftAmount, targetId, x, y}
   const labelTimeoutRef = useRef(null)
   const topGifterRefs = useRef({}) // Store refs to top gifter elements
+  const [playerColors] = useState(() => {
+    // Generate light pastel colors for each player
+    const colors = new Map()
+    const lightColors = [
+      '#40E0D0', // Turquoise - teal
+      '#9370DB', // Medium Purple - violet
+      '#32CD32', // Lime Green - bright green
+      '#FF6B6B', // Coral Red - salmon
+      '#FFD700', // Gold - bright yellow
+      '#8A2BE2', // Blue Violet - deep purple
+      '#FF1493', // Deep Pink - hot pink
+      '#3CB371', // Medium Sea Green - forest green
+      '#FF8C00', // Dark Orange - orange
+      '#4682B4', // Steel Blue - single blue
+      '#DC143C', // Crimson - deep red
+      '#9ACD32', // Yellow Green - chartreuse
+      '#C71585', // Medium Violet Red - magenta
+      '#D2691E', // Chocolate - brown
+      '#FF6347', // Tomato - red-orange
+      '#708090', // Slate Gray - gray
+    ]
+    
+    speakingOrder.forEach((id, index) => {
+      // Use modulo to cycle through colors if more players than colors
+      colors.set(id, lightColors[index % lightColors.length])
+    })
+    
+    return colors
+  })
   
   // Cleanup timeout on unmount
   useEffect(() => {
@@ -192,8 +221,19 @@ export default function VotingGrid({ speakingOrder, canVote }) {
                 className={`player-square ${isDead ? 'is-dead' : ''}`}
                 onClick={() => handleVote(id)}
                 data-player-id={id}
+                style={{ 
+                  backgroundColor: isDead ? '#f8f9fa' : playerColors.get(id),
+                  borderColor: isDead ? '#6c757d' : '#e0e0e0'
+                }}
               >
                 <div className="voter-circles-container" id={`voter-circles-${id}`}>
+                  {/* Show placeholder when no votes */}
+                  {voteCount === 0 && !isSelected && (
+                    <div className="vote-placeholder">
+                      <span className="vote-placeholder-icon">💬</span>
+                      <span className="vote-placeholder-text">Type {playerName} in the chat to vote</span>
+                    </div>
+                  )}
                   {isSelected && (
                     <div 
                       className="voter-circle player-vote" 
