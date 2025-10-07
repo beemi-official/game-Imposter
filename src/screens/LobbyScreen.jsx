@@ -14,25 +14,33 @@ export default function LobbyScreen() {
     startGame()
   }
 
+  const handleInvite = () => {
+    if (window.beemi && window.beemi.inviteOthers) {
+      window.beemi.inviteOthers()
+    }
+  }
+
   const renderPlayerCards = () => {
     const cards = []
     const players = Array.from(playerNames.entries())
     const maxSlots = 4 // Fixed 2x2 grid like the original game
-    
+
     for (let i = 0; i < maxSlots; i++) {
       const [playerId, name] = players[i] || []
-      
+
       cards.push(
         <div key={i} className={`player-card ${name ? '' : 'empty'}`}>
           {name ? (
             <span className="player-name">{name}</span>
           ) : (
-            <span className="waiting-text">Waiting for player...</span>
+            <button className="invite-btn" onClick={handleInvite}>
+              Invite players
+            </button>
           )}
         </div>
       )
     }
-    
+
     return cards
   }
 
